@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARIPTOTO - Full Web</title>
   <style>
+    /* (copy semua style kamu di sini) */
     body { margin: 0; font-family: Arial, sans-serif; background: #0a0f1c; color: white; overflow-x: hidden; }
     header { background: #111a33; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
     header .logo { font-size: 22px; font-weight: bold; color: #FFD700; letter-spacing: 1px; }
@@ -15,90 +16,43 @@
     .btn-daftar { background: #00cc66; color: white; }
     header button:hover { transform: scale(1.05); opacity: 0.9; }
 
-    /* Popup form deposit */
-    .deposit-popup {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #1c1c1c;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.7);
-      display: none;
-      z-index: 1000;
-      width: 90%;
-      max-width: 400px;
-    }
-    .deposit-popup h3 {
-      color: #FFD700;
-      margin-bottom: 10px;
-    }
-    .deposit-popup input, .deposit-popup select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 5px;
-      outline: none;
-    }
-    .deposit-popup button {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-      transition: all 0.3s ease;
-    }
-    .btn-send { background: #00cc66; color: white; }
-    .btn-cancel { background: #ff4444; color: white; margin-left: 10px; }
+    /* Banner Promo */
+    .banner { text-align: center; margin: 30px auto; padding: 50px 20px; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; max-width: 900px; box-shadow: 0px 5px 20px rgba(0,0,0,0.6); animation: fadeInUp 1s ease; }
+    .banner h1 { font-size: 40px; margin-bottom: 15px; color: #FFD700; animation: fadeIn 2s ease; }
+    .banner p { font-size: 20px; color: #ddd; animation: fadeIn 2.5s ease; }
+    .banner .btn-main { margin-top: 20px; padding: 12px 25px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; background: #ffcc00; color: black; font-weight: bold; transition: 0.3s; }
+    .banner .btn-main:hover { background: #ffaa00; transform: scale(1.05); }
 
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      z-index: 900;
-    }
+    /* Menu User */
+    .menu { display: flex; gap: 15px; }
+    .menu a { color: #FFD700; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    .menu a:hover { color: #ff4444; }
+    .container { padding: 20px; animation: fadeIn 1s ease; }
+    .card { background: #2a2a2a; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: transform 0.3s ease; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { margin-top: 0; color: #ff4444; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
+    /* Form Daftar */
+    .form-box { background: #1c1c1c; padding: 30px; border-radius: 10px; width: 350px; margin: 60px auto; text-align: center; animation: fadeInDown 1s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+    .form-box h2 { color: #FFD700; margin-bottom: 20px; }
+    .form-box input, .form-box select { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; outline: none; }
+    .form-box button { width: 100%; padding: 12px; border: none; border-radius: 5px; background: #00cc66; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .form-box button:hover { background: #00994d; transform: scale(1.05); }
+
+    /* Halaman Switching */
     .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
     .active { display: block; opacity: 1; transform: translateY(0); }
 
-    /* Tabel informasi rekening tujuan */
-    .info-table {
-      width: 100%;
-      margin-top: 15px;
-      border-collapse: collapse;
-    }
-    .info-table th, .info-table td {
-      padding: 8px;
-      text-align: left;
-      border: 1px solid #444;
-    }
-    .info-table th {
-      background-color: #333;
-    }
-    .info-table td {
-      background-color: #222;
-    }
-    .info-table input {
-      background: #222;
-      color: white;
-      border: none;
-      width: 100%;
-      padding: 6px;
-      text-align: center;
-    }
-    .info-table input[readonly] {
-      background: #444;
-      cursor: not-allowed;
-    }
+    /* Animations */
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
   </style>
 </head>
 <body>
 
-  <!-- Halaman utama / login / daftar -->
+  <!-- Halaman Utama -->
   <div id="home" class="page active">
     <header>
       <div class="logo">ARIPTOTO</div>
@@ -109,50 +63,75 @@
         <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
       </div>
     </header>
+
+    <div class="banner">
+      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
+      <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
+      <button class="btn-main">Main Sekarang</button>
+    </div>
   </div>
 
+  <!-- Halaman Daftar -->
   <div id="daftar" class="page">
-    <!-- Form pendaftaran ... -->
+    <div class="form-box">
+      <h2>Form Pendaftaran</h2>
+      <input type="text" id="newUser" placeholder="User ID">
+      <input type="password" id="newPass" placeholder="Kata Sandi">
+      <input type="text" id="rekNum" placeholder="No. Rekening">
+      <input type="text" id="rekName" placeholder="Nama Rekening">
+      <input type="text" id="phoneNum" placeholder="No. HP">
+      <select id="bankType">
+        <option value="">-- Pilih Bank / E-Wallet --</option>
+        <option>Bank BCA</option>
+        <option>Bank BNI</option>
+        <option>Bank BRI</option>
+        <option>Bank Mandiri</option>
+        <option>DANA</option>
+        <option>OVO</option>
+        <option>Gopay</option>
+        <option>ShopeePay</option>
+      </select>
+      <button onclick="register()">Daftar</button>
+      <br><br>
+      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
+    </div>
   </div>
 
+  <!-- Halaman User Area -->
   <div id="userarea" class="page">
     <header>
       <div class="logo">ARIPTOTO - User Area</div>
       <div class="menu">
         <a href="#">History</a>
-        <a href="#" onclick="openDeposit()">Deposit</a>
+        <a href="#">Deposit</a>
         <a href="#">Withdraw</a>
         <a href="#">Rekening</a>
         <a href="#">Memo</a>
         <a href="#" onclick="logout()">Logout</a>
       </div>
     </header>
-    <div class="container">
-      <!-- Kartu user data, tabel vendor, dsb -->
-    </div>
-  </div>
 
-  <!-- Popup Deposit -->
-  <div class="overlay" id="overlay"></div>
-  <div class="deposit-popup" id="depositPopup">
-    <h3>Form Permintaan Deposit</h3>
-    <label for="tujuanBank">Tujuan Bank / E-Wallet</label>
-    <select id="tujuanBank">
-      <option value="">-- Pilih Bank / E-Wallet --</option>
-      <option>08511111111 (Dana)</option>
-      <option>Bank BCA</option>
-      <option>Bank BNI</option>
-      <option>Bank BRI</option>
-      <option>Bank Mandiri</option>
-      <option>OVO</option>
-      <option>Gopay</option>
-      <option>ShopeePay</option>
-    </select>
-    <input type="text" id="atasNama" placeholder="Atas Nama" value="Lumpia Saepon">
-    <input type="number" id="jumlahDeposit" placeholder="Jumlah Nominal">
-    <div style="text-align: right;">
-      <button class="btn-send" onclick="submitDeposit()">Kirim Permintaan</button>
-      <button class="btn-cancel" onclick="closeDeposit()">Batal</button>
+    <div class="container">
+      <div class="grid">
+        <div class="card">
+          <h3>User Data</h3>
+          <p id="userData">Balance: Rp 0</p>
+          <p id="bankData"></p>
+          <p id="phoneData"></p>
+        </div>
+        <div class="card">
+          <h3>Last Bet/Win Report</h3>
+          <p>No Data</p>
+        </div>
+        <div class="card">
+          <h3>Last Deposit/Withdraw Status</h3>
+          <p>No Data</p>
+        </div>
+      </div>
+      <!-- Tambahkan link ke halaman daftar user -->
+      <div style="text-align:center; margin-top:30px;">
+        <a href="list.html" style="color:#FFD700; text-decoration: underline;">Lihat Daftar User Terdaftar</a>
+      </div>
     </div>
   </div>
 
@@ -162,55 +141,291 @@
       document.getElementById(pageId).classList.add('active');
     }
 
-    function openDeposit() {
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById('depositPopup').style.display = 'block';
-    }
-    function closeDeposit() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('depositPopup').style.display = 'none';
-      // reset if mau kosongkan nominal saja
-      document.getElementById('jumlahDeposit').value = "";
-      // tapi tetap biarkan tujuanBank & atasNama default
-    }
-    function submitDeposit() {
-      const tujuan = document.getElementById('tujuanBank').value;
-      const nama = document.getElementById('atasNama').value.trim();
-      const jumlah = document.getElementById('jumlahDeposit').value;
+    function register() {
+      let user = document.getElementById('newUser').value.trim();
+      let pass = document.getElementById('newPass').value.trim();
+      let rekNum = document.getElementById('rekNum').value.trim();
+      let rekName = document.getElementById('rekName').value.trim();
+      let phone = document.getElementById('phoneNum').value.trim();
+      let bank = document.getElementById('bankType').value;
 
-      if (!tujuan || !nama || !jumlah) {
-        alert("Mohon isi semua field deposit!");
-        return;
+      if(user && pass && rekNum && rekName && phone && bank){
+        // ambil array users dari localStorage
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        // cek apakah user ID sudah ada
+        let exists = users.some(u => u.user === user);
+        if(exists){
+          alert("User ID sudah terdaftar, pilih yang lain!");
+          return;
+        }
+        // buat objek user baru (tidak menyimpan pass dalam plaintext untuk produksi tapi demo ok)
+        let newUserObj = {
+          user: user,
+          pass: pass,
+          rekNum: rekNum,
+          rekName: rekName,
+          phoneNum: phone,
+          bankType: bank,
+          balance: 1000000
+        };
+        // tambahkan ke array
+        users.push(newUserObj);
+        // simpan kembali
+        localStorage.setItem("users", JSON.stringify(users));
+
+        alert("Pendaftaran berhasil untuk user: " + user);
+        showPage('home');
+
+        // kosongkan form
+        document.getElementById('newUser').value = "";
+        document.getElementById('newPass').value = "";
+        document.getElementById('rekNum').value = "";
+        document.getElementById('rekName').value = "";
+        document.getElementById('phoneNum').value = "";
+        document.getElementById('bankType').value = "";
+      } else {
+        alert("Isi semua data dengan benar!");
       }
-
-      let depositRequests = JSON.parse(localStorage.getItem("depositRequests")) || [];
-      depositRequests.push({
-        tujuan: tujuan,
-        nama: nama,
-        jumlah: parseFloat(jumlah),
-        waktu: new Date().toLocaleString()
-      });
-      localStorage.setItem("depositRequests", JSON.stringify(depositRequests));
-
-      alert("Permintaan deposit berhasil dikirim!\n" +
-            "Tujuan: " + tujuan + "\n" +
-            "Atas Nama: " + nama + "\n" +
-            "Jumlah: Rp " + jumlah);
-
-      closeDeposit();
     }
 
     function login() {
-      // isi login seperti sebelumnya; setelah login baru userarea muncul
-      // ... kode login Anda
-    }
-    function logout() {
-      // ... kode logout Anda
-    }
-    function register() {
-      // ... kode pendaftaran Anda
-    }
-  </script>
+      let user = document.getElementById('userLogin').value.trim();
+      let pass = document.getElementById('passLogin').value.trim();
+      let users = JSON.parse(localStorage.getItem("users")) || [];
 
+      let found = users.find(u => u.user === user && u.pass === pass);
+      if(found){
+        // tampilkan data user area
+        document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString() + " (Bonus Daftar)";
+        document.getElementById('bankData').innerText = "Bank/E-Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
+        document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
+        showPage('userarea');
+      } else {
+        alert("User ID atau Password salah / belum terdaftar!");
+      }
+    }
+
+    function logout() {
+      document.getElementById('userLogin').value = "";
+      document.getElementById('passLogin').value = "";
+      showPage('home');
+    }
+
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARIPTOTO - Full Web</title>
+  <style>
+    /* (copy semua style kamu di sini) */
+    body { margin: 0; font-family: Arial, sans-serif; background: #0a0f1c; color: white; overflow-x: hidden; }
+    header { background: #111a33; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    header .logo { font-size: 22px; font-weight: bold; color: #FFD700; letter-spacing: 1px; }
+    header .login-form { display: flex; gap: 10px; }
+    header input { padding: 6px; border-radius: 5px; border: none; outline: none; }
+    header button { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; }
+    .btn-login { background: #ff4444; color: white; }
+    .btn-daftar { background: #00cc66; color: white; }
+    header button:hover { transform: scale(1.05); opacity: 0.9; }
+
+    /* Banner Promo */
+    .banner { text-align: center; margin: 30px auto; padding: 50px 20px; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; max-width: 900px; box-shadow: 0px 5px 20px rgba(0,0,0,0.6); animation: fadeInUp 1s ease; }
+    .banner h1 { font-size: 40px; margin-bottom: 15px; color: #FFD700; animation: fadeIn 2s ease; }
+    .banner p { font-size: 20px; color: #ddd; animation: fadeIn 2.5s ease; }
+    .banner .btn-main { margin-top: 20px; padding: 12px 25px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; background: #ffcc00; color: black; font-weight: bold; transition: 0.3s; }
+    .banner .btn-main:hover { background: #ffaa00; transform: scale(1.05); }
+
+    /* Menu User */
+    .menu { display: flex; gap: 15px; }
+    .menu a { color: #FFD700; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    .menu a:hover { color: #ff4444; }
+    .container { padding: 20px; animation: fadeIn 1s ease; }
+    .card { background: #2a2a2a; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: transform 0.3s ease; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { margin-top: 0; color: #ff4444; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+    /* Form Daftar */
+    .form-box { background: #1c1c1c; padding: 30px; border-radius: 10px; width: 350px; margin: 60px auto; text-align: center; animation: fadeInDown 1s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+    .form-box h2 { color: #FFD700; margin-bottom: 20px; }
+    .form-box input, .form-box select { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; outline: none; }
+    .form-box button { width: 100%; padding: 12px; border: none; border-radius: 5px; background: #00cc66; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .form-box button:hover { background: #00994d; transform: scale(1.05); }
+
+    /* Halaman Switching */
+    .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .active { display: block; opacity: 1; transform: translateY(0); }
+
+    /* Animations */
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
+  </style>
+</head>
+<body>
+
+  <!-- Halaman Utama -->
+  <div id="home" class="page active">
+    <header>
+      <div class="logo">ARIPTOTO</div>
+      <div class="login-form">
+        <input type="text" id="userLogin" placeholder="User ID">
+        <input type="password" id="passLogin" placeholder="Kata Sandi">
+        <button class="btn-login" onclick="login()">Login</button>
+        <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
+      </div>
+    </header>
+
+    <div class="banner">
+      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
+      <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
+      <button class="btn-main">Main Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Halaman Daftar -->
+  <div id="daftar" class="page">
+    <div class="form-box">
+      <h2>Form Pendaftaran</h2>
+      <input type="text" id="newUser" placeholder="User ID">
+      <input type="password" id="newPass" placeholder="Kata Sandi">
+      <input type="text" id="rekNum" placeholder="No. Rekening">
+      <input type="text" id="rekName" placeholder="Nama Rekening">
+      <input type="text" id="phoneNum" placeholder="No. HP">
+      <select id="bankType">
+        <option value="">-- Pilih Bank / E-Wallet --</option>
+        <option>Bank BCA</option>
+        <option>Bank BNI</option>
+        <option>Bank BRI</option>
+        <option>Bank Mandiri</option>
+        <option>DANA</option>
+        <option>OVO</option>
+        <option>Gopay</option>
+        <option>ShopeePay</option>
+      </select>
+      <button onclick="register()">Daftar</button>
+      <br><br>
+      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
+    </div>
+  </div>
+
+  <!-- Halaman User Area -->
+  <div id="userarea" class="page">
+    <header>
+      <div class="logo">ARIPTOTO - User Area</div>
+      <div class="menu">
+        <a href="#">History</a>
+        <a href="#">Deposit</a>
+        <a href="#">Withdraw</a>
+        <a href="#">Rekening</a>
+        <a href="#">Memo</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="grid">
+        <div class="card">
+          <h3>User Data</h3>
+          <p id="userData">Balance: Rp 0</p>
+          <p id="bankData"></p>
+          <p id="phoneData"></p>
+        </div>
+        <div class="card">
+          <h3>Last Bet/Win Report</h3>
+          <p>No Data</p>
+        </div>
+        <div class="card">
+          <h3>Last Deposit/Withdraw Status</h3>
+          <p>No Data</p>
+        </div>
+      </div>
+      <!-- Tambahkan link ke halaman daftar user -->
+      <div style="text-align:center; margin-top:30px;">
+        <a href="list.html" style="color:#FFD700; text-decoration: underline;">Lihat Daftar User Terdaftar</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function register() {
+      let user = document.getElementById('newUser').value.trim();
+      let pass = document.getElementById('newPass').value.trim();
+      let rekNum = document.getElementById('rekNum').value.trim();
+      let rekName = document.getElementById('rekName').value.trim();
+      let phone = document.getElementById('phoneNum').value.trim();
+      let bank = document.getElementById('bankType').value;
+
+      if(user && pass && rekNum && rekName && phone && bank){
+        // ambil array users dari localStorage
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        // cek apakah user ID sudah ada
+        let exists = users.some(u => u.user === user);
+        if(exists){
+          alert("User ID sudah terdaftar, pilih yang lain!");
+          return;
+        }
+        // buat objek user baru (tidak menyimpan pass dalam plaintext untuk produksi tapi demo ok)
+        let newUserObj = {
+          user: user,
+          pass: pass,
+          rekNum: rekNum,
+          rekName: rekName,
+          phoneNum: phone,
+          bankType: bank,
+          balance: 1000000
+        };
+        // tambahkan ke array
+        users.push(newUserObj);
+        // simpan kembali
+        localStorage.setItem("users", JSON.stringify(users));
+
+        alert("Pendaftaran berhasil untuk user: " + user);
+        showPage('home');
+
+        // kosongkan form
+        document.getElementById('newUser').value = "";
+        document.getElementById('newPass').value = "";
+        document.getElementById('rekNum').value = "";
+        document.getElementById('rekName').value = "";
+        document.getElementById('phoneNum').value = "";
+        document.getElementById('bankType').value = "";
+      } else {
+        alert("Isi semua data dengan benar!");
+      }
+    }
+
+    function login() {
+      let user = document.getElementById('userLogin').value.trim();
+      let pass = document.getElementById('passLogin').value.trim();
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      let found = users.find(u => u.user === user && u.pass === pass);
+      if(found){
+        // tampilkan data user area
+        document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString() + " (Bonus Daftar)";
+        document.getElementById('bankData').innerText = "Bank/E-Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
+        document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
+        showPage('userarea');
+      } else {
+        alert("User ID atau Password salah / belum terdaftar!");
+      }
+    }
+
+    function logout() {
+      document.getElementById('userLogin').value = "";
+      document.getElementById('passLogin').value = "";
+      showPage('home');
+    }
+
+  </script>
 </body>
 </html>
