@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GloryGame99 - Full Web</title>
+  <title>ARIPTOTO - Full Web</title>
   <style>
     body {
       margin: 0;
@@ -21,11 +21,13 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
     header .logo {
       font-size: 22px;
       font-weight: bold;
       color: #FFD700;
+      letter-spacing: 1px;
     }
     header .login-form {
       display: flex;
@@ -35,6 +37,7 @@
       padding: 6px;
       border-radius: 5px;
       border: none;
+      outline: none;
     }
     header button {
       padding: 6px 12px;
@@ -84,7 +87,7 @@
     }
     .banner .btn-main:hover { background: #ffaa00; transform: scale(1.05); }
 
-    /* User Area */
+    /* Menu User */
     .menu {
       display: flex;
       gap: 15px;
@@ -106,6 +109,7 @@
       padding: 15px;
       margin-bottom: 15px;
       transition: transform 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
     }
     .card:hover { transform: translateY(-5px); }
     .card h3 {
@@ -136,6 +140,7 @@
       margin: 8px 0;
       border: none;
       border-radius: 5px;
+      outline: none;
     }
     .form-box button {
       width: 100%;
@@ -166,17 +171,17 @@
   <!-- Halaman Utama -->
   <div id="home" class="page active">
     <header>
-      <div class="logo">GLORYGAME99</div>
+      <div class="logo">ARIPTOTO</div>
       <div class="login-form">
         <input type="text" id="userLogin" placeholder="User ID">
         <input type="password" id="passLogin" placeholder="Kata Sandi">
-        <button class="btn-login" onclick="showPage('userarea')">Login</button>
+        <button class="btn-login" onclick="login()">Login</button>
         <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
       </div>
     </header>
 
     <div class="banner">
-      <h1>🎉 WELCOME TO GLORYGAME99 🎉</h1>
+      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
       <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
       <button class="btn-main">Main Sekarang</button>
     </div>
@@ -211,14 +216,14 @@
   <!-- Halaman User Area -->
   <div id="userarea" class="page">
     <header>
-      <div class="logo">GLORYGAME99 - User Area</div>
+      <div class="logo">ARIPTOTO - User Area</div>
       <div class="menu">
         <a href="#">History</a>
         <a href="#">Deposit</a>
         <a href="#">Withdraw</a>
         <a href="#">Rekening</a>
         <a href="#">Memo</a>
-        <a href="#" onclick="showPage('home')">Logout</a>
+        <a href="#" onclick="logout()">Logout</a>
       </div>
     </header>
 
@@ -227,8 +232,8 @@
         <div class="card">
           <h3>User Data</h3>
           <p id="userData">Balance: Rp 0</p>
-          <p>Last Login: 18 Sep 2025 20:35</p>
-          <p>Last IP: 111.87.98.28</p>
+          <p id="bankData"></p>
+          <p id="phoneData"></p>
         </div>
         <div class="card">
           <h3>Last Bet/Win Report</h3>
@@ -244,9 +249,7 @@
 
   <script>
     function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
-      });
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
     }
 
@@ -259,15 +262,40 @@
       let bank = document.getElementById('bankType').value;
 
       if(user && pass && rekNum && rekName && phone && bank){
+        let userData = {user, pass, rekNum, rekName, phone, bank, balance: 1000000};
+        localStorage.setItem("ariptotoUser", JSON.stringify(userData));
         alert("Pendaftaran berhasil untuk user: " + user);
-        document.getElementById('userLogin').value = user;
-        document.getElementById('passLogin').value = pass;
-        showPage('userarea');
-        document.getElementById('userData').innerText = 
-          "Balance: Rp 1.000.000 (Bonus Daftar)\nBank: " + bank + "\nRek: " + rekNum + " a/n " + rekName;
+        showPage('home');
       } else {
         alert("Isi semua data dengan benar!");
       }
+    }
+
+    function login() {
+      let user = document.getElementById('userLogin').value;
+      let pass = document.getElementById('passLogin').value;
+      let stored = localStorage.getItem("ariptotoUser");
+
+      if(!stored){
+        alert("Belum ada akun terdaftar. Silakan daftar dulu!");
+        return;
+      }
+
+      let data = JSON.parse(stored);
+      if(user === data.user && pass === data.pass){
+        document.getElementById('userData').innerText = "Balance: Rp " + data.balance.toLocaleString() + " (Bonus Daftar)";
+        document.getElementById('bankData').innerText = "Bank/E-Wallet: " + data.bank + " - " + data.rekNum + " a/n " + data.rekName;
+        document.getElementById('phoneData').innerText = "No. HP: " + data.phone;
+        showPage('userarea');
+      } else {
+        alert("User ID atau Password salah!");
+      }
+    }
+
+    function logout() {
+      document.getElementById('userLogin').value = "";
+      document.getElementById('passLogin').value = "";
+      showPage('home');
     }
   </script>
 </body>
