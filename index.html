@@ -69,13 +69,6 @@
       background: #2a2a2a;
     }
 
-    /* Form / daftar etc tetap */
-    .form-box { background: #1c1c1c; padding: 30px; border-radius: 10px; width: 350px; margin: 60px auto; text-align: center; animation: fadeInDown 1s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
-    .form-box h2 { color: #FFD700; margin-bottom: 20px; }
-    .form-box input, .form-box select { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; outline: none; }
-    .form-box button { width: 100%; padding: 12px; border: none; border-radius: 5px; background: #00cc66; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-    .form-box button:hover { background: #00994d; transform: scale(1.05); }
-
     .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
     .active { display: block; opacity: 1; transform: translateY(0); }
 
@@ -86,7 +79,50 @@
 </head>
 <body>
 
-  <!-- Halaman Utama dan Daftar dikurangi utk singkat -->
+  <!-- Halaman Utama -->
+  <div id="home" class="page active">
+    <header>
+      <div class="logo">ARIPTOTO</div>
+      <div class="login-form">
+        <input type="text" id="userLogin" placeholder="User ID">
+        <input type="password" id="passLogin" placeholder="Kata Sandi">
+        <button class="btn-login" onclick="login()">Login</button>
+        <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
+      </div>
+    </header>
+
+    <div class="banner">
+      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
+      <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
+      <button class="btn-main">Main Sekarang</button>
+    </div>
+  </div>
+
+  <!-- Halaman Daftar -->
+  <div id="daftar" class="page">
+    <div class="form-box">
+      <h2>Form Pendaftaran</h2>
+      <input type="text" id="newUser" placeholder="User ID">
+      <input type="password" id="newPass" placeholder="Kata Sandi">
+      <input type="text" id="rekNum" placeholder="No. Rekening">
+      <input type="text" id="rekName" placeholder="Nama Rekening">
+      <input type="text" id="phoneNum" placeholder="No. HP">
+      <select id="bankType">
+        <option value="">-- Pilih Bank / E-Wallet --</option>
+        <option>Bank BCA</option>
+        <option>Bank BNI</option>
+        <option>Bank BRI</option>
+        <option>Bank Mandiri</option>
+        <option>DANA</option>
+        <option>OVO</option>
+        <option>Gopay</option>
+        <option>ShopeePay</option>
+      </select>
+      <button onclick="register()">Daftar</button>
+      <br><br>
+      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
+    </div>
+  </div>
 
   <!-- Halaman User Area -->
   <div id="userarea" class="page">
@@ -131,9 +167,9 @@
                 <tr><th>Pragmatic</th></tr>
               </thead>
               <tbody>
-                <tr><td>Info A</td></tr>
-                <tr><td>Info B</td></tr>
-                <tr><td>Info C</td></tr>
+                <tr><td>Bonus Pragmatic</td></tr>
+                <tr><td>RTP: 96%</td></tr>
+                <tr><td>Max Bet: Rp 500.000</td></tr>
               </tbody>
             </table>
           </div>
@@ -144,9 +180,9 @@
                 <tr><th>PG Soft</th></tr>
               </thead>
               <tbody>
-                <tr><td>Info A</td></tr>
-                <tr><td>Info B</td></tr>
-                <tr><td>Info C</td></tr>
+                <tr><td>Bonus PG Soft</td></tr>
+                <tr><td>RTP: 95%</td></tr>
+                <tr><td>Max Bet: Rp 300.000</td></tr>
               </tbody>
             </table>
           </div>
@@ -157,9 +193,9 @@
                 <tr><th>No Limit</th></tr>
               </thead>
               <tbody>
-                <tr><td>Info A</td></tr>
-                <tr><td>Info B</td></tr>
-                <tr><td>Info C</td></tr>
+                <tr><td>Bonus No Limit</td></tr>
+                <tr><td>RTP: 97%</td></tr>
+                <tr><td>Max Bet: Rp 1.000.000</td></tr>
               </tbody>
             </table>
           </div>
@@ -170,9 +206,9 @@
                 <tr><th>Lainnya</th></tr>
               </thead>
               <tbody>
-                <tr><td>Info A</td></tr>
-                <tr><td>Info B</td></tr>
-                <tr><td>Info C</td></tr>
+                <tr><td>Bonus Spesial</td></tr>
+                <tr><td>Promo Harian</td></tr>
+                <tr><td>Keuntungan Tambahan</td></tr>
               </tbody>
             </table>
           </div>
@@ -183,23 +219,81 @@
   </div>
 
   <script>
-    // Script showPage, login, register, logout, etc. tetap seperti sebelumnya
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
     }
-    // stub contoh data
+
+    // Simpan data pendaftaran ke localStorage
+    function register() {
+      const user = document.getElementById('newUser').value.trim();
+      const pass = document.getElementById('newPass').value.trim();
+      const rekNum = document.getElementById('rekNum').value.trim();
+      const rekName = document.getElementById('rekName').value.trim();
+      const phone = document.getElementById('phoneNum').value.trim();
+      const bank = document.getElementById('bankType').value;
+
+      if (!user || !pass || !rekNum || !rekName || !phone || !bank) {
+        alert("Isi semua data dengan benar!");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let exists = users.some(u => u.user === user);
+      if (exists) {
+        alert("User ID sudah terdaftar, pilih yang lain!");
+        return;
+      }
+
+      const newUserObj = {
+        user: user,
+        pass: pass,
+        rekNum: rekNum,
+        rekName: rekName,
+        phoneNum: phone,
+        bankType: bank,
+        balance: 1000000
+      };
+
+      users.push(newUserObj);
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("Pendaftaran berhasil untuk user: " + user);
+      showPage('home');
+
+      // kosongkan form
+      document.getElementById('newUser').value = "";
+      document.getElementById('newPass').value = "";
+      document.getElementById('rekNum').value = "";
+      document.getElementById('rekName').value = "";
+      document.getElementById('phoneNum').value = "";
+      document.getElementById('bankType').value = "";
+    }
+
+    // login berdasarkan localStorage
     function login() {
-      // setelah login berhasil, isi userData, bankData, phoneData
-      document.getElementById('userData').innerText = "Balance: Rp 1.000.000";
-      document.getElementById('bankData').innerText = "Bank/E-Wallet: Contoh Bank - 123456789";
-      document.getElementById('phoneData').innerText = "No. HP: 08123456789";
+      const user = document.getElementById('userLogin').value.trim();
+      const pass = document.getElementById('passLogin').value.trim();
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let found = users.find(u => u.user === user && u.pass === pass);
+      if (!found) {
+        alert("User ID atau Password salah / belum terdaftar!");
+        return;
+      }
+
+      // isi data user area
+      document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString();
+      document.getElementById('bankData').innerText = "Bank/E-Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
+      document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
+
       showPage('userarea');
     }
+
     function logout() {
+      // bisa clear input
+      document.getElementById('userLogin').value = "";
+      document.getElementById('passLogin').value = "";
       showPage('home');
     }
-    // register tidak ditulis lengkap disini (sesuaikan dengan kode kamu)
   </script>
 
 </body>
