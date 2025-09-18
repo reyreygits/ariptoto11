@@ -5,155 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARIPTOTO - Full Web</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0a0f1c;
-      color: white;
-      overflow-x: hidden;
-    }
-    header {
-      background: #111a33;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    header .logo {
-      font-size: 22px;
-      font-weight: bold;
-      color: #FFD700;
-      letter-spacing: 1px;
-    }
-    header .login-form {
-      display: flex;
-      gap: 10px;
-    }
-    header input {
-      padding: 6px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-    }
-    header button {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
+    /* (copy semua style kamu di sini) */
+    body { margin: 0; font-family: Arial, sans-serif; background: #0a0f1c; color: white; overflow-x: hidden; }
+    header { background: #111a33; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    header .logo { font-size: 22px; font-weight: bold; color: #FFD700; letter-spacing: 1px; }
+    header .login-form { display: flex; gap: 10px; }
+    header input { padding: 6px; border-radius: 5px; border: none; outline: none; }
+    header button { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; }
     .btn-login { background: #ff4444; color: white; }
     .btn-daftar { background: #00cc66; color: white; }
     header button:hover { transform: scale(1.05); opacity: 0.9; }
 
     /* Banner Promo */
-    .banner {
-      text-align: center;
-      margin: 30px auto;
-      padding: 50px 20px;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      border-radius: 15px;
-      max-width: 900px;
-      box-shadow: 0px 5px 20px rgba(0,0,0,0.6);
-      animation: fadeInUp 1s ease;
-    }
-    .banner h1 {
-      font-size: 40px;
-      margin-bottom: 15px;
-      color: #FFD700;
-      animation: fadeIn 2s ease;
-    }
-    .banner p {
-      font-size: 20px;
-      color: #ddd;
-      animation: fadeIn 2.5s ease;
-    }
-    .banner .btn-main {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #ffcc00;
-      color: black;
-      font-weight: bold;
-      transition: 0.3s;
-    }
+    .banner { text-align: center; margin: 30px auto; padding: 50px 20px; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; max-width: 900px; box-shadow: 0px 5px 20px rgba(0,0,0,0.6); animation: fadeInUp 1s ease; }
+    .banner h1 { font-size: 40px; margin-bottom: 15px; color: #FFD700; animation: fadeIn 2s ease; }
+    .banner p { font-size: 20px; color: #ddd; animation: fadeIn 2.5s ease; }
+    .banner .btn-main { margin-top: 20px; padding: 12px 25px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; background: #ffcc00; color: black; font-weight: bold; transition: 0.3s; }
     .banner .btn-main:hover { background: #ffaa00; transform: scale(1.05); }
 
     /* Menu User */
-    .menu {
-      display: flex;
-      gap: 15px;
-    }
-    .menu a {
-      color: #FFD700;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-    }
+    .menu { display: flex; gap: 15px; }
+    .menu a { color: #FFD700; text-decoration: none; font-weight: bold; transition: 0.3s; }
     .menu a:hover { color: #ff4444; }
-    .container {
-      padding: 20px;
-      animation: fadeIn 1s ease;
-    }
-    .card {
-      background: #2a2a2a;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-      transition: transform 0.3s ease;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-    }
+    .container { padding: 20px; animation: fadeIn 1s ease; }
+    .card { background: #2a2a2a; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: transform 0.3s ease; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
     .card:hover { transform: translateY(-5px); }
-    .card h3 {
-      margin-top: 0;
-      color: #ff4444;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
+    .card h3 { margin-top: 0; color: #ff4444; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
     /* Form Daftar */
-    .form-box {
-      background: #1c1c1c;
-      padding: 30px;
-      border-radius: 10px;
-      width: 350px;
-      margin: 60px auto;
-      text-align: center;
-      animation: fadeInDown 1s ease;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    }
+    .form-box { background: #1c1c1c; padding: 30px; border-radius: 10px; width: 350px; margin: 60px auto; text-align: center; animation: fadeInDown 1s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
     .form-box h2 { color: #FFD700; margin-bottom: 20px; }
-    .form-box input, .form-box select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 5px;
-      outline: none;
-    }
-    .form-box button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 5px;
-      background: #00cc66;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+    .form-box input, .form-box select { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; outline: none; }
+    .form-box button { width: 100%; padding: 12px; border: none; border-radius: 5px; background: #00cc66; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
     .form-box button:hover { background: #00994d; transform: scale(1.05); }
 
     /* Halaman Switching */
@@ -244,6 +128,10 @@
           <p>No Data</p>
         </div>
       </div>
+      <!-- Tambahkan link ke halaman daftar user -->
+      <div style="text-align:center; margin-top:30px;">
+        <a href="list.html" style="color:#FFD700; text-decoration: underline;">Lihat Daftar User Terdaftar</a>
+      </div>
     </div>
   </div>
 
@@ -254,41 +142,66 @@
     }
 
     function register() {
-      let user = document.getElementById('newUser').value;
-      let pass = document.getElementById('newPass').value;
-      let rekNum = document.getElementById('rekNum').value;
-      let rekName = document.getElementById('rekName').value;
-      let phone = document.getElementById('phoneNum').value;
+      let user = document.getElementById('newUser').value.trim();
+      let pass = document.getElementById('newPass').value.trim();
+      let rekNum = document.getElementById('rekNum').value.trim();
+      let rekName = document.getElementById('rekName').value.trim();
+      let phone = document.getElementById('phoneNum').value.trim();
       let bank = document.getElementById('bankType').value;
 
       if(user && pass && rekNum && rekName && phone && bank){
-        let userData = {user, pass, rekNum, rekName, phone, bank, balance: 1000000};
-        localStorage.setItem("ariptotoUser", JSON.stringify(userData));
+        // ambil array users dari localStorage
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        // cek apakah user ID sudah ada
+        let exists = users.some(u => u.user === user);
+        if(exists){
+          alert("User ID sudah terdaftar, pilih yang lain!");
+          return;
+        }
+        // buat objek user baru (tidak menyimpan pass dalam plaintext untuk produksi tapi demo ok)
+        let newUserObj = {
+          user: user,
+          pass: pass,
+          rekNum: rekNum,
+          rekName: rekName,
+          phoneNum: phone,
+          bankType: bank,
+          balance: 1000000
+        };
+        // tambahkan ke array
+        users.push(newUserObj);
+        // simpan kembali
+        localStorage.setItem("users", JSON.stringify(users));
+
         alert("Pendaftaran berhasil untuk user: " + user);
         showPage('home');
+
+        // kosongkan form
+        document.getElementById('newUser').value = "";
+        document.getElementById('newPass').value = "";
+        document.getElementById('rekNum').value = "";
+        document.getElementById('rekName').value = "";
+        document.getElementById('phoneNum').value = "";
+        document.getElementById('bankType').value = "";
       } else {
         alert("Isi semua data dengan benar!");
       }
     }
 
     function login() {
-      let user = document.getElementById('userLogin').value;
-      let pass = document.getElementById('passLogin').value;
-      let stored = localStorage.getItem("ariptotoUser");
+      let user = document.getElementById('userLogin').value.trim();
+      let pass = document.getElementById('passLogin').value.trim();
+      let users = JSON.parse(localStorage.getItem("users")) || [];
 
-      if(!stored){
-        alert("Belum ada akun terdaftar. Silakan daftar dulu!");
-        return;
-      }
-
-      let data = JSON.parse(stored);
-      if(user === data.user && pass === data.pass){
-        document.getElementById('userData').innerText = "Balance: Rp " + data.balance.toLocaleString() + " (Bonus Daftar)";
-        document.getElementById('bankData').innerText = "Bank/E-Wallet: " + data.bank + " - " + data.rekNum + " a/n " + data.rekName;
-        document.getElementById('phoneData').innerText = "No. HP: " + data.phone;
+      let found = users.find(u => u.user === user && u.pass === pass);
+      if(found){
+        // tampilkan data user area
+        document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString() + " (Bonus Daftar)";
+        document.getElementById('bankData').innerText = "Bank/E-Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
+        document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
         showPage('userarea');
       } else {
-        alert("User ID atau Password salah!");
+        alert("User ID atau Password salah / belum terdaftar!");
       }
     }
 
@@ -297,6 +210,7 @@
       document.getElementById('passLogin').value = "";
       showPage('home');
     }
+
   </script>
 </body>
 </html>
