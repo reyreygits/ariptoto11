@@ -3,138 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin - Daftar User ARIPTOTO</title>
+  <title>ARIPTOTO - Full Web</title>
   <style>
-    body {
-      background: #0a0f1c;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      text-align: center;
-    }
-    h1 {
-      color: #FFD700;
-      margin-bottom: 25px;
-    }
-    table {
-      margin: 0 auto;
-      width: 90%;
-      max-width: 900px;
-      border-collapse: collapse;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.6);
-      border-radius: 10px;
-      overflow: hidden;
-      background: #1c1c1c;
-    }
-    th, td {
-      padding: 12px 18px;
-      border: 1px solid #333;
-    }
-    th {
-      background: #111a33;
-      color: #FFD700;
-      text-align: center;
-    }
-    tr:nth-child(even) {
-      background: #2a2a2a;
-    }
-    tr:hover {
-      background: #444444;
-    }
-    button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #ff4444;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #cc0000;
-      transform: scale(1.05);
-    }
-    a {
-      color: #FFD700;
-      text-decoration: underline;
-      display: inline-block;
-      margin-top: 25px;
-      font-weight: bold;
+    /* Semua style sama persis dengan yang kamu kirim, saya salin langsung */
+    body { margin: 0; font-family: Arial, sans-serif; background: #0a0f1c; color: white; overflow-x: hidden; }
+    header { background: #111a33; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.4); flex-wrap: wrap; }
+    header .logo { font-size: 22px; font-weight: bold; color: #FFD700; letter-spacing: 1px; flex-shrink: 0; }
+    header .login-form { display: flex; gap: 10px; flex-wrap: wrap; flex-grow: 1; justify-content: flex-end; }
+    header input { padding: 6px; border-radius: 5px; border: none; outline: none; min-width: 100px; flex: 1 1 auto; max-width: 150px; }
+    header button { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; flex: 1 1 auto; max-width: 120px; }
+    .btn-login { background: #ff4444; color: white; }
+    .btn-daftar { background: #00cc66; color: white; }
+    header button:hover { transform: scale(1.05); opacity: 0.9; }
+    .banner { text-align: center; margin: 30px auto; padding: 50px 20px; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; max-width: 900px; box-shadow: 0px 5px 20px rgba(0,0,0,0.6); animation: fadeInUp 1s ease; }
+    .banner h1 { font-size: 40px; margin-bottom: 15px; color: #FFD700; animation: fadeIn 2s ease; }
+    .banner p { font-size: 20px; color: #ddd; animation: fadeIn 2.5s ease; }
+    .banner .btn-main { margin-top: 20px; padding: 12px 25px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; background: #ffcc00; color: black; font-weight: bold; transition: 0.3s; max-width: 300px; width: 100%; }
+    .banner .btn-main:hover { background: #ffaa00; transform: scale(1.05); }
+    .menu { display: flex; gap: 15px; flex-wrap: wrap; }
+    .menu a { color: #FFD700; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    .menu a:hover { color: #ff4444; }
+    .container { padding: 20px; animation: fadeIn 1s ease; max-width: 900px; margin: 0 auto; }
+    .card { background: #2a2a2a; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: transform 0.3s ease; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { margin-top: 0; color: #ff4444; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .center-image { display: block; margin: 20px auto; max-width: 80%; height: auto; border-radius: 8px; }
+    .form-box { background: #1c1c1c; padding: 30px; border-radius: 10px; width: 350px; margin: 60px auto; text-align: center; animation: fadeInDown 1s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+    .form-box h2 { color: #FFD700; margin-bottom: 20px; }
+    .form-box input, .form-box select { width: 100%; padding: 10px; margin: 8px 0; border: none; border-radius: 5px; outline: none; font-size: 16px; box-sizing: border-box; }
+    .form-box button { width: 100%; padding: 12px; border: none; border-radius: 5px; background: #00cc66; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .form-box button:hover { background: #00994d; transform: scale(1.05); }
+    .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .active { display: block; opacity: 1; transform: translateY(0); }
+    .provider-boxes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 30px; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .provider-card { background: #2a2a2a; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; color: #FFD700; box-shadow: 0 6px 15px rgba(255,215,0,0.4); cursor: default; user-select: none; }
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
+    @media screen and (max-width: 768px) {
+      header { flex-direction: column; align-items: flex-start; }
+      header .login-form { flex-direction: column; width: 100%; margin-top: 10px; }
+      header input, header button { width: 100%; max-width: 100%; margin-bottom: 8px; }
+      .banner { padding: 30px 15px; max-width: 100%; }
+      .banner h1 { font-size: 26px; }
+      .banner p { font-size: 16px; }
+      .banner .btn-main { font-size: 16px; }
+      .center-image { max-width: 100%; }
+      .grid { grid-template-columns: 1fr; }
+      .provider-boxes { grid-template-columns: 1fr 1fr; }
+      .form-box { width: 90%; margin: 30px auto; padding: 20px; }
     }
   </style>
 </head>
 <body>
-  <h1>📋 Daftar User Terdaftar</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>User ID</th>
-        <th>No. Rekening</th>
-        <th>Nama Rekening</th>
-        <th>No. HP</th>
-        <th>Bank / E-Wallet</th>
-      </tr>
-    </thead>
-    <tbody id="userTable">
-      <tr><td colspan="5">Memuat data...</td></tr>
-    </tbody>
-  </table>
 
-  <button onclick="clearUsers()">Hapus Semua User</button>
-  <br />
-  <a href="index.html">Kembali ke Beranda</a>
+  <!-- Halaman Utama -->
+  <div id="home" class="page active">
+    <header>
+      <div class="logo">ARIPTOTO</div>
+      <div class="login-form">
+        <input type="text" id="userLogin" placeholder="User ID" />
+        <input type="password" id="passLogin" placeholder="Kata Sandi" />
+        <button class="btn-login" onclick="login()">Login</button>
+        <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
+      </div>
+    </header>
+
+    <div class="banner">
+      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
+      <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
+      <button class="btn-main">Main Sekarang</button>
+
+      <!-- Gambar tengah bawah tulisan banner -->
+      <img src="https://raw.githubusercontent.com/reyreygits/ariptoto11/8c6b6bc656f69037edc448d4997d0d9d784e8711/poto.png2" alt="Gambar Banner" class="center-image" />
+    </div>
+  </div>
+
+  <!-- Halaman Daftar -->
+  <div id="daftar" class="page">
+    <div class="form-box">
+      <h2>Form Pendaftaran</h2>
+      <input type="text" id="newUser" placeholder="User ID" />
+      <input type="password" id="newPass" placeholder="Kata Sandi" />
+      <input type="text" id="rekNum" placeholder="No. Rekening" />
+      <input type="text" id="rekName" placeholder="Nama Rekening" />
+      <input type="text" id="phoneNum" placeholder="No. HP" />
+      <select id="bankType">
+        <option value="">-- Pilih Bank / E‑Wallet --</option>
+        <option>Bank BCA</option>
+        <option>Bank BNI</option>
+        <option>Bank BRI</option>
+        <option>Bank Mandiri</option>
+        <option>DANA</option>
+        <option>OVO</option>
+        <option>Gopay</option>
+        <option>ShopeePay</option>
+      </select>
+      <button onclick="register()">Daftar</button>
+      <br /><br />
+      <button onclick="showPage('home')" style="background:#ff4444; color:#fff;">Kembali ke Login</button>
+    </div>
+  </div>
 
   <script>
-    function loadUsers() {
-      let users = JSON.parse(localStorage.getItem('users')) || {};
-      let tbody = document.getElementById('userTable');
-      tbody.innerHTML = '';
+    // Fungsi untuk pindah halaman
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
 
-      let entries = Object.entries(users);
-      if(entries.length === 0){
-        tbody.innerHTML = `<tr><td colspan="5">Belum ada user terdaftar.</td></tr>`;
+    // Login
+    function login() {
+      let user = document.getElementById('userLogin').value.trim();
+      let pass = document.getElementById('passLogin').value;
+
+      if (!user || !pass) {
+        alert('Silakan isi User ID dan Kata Sandi');
         return;
       }
 
-      entries.forEach(([userID, data]) => {
-        let row = document.createElement('tr');
-
-        let tdUser = document.createElement('td');
-        tdUser.textContent = userID;
-
-        let tdRekNum = document.createElement('td');
-        tdRekNum.textContent = data.rekNum;
-
-        let tdRekName = document.createElement('td');
-        tdRekName.textContent = data.rekName;
-
-        let tdPhone = document.createElement('td');
-        tdPhone.textContent = data.phone;
-
-        let tdBank = document.createElement('td');
-        tdBank.textContent = data.bank;
-
-        row.appendChild(tdUser);
-        row.appendChild(tdRekNum);
-        row.appendChild(tdRekName);
-        row.appendChild(tdPhone);
-        row.appendChild(tdBank);
-
-        tbody.appendChild(row);
-      });
-    }
-
-    function clearUsers() {
-      if(confirm('Yakin ingin menghapus semua user?')){
-        localStorage.removeItem('users');
-        loadUsers();
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      if(users[user] && users[user].password === pass){
+        alert(`Selamat datang, ${user}!`);
+        // Bisa redirect ke admin atau halaman lain
+        window.location.href = 'admin.html';
+      } else {
+        alert('User ID atau Kata Sandi salah!');
       }
     }
 
-    window.onload = loadUsers;
+    // Register
+    function register() {
+      let user = document.getElementById('newUser').value.trim();
+      let pass = document.getElementById('newPass').value;
+      let rekNum = document.getElementById('rekNum').value.trim();
+      let rekName = document.getElementById('rekName').value.trim();
+      let phone = document.getElementById('phoneNum').value.trim();
+      let bank = document.getElementById('bankType').value;
+
+      if (!user || !pass || !rekNum || !rekName || !phone || !bank) {
+        alert('Mohon isi semua field!');
+        return;
+      }
+
+      // Ambil users dari localStorage
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+
+      if(users[user]){
+        alert('User ID sudah terdaftar, silakan pilih yang lain.');
+        return;
+      }
+
+      // Simpan user baru
+      users[user] = {
+        password: pass,
+        rekNum: rekNum,
+        rekName: rekName,
+        phone: phone,
+        bank: bank
+      };
+
+      localStorage.setItem('users', JSON.stringify(users));
+      alert('Pendaftaran berhasil! Silakan login.');
+      showPage('home');
+
+      // Reset form
+      document.getElementById('newUser').value = '';
+      document.getElementById('newPass').value = '';
+      document.getElementById('rekNum').value = '';
+      document.getElementById('rekName').value = '';
+      document.getElementById('phoneNum').value = '';
+      document.getElementById('bankType').value = '';
+    }
   </script>
+
 </body>
 </html>
