@@ -130,7 +130,7 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
     .form-box h2 { color: #FFD700; margin-bottom: 20px; }
-    .form-box input {
+    .form-box input, .form-box select {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
@@ -188,8 +188,20 @@
       <h2>Form Pendaftaran</h2>
       <input type="text" id="newUser" placeholder="User ID">
       <input type="password" id="newPass" placeholder="Kata Sandi">
-      <input type="text" placeholder="Email">
-      <input type="text" placeholder="No. HP">
+      <input type="text" id="rekNum" placeholder="No. Rekening">
+      <input type="text" id="rekName" placeholder="Nama Rekening">
+      <input type="text" id="phoneNum" placeholder="No. HP">
+      <select id="bankType">
+        <option value="">-- Pilih Bank / E-Wallet --</option>
+        <option>Bank BCA</option>
+        <option>Bank BNI</option>
+        <option>Bank BRI</option>
+        <option>Bank Mandiri</option>
+        <option>DANA</option>
+        <option>OVO</option>
+        <option>Gopay</option>
+        <option>ShopeePay</option>
+      </select>
       <button onclick="register()">Daftar</button>
       <br><br>
       <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
@@ -241,14 +253,20 @@
     function register() {
       let user = document.getElementById('newUser').value;
       let pass = document.getElementById('newPass').value;
-      if(user && pass){
+      let rekNum = document.getElementById('rekNum').value;
+      let rekName = document.getElementById('rekName').value;
+      let phone = document.getElementById('phoneNum').value;
+      let bank = document.getElementById('bankType').value;
+
+      if(user && pass && rekNum && rekName && phone && bank){
         alert("Pendaftaran berhasil untuk user: " + user);
         document.getElementById('userLogin').value = user;
         document.getElementById('passLogin').value = pass;
         showPage('userarea');
-        document.getElementById('userData').innerText = "Balance: Rp 1.000.000 (Bonus Daftar)";
+        document.getElementById('userData').innerText = 
+          "Balance: Rp 1.000.000 (Bonus Daftar)\nBank: " + bank + "\nRek: " + rekNum + " a/n " + rekName;
       } else {
-        alert("Isi User ID dan Sandi!");
+        alert("Isi semua data dengan benar!");
       }
     }
   </script>
