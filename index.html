@@ -30,7 +30,53 @@
     .card h3 { margin-top: 0; color: #ff4444; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
-    /* Style untuk tabel tambahan */
+    /* Popup form deposit */
+    .deposit-popup {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.7);
+      display: none;
+      z-index: 1000;
+      width: 90%;
+      max-width: 400px;
+    }
+    .deposit-popup h3 {
+      color: #FFD700;
+      margin-bottom: 10px;
+    }
+    .deposit-popup input, .deposit-popup select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+    .deposit-popup button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+    .btn-send { background: #00cc66; color: white; }
+    .btn-cancel { background: #ff4444; color: white; margin-left: 10px; }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      z-index: 900;
+    }
+
     .extra-tables {
       max-width: 900px;
       margin: 30px auto;
@@ -73,13 +119,14 @@
     .active { display: block; opacity: 1; transform: translateY(0); }
 
     @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
-    @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInUp { from {opacity=0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInDown { from {opacity=0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
   </style>
 </head>
 <body>
 
-  <!-- Halaman Utama -->
+  <!-- Halaman Utama & Daftar seperti sebelumnya... -->
+
   <div id="home" class="page active">
     <header>
       <div class="logo">ARIPTOTO</div>
@@ -90,7 +137,6 @@
         <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
       </div>
     </header>
-
     <div class="banner">
       <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
       <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
@@ -98,7 +144,6 @@
     </div>
   </div>
 
-  <!-- Halaman Daftar -->
   <div id="daftar" class="page">
     <div class="form-box">
       <h2>Form Pendaftaran</h2>
@@ -124,13 +169,12 @@
     </div>
   </div>
 
-  <!-- Halaman User Area -->
   <div id="userarea" class="page">
     <header>
       <div class="logo">ARIPTOTO - User Area</div>
       <div class="menu">
         <a href="#">History</a>
-        <a href="#">Deposit</a>
+        <a href="#" onclick="openDeposit()">Deposit</a> <!-- tombol deposit -->
         <a href="#">Withdraw</a>
         <a href="#">Rekening</a>
         <a href="#">Memo</a>
@@ -156,65 +200,32 @@
         </div>
       </div>
 
-      <!-- Bagian tabel tambahan 4 -->
-      <div class="extra-tables">
-        <h2>Vendor Game</h2>
-        <div class="table-grid">
-          <!-- Tabel 1: Pragmatic -->
-          <div class="extra-table">
-            <table>
-              <thead>
-                <tr><th>Pragmatic</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Bonus Pragmatic</td></tr>
-                <tr><td>RTP: 96%</td></tr>
-                <tr><td>Max Bet: Rp 500.000</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Tabel 2: PG Soft -->
-          <div class="extra-table">
-            <table>
-              <thead>
-                <tr><th>PG Soft</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Bonus PG Soft</td></tr>
-                <tr><td>RTP: 95%</td></tr>
-                <tr><td>Max Bet: Rp 300.000</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Tabel 3: No Limit -->
-          <div class="extra-table">
-            <table>
-              <thead>
-                <tr><th>No Limit</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Bonus No Limit</td></tr>
-                <tr><td>RTP: 97%</td></tr>
-                <tr><td>Max Bet: Rp 1.000.000</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Tabel 4: Lainnya -->
-          <div class="extra-table">
-            <table>
-              <thead>
-                <tr><th>Lainnya</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Bonus Spesial</td></tr>
-                <tr><td>Promo Harian</td></tr>
-                <tr><td>Keuntungan Tambahan</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <!-- Tabel vendor game etc... bisa disini -->
 
+    </div>
+  </div>
+
+  <!-- Popup Deposit -->
+  <div class="overlay" id="overlay"></div>
+  <div class="deposit-popup" id="depositPopup">
+    <h3>Form Permintaan Deposit</h3>
+    <label for="tujuanBank">Tujuan Bank / E-Wallet</label>
+    <select id="tujuanBank">
+      <option value="">-- Pilih Bank / E-Wallet --</option>
+      <option>Bank BCA</option>
+      <option>Bank BNI</option>
+      <option>Bank BRI</option>
+      <option>Bank Mandiri</option>
+      <option>DANA</option>
+      <option>OVO</option>
+      <option>Gopay</option>
+      <option>ShopeePay</option>
+    </select>
+    <input type="text" id="atasNama" placeholder="Atas Nama">
+    <input type="number" id="jumlahDeposit" placeholder="Jumlah Nominal">
+    <div style="text-align: right;">
+      <button class="btn-send" onclick="submitDeposit()">Kirim Permintaan</button>
+      <button class="btn-cancel" onclick="closeDeposit()">Batal</button>
     </div>
   </div>
 
@@ -224,7 +235,6 @@
       document.getElementById(pageId).classList.add('active');
     }
 
-    // Simpan data pendaftaran ke localStorage
     function register() {
       const user = document.getElementById('newUser').value.trim();
       const pass = document.getElementById('newPass').value.trim();
@@ -260,7 +270,6 @@
       alert("Pendaftaran berhasil untuk user: " + user);
       showPage('home');
 
-      // kosongkan form
       document.getElementById('newUser').value = "";
       document.getElementById('newPass').value = "";
       document.getElementById('rekNum').value = "";
@@ -269,7 +278,6 @@
       document.getElementById('bankType').value = "";
     }
 
-    // login berdasarkan localStorage
     function login() {
       const user = document.getElementById('userLogin').value.trim();
       const pass = document.getElementById('passLogin').value.trim();
@@ -280,20 +288,60 @@
         return;
       }
 
-      // isi data user area
       document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString();
-      document.getElementById('bankData').innerText = "Bank/E-Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
+      document.getElementById('bankData').innerText = "Bank/E‑Wallet: " + found.bankType + " ‑ " + found.rekNum + " a/n " + found.rekName;
       document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
 
       showPage('userarea');
     }
 
     function logout() {
-      // bisa clear input
       document.getElementById('userLogin').value = "";
       document.getElementById('passLogin').value = "";
       showPage('home');
     }
+
+    // Untuk deposit popup
+    function openDeposit() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('depositPopup').style.display = 'block';
+    }
+    function closeDeposit() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('depositPopup').style.display = 'none';
+      // kosongkan field
+      document.getElementById('tujuanBank').value = "";
+      document.getElementById('atasNama').value = "";
+      document.getElementById('jumlahDeposit').value = "";
+    }
+    function submitDeposit() {
+      const tujuan = document.getElementById('tujuanBank').value;
+      const nama = document.getElementById('atasNama').value.trim();
+      const jumlah = document.getElementById('jumlahDeposit').value;
+
+      if (!tujuan || !nama || !jumlah) {
+        alert("Mohon isi semua field deposit!");
+        return;
+      }
+
+      // Simpan request ke localStorage (atau lakukan tindakan lain)
+      let depositRequests = JSON.parse(localStorage.getItem("depositRequests")) || [];
+      depositRequests.push({
+        tujuan: tujuan,
+        nama: nama,
+        jumlah: parseFloat(jumlah),
+        waktu: new Date().toLocaleString()
+      });
+      localStorage.setItem("depositRequests", JSON.stringify(depositRequests));
+
+      alert("Permintaan deposit berhasil dikirim!\n" +
+            "Tujuan: " + tujuan + "\n" +
+            "Atas Nama: " + nama + "\n" +
+            "Jumlah: Rp " + jumlah);
+
+      closeDeposit();
+    }
+
   </script>
 
 </body>
