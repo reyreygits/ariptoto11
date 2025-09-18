@@ -15,6 +15,7 @@
     .btn-daftar { background: #00cc66; color: white; }
     header button:hover { transform: scale(1.05); opacity: 0.9; }
 
+    /* Popup form deposit */
     .deposit-popup {
       position: fixed;
       top: 50%; left: 50%;
@@ -28,19 +29,17 @@
       width: 90%;
       max-width: 400px;
     }
-    .deposit-popup h3 { color: #FFD700; margin-bottom: 10px; }
-    .deposit-popup input {
+    .deposit-popup h3 {
+      color: #FFD700;
+      margin-bottom: 10px;
+    }
+    .deposit-popup input, .deposit-popup select {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
       border: none;
       border-radius: 5px;
       outline: none;
-      background: #333;
-      color: white;
-    }
-    .deposit-popup input[readonly] {
-      opacity: 0.6;
     }
     .deposit-popup button {
       padding: 10px;
@@ -65,9 +64,56 @@
 
     .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
     .active { display: block; opacity: 1; transform: translateY(0); }
+
+    /* Tabel informasi rekening tujuan */
+    .info-table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+    }
+    .info-table th, .info-table td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #444;
+    }
+    .info-table th {
+      background-color: #333;
+    }
+    .info-table td {
+      background-color: #222;
+    }
+    .info-table input {
+      background: #222;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 6px;
+      text-align: center;
+    }
+    .info-table input[readonly] {
+      background: #444;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Halaman utama / login / daftar -->
+  <div id="home" class="page active">
+    <header>
+      <div class="logo">ARIPTOTO</div>
+      <div class="login-form">
+        <input type="text" id="userLogin" placeholder="User ID">
+        <input type="password" id="passLogin" placeholder="Kata Sandi">
+        <button class="btn-login" onclick="login()">Login</button>
+        <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
+      </div>
+    </header>
+  </div>
+
+  <div id="daftar" class="page">
+    <!-- Form pendaftaran ... -->
+  </div>
 
   <div id="userarea" class="page">
     <header>
@@ -81,21 +127,29 @@
         <a href="#" onclick="logout()">Logout</a>
       </div>
     </header>
-
     <div class="container">
-      <!-- bagian user data dst -->
+      <!-- Kartu user data, tabel vendor, dsb -->
     </div>
   </div>
 
+  <!-- Popup Deposit -->
   <div class="overlay" id="overlay"></div>
   <div class="deposit-popup" id="depositPopup">
     <h3>Form Permintaan Deposit</h3>
-    <label>Tujuan</label>
-    <input type="text" value="08511111111 (Dana)" readonly>
-    <label>Atas Nama</label>
-    <input type="text" value="Lumpia Saepon" readonly>
-    <label for="jumlahDeposit">Jumlah Nominal</label>
-    <input type="number" id="jumlahDeposit" placeholder="Masukkan jumlah deposit">
+    <label for="tujuanBank">Tujuan Bank / E-Wallet</label>
+    <select id="tujuanBank">
+      <option value="">-- Pilih Bank / E-Wallet --</option>
+      <option>08511111111 (Dana)</option>
+      <option>Bank BCA</option>
+      <option>Bank BNI</option>
+      <option>Bank BRI</option>
+      <option>Bank Mandiri</option>
+      <option>OVO</option>
+      <option>Gopay</option>
+      <option>ShopeePay</option>
+    </select>
+    <input type="text" id="atasNama" placeholder="Atas Nama" value="Lumpia Saepon">
+    <input type="number" id="jumlahDeposit" placeholder="Jumlah Nominal">
     <div style="text-align: right;">
       <button class="btn-send" onclick="submitDeposit()">Kirim Permintaan</button>
       <button class="btn-cancel" onclick="closeDeposit()">Batal</button>
@@ -103,30 +157,36 @@
   </div>
 
   <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
     function openDeposit() {
       document.getElementById('overlay').style.display = 'block';
       document.getElementById('depositPopup').style.display = 'block';
     }
-
     function closeDeposit() {
       document.getElementById('overlay').style.display = 'none';
       document.getElementById('depositPopup').style.display = 'none';
+      // reset if mau kosongkan nominal saja
       document.getElementById('jumlahDeposit').value = "";
+      // tapi tetap biarkan tujuanBank & atasNama default
     }
-
     function submitDeposit() {
+      const tujuan = document.getElementById('tujuanBank').value;
+      const nama = document.getElementById('atasNama').value.trim();
       const jumlah = document.getElementById('jumlahDeposit').value;
-      if (!jumlah) {
-        alert("Mohon isi jumlah nominal deposit!");
+
+      if (!tujuan || !nama || !jumlah) {
+        alert("Mohon isi semua field deposit!");
         return;
       }
-      const tujuan = "08511111111 (Dana)";
-      const atasNama = "Lumpia Saepon";
 
       let depositRequests = JSON.parse(localStorage.getItem("depositRequests")) || [];
       depositRequests.push({
         tujuan: tujuan,
-        nama: atasNama,
+        nama: nama,
         jumlah: parseFloat(jumlah),
         waktu: new Date().toLocaleString()
       });
@@ -134,10 +194,21 @@
 
       alert("Permintaan deposit berhasil dikirim!\n" +
             "Tujuan: " + tujuan + "\n" +
-            "Atas Nama: " + atasNama + "\n" +
+            "Atas Nama: " + nama + "\n" +
             "Jumlah: Rp " + jumlah);
 
       closeDeposit();
+    }
+
+    function login() {
+      // isi login seperti sebelumnya; setelah login baru userarea muncul
+      // ... kode login Anda
+    }
+    function logout() {
+      // ... kode logout Anda
+    }
+    function register() {
+      // ... kode pendaftaran Anda
     }
   </script>
 
