@@ -33,6 +33,15 @@
     .card h3 { margin-top: 0; color: #ff4444; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
+    /* Styling tambahan untuk foto tengah */
+    .center-image {
+      display: block;
+      margin: 20px auto; /* jarak atas-bawah 20px, auto kiri-kanan => center */
+      max-width: 80%; /* atur lebar maksimal, bisa ubah sesuai kebutuhan */
+      height: auto;
+      border-radius: 8px; /* opsional: sudut agak melengkung */
+    }
+
     /* Form Daftar */
     .form-box { background: #1c1c1c; padding: 30px; border-radius: 10px; width: 350px; margin: 60px auto; text-align: center; animation: fadeInDown 1s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
     .form-box h2 { color: #FFD700; margin-bottom: 20px; }
@@ -68,6 +77,11 @@
       <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
       <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
       <button class="btn-main">Main Sekarang</button>
+
+      <!-- Tambahkan gambar di tengah bawah tulisan banner -->
+      <img src="https://via.placeholder.com/600x200?text=Banner+Gambar" alt="Gambar Banner" class="center-image" />
+      <!-- Ganti src di atas dengan URL gambar kamu -->
+
     </div>
   </div>
 
@@ -81,7 +95,7 @@
       <input type="text" id="rekName" placeholder="Nama Rekening" />
       <input type="text" id="phoneNum" placeholder="No. HP" />
       <select id="bankType">
-        <option value="">-- Pilih Bank / E-Wallet --</option>
+        <option value="">-- Pilih Bank / E‑Wallet --</option>
         <option>Bank BCA</option>
         <option>Bank BNI</option>
         <option>Bank BRI</option>
@@ -132,7 +146,7 @@
       <!-- Kotak provider tambahan -->
       <div class="provider-boxes" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 30px;">
         <div class="provider-card" style="background: #2a2a2a; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; color: #FFD700; box-shadow: 0 6px 15px rgba(255,215,0,0.4); cursor: default; user-select: none;">
-          Pramatic
+          Pragmatic
         </div>
         <div class="provider-card" style="background: #2a2a2a; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; color: #FFD700; box-shadow: 0 6px 15px rgba(255,215,0,0.4); cursor: default; user-select: none;">
           PG Soft
@@ -167,15 +181,12 @@
       let bank = document.getElementById('bankType').value;
 
       if(user && pass && rekNum && rekName && phone && bank){
-        // ambil array users dari localStorage
         let users = JSON.parse(localStorage.getItem("users")) || [];
-        // cek apakah user ID sudah ada
         let exists = users.some(u => u.user === user);
         if(exists){
           alert("User ID sudah terdaftar, pilih yang lain!");
           return;
         }
-        // buat objek user baru (tidak menyimpan pass dalam plaintext untuk produksi tapi demo ok)
         let newUserObj = {
           user: user,
           pass: pass,
@@ -185,9 +196,7 @@
           bankType: bank,
           balance: 1000000
         };
-        // tambahkan ke array
         users.push(newUserObj);
-        // simpan kembali
         localStorage.setItem("users", JSON.stringify(users));
 
         alert("Pendaftaran berhasil untuk user: " + user);
@@ -212,9 +221,8 @@
 
       let found = users.find(u => u.user === user && u.pass === pass);
       if(found){
-        // tampilkan data user area
         document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString() + " (Bonus Daftar)";
-        document.getElementById('bankData').innerText = "Bank/E-Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
+        document.getElementById('bankData').innerText = "Bank/E‑Wallet: " + found.bankType + " - " + found.rekNum + " a/n " + found.rekName;
         document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
         showPage('userarea');
       } else {
