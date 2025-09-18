@@ -235,6 +235,55 @@
       document.getElementById('passLogin').value = "";
       showPage('home');
     }
+/* Responsive untuk Mobile */
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header .login-form {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  header input, 
+  header button {
+    width: 100%;
+  }
+
+  .banner {
+    padding: 30px 15px;
+  }
+  .banner h1 {
+    font-size: 26px;
+  }
+  .banner p {
+    font-size: 16px;
+  }
+  .banner .btn-main {
+    width: 100%;
+    font-size: 16px;
+  }
+  .center-image {
+    max-width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-boxes {
+    grid-template-columns: 1fr 1fr; /* 2 kolom saja biar rapi */
+  }
+
+  .form-box {
+    width: 90%;
+    margin: 30px auto;
+    padding: 20px;
+  }
+}
   </script>
 </body>
 </html>
