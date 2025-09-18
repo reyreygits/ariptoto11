@@ -15,22 +15,6 @@
     .btn-daftar { background: #00cc66; color: white; }
     header button:hover { transform: scale(1.05); opacity: 0.9; }
 
-    .banner { text-align: center; margin: 30px auto; padding: 50px 20px; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; max-width: 900px; box-shadow: 0px 5px 20px rgba(0,0,0,0.6); animation: fadeInUp 1s ease; }
-    .banner h1 { font-size: 40px; margin-bottom: 15px; color: #FFD700; animation: fadeIn 2s ease; }
-    .banner p { font-size: 20px; color: #ddd; animation: fadeIn 2.5s ease; }
-    .banner .btn-main { margin-top: 20px; padding: 12px 25px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; background: #ffcc00; color: black; font-weight: bold; transition: 0.3s; }
-    .banner .btn-main:hover { background: #ffaa00; transform: scale(1.05); }
-
-    .menu { display: flex; gap: 15px; }
-    .menu a { color: #FFD700; text-decoration: none; font-weight: bold; transition: 0.3s; }
-    .menu a:hover { color: #ff4444; }
-    .container { padding: 20px; animation: fadeIn 1s ease; }
-    .card { background: #2a2a2a; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: transform 0.3s ease; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
-    .card:hover { transform: translateY(-5px); }
-    .card h3 { margin-top: 0; color: #ff4444; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-
-    /* Popup form deposit */
     .deposit-popup {
       position: fixed;
       top: 50%; left: 50%;
@@ -44,17 +28,20 @@
       width: 90%;
       max-width: 400px;
     }
-    .deposit-popup h3 {
-      color: #FFD700;
-      margin-bottom: 10px;
-    }
-    .deposit-popup input, .deposit-popup select {
+    .deposit-popup h3 { color: #FFD700; margin-bottom: 10px; }
+    .deposit-popup input {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
       border: none;
       border-radius: 5px;
       outline: none;
+      background: #333;
+      color: white;
+    }
+    .deposit-popup input[readonly] {
+      opacity: 0.6;
+      /* supaya tampak tidak bisa diubah */
     }
     .deposit-popup button {
       padding: 10px;
@@ -77,104 +64,23 @@
       z-index: 900;
     }
 
-    .extra-tables {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .extra-tables h2 {
-      color: #FFD700;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    .table-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    .extra-table {
-      background: #1c1c1c;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-    }
-    .extra-table table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .extra-table th, .extra-table td {
-      padding: 10px;
-      border: 1px solid #333;
-      text-align: center;
-    }
-    .extra-table th {
-      background: #111a33;
-      color: #FFD700;
-    }
-    .extra-table tr:nth-child(even) {
-      background: #2a2a2a;
-    }
-
     .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
     .active { display: block; opacity: 1; transform: translateY(0); }
 
-    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-    @keyframes fadeInUp { from {opacity=0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
-    @keyframes fadeInDown { from {opacity=0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
+    /* kamu bisa tambahin style lainnya sesuai desain kamu */
   </style>
 </head>
 <body>
 
-  <!-- Halaman Utama & Daftar seperti sebelumnya... -->
+  <!-- bagian login / daftar / userarea seperti sebelumnya -->
 
-  <div id="home" class="page active">
-    <header>
-      <div class="logo">ARIPTOTO</div>
-      <div class="login-form">
-        <input type="text" id="userLogin" placeholder="User ID">
-        <input type="password" id="passLogin" placeholder="Kata Sandi">
-        <button class="btn-login" onclick="login()">Login</button>
-        <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
-      </div>
-    </header>
-    <div class="banner">
-      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
-      <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
-      <button class="btn-main">Main Sekarang</button>
-    </div>
-  </div>
-
-  <div id="daftar" class="page">
-    <div class="form-box">
-      <h2>Form Pendaftaran</h2>
-      <input type="text" id="newUser" placeholder="User ID">
-      <input type="password" id="newPass" placeholder="Kata Sandi">
-      <input type="text" id="rekNum" placeholder="No. Rekening">
-      <input type="text" id="rekName" placeholder="Nama Rekening">
-      <input type="text" id="phoneNum" placeholder="No. HP">
-      <select id="bankType">
-        <option value="">-- Pilih Bank / E-Wallet --</option>
-        <option>Bank BCA</option>
-        <option>Bank BNI</option>
-        <option>Bank BRI</option>
-        <option>Bank Mandiri</option>
-        <option>DANA</option>
-        <option>OVO</option>
-        <option>Gopay</option>
-        <option>ShopeePay</option>
-      </select>
-      <button onclick="register()">Daftar</button>
-      <br><br>
-      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
-    </div>
-  </div>
-
+  <!-- Menu userarea salah satunya -->
   <div id="userarea" class="page">
     <header>
       <div class="logo">ARIPTOTO - User Area</div>
       <div class="menu">
         <a href="#">History</a>
-        <a href="#" onclick="openDeposit()">Deposit</a> <!-- tombol deposit -->
+        <a href="#" onclick="openDeposit()">Deposit</a>
         <a href="#">Withdraw</a>
         <a href="#">Rekening</a>
         <a href="#">Memo</a>
@@ -183,125 +89,30 @@
     </header>
 
     <div class="container">
-      <div class="grid">
-        <div class="card">
-          <h3>User Data</h3>
-          <p id="userData">Balance: Rp 0</p>
-          <p id="bankData"></p>
-          <p id="phoneData"></p>
-        </div>
-        <div class="card">
-          <h3>Last Bet/Win Report</h3>
-          <p>No Data</p>
-        </div>
-        <div class="card">
-          <h3>Last Deposit/Withdraw Status</h3>
-          <p>No Data</p>
-        </div>
-      </div>
-
-      <!-- Tabel vendor game etc... bisa disini -->
-
+      <!-- bagian user data dst -->
     </div>
   </div>
+
 
   <!-- Popup Deposit -->
   <div class="overlay" id="overlay"></div>
   <div class="deposit-popup" id="depositPopup">
     <h3>Form Permintaan Deposit</h3>
-    <label for="tujuanBank">Tujuan Bank / E-Wallet</label>
-    <select id="tujuanBank">
-      <option value="">-- Pilih Bank / E-Wallet --</option>
-      <option>Bank BCA</option>
-      <option>Bank BNI</option>
-      <option>Bank BRI</option>
-      <option>Bank Mandiri</option>
-      <option>DANA</option>
-      <option>OVO</option>
-      <option>Gopay</option>
-      <option>ShopeePay</option>
-    </select>
-    <input type="text" id="atasNama" placeholder="Atas Nama">
-    <input type="number" id="jumlahDeposit" placeholder="Jumlah Nominal">
+    <label>Tujuan</label>
+    <input type="text" value="08511111111 (Dana)" readonly>
+    <label>Atas Nama</label>
+    <input type="text" value="Lumpia Saepon" readonly>
+    <label for="jumlahDeposit">Jumlah Nominal</label>
+    <input type="number" id="jumlahDeposit" placeholder="Masukkan jumlah deposit">
     <div style="text-align: right;">
       <button class="btn-send" onclick="submitDeposit()">Kirim Permintaan</button>
       <button class="btn-cancel" onclick="closeDeposit()">Batal</button>
     </div>
   </div>
 
+
   <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
-
-    function register() {
-      const user = document.getElementById('newUser').value.trim();
-      const pass = document.getElementById('newPass').value.trim();
-      const rekNum = document.getElementById('rekNum').value.trim();
-      const rekName = document.getElementById('rekName').value.trim();
-      const phone = document.getElementById('phoneNum').value.trim();
-      const bank = document.getElementById('bankType').value;
-
-      if (!user || !pass || !rekNum || !rekName || !phone || !bank) {
-        alert("Isi semua data dengan benar!");
-        return;
-      }
-
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      let exists = users.some(u => u.user === user);
-      if (exists) {
-        alert("User ID sudah terdaftar, pilih yang lain!");
-        return;
-      }
-
-      const newUserObj = {
-        user: user,
-        pass: pass,
-        rekNum: rekNum,
-        rekName: rekName,
-        phoneNum: phone,
-        bankType: bank,
-        balance: 1000000
-      };
-
-      users.push(newUserObj);
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("Pendaftaran berhasil untuk user: " + user);
-      showPage('home');
-
-      document.getElementById('newUser').value = "";
-      document.getElementById('newPass').value = "";
-      document.getElementById('rekNum').value = "";
-      document.getElementById('rekName').value = "";
-      document.getElementById('phoneNum').value = "";
-      document.getElementById('bankType').value = "";
-    }
-
-    function login() {
-      const user = document.getElementById('userLogin').value.trim();
-      const pass = document.getElementById('passLogin').value.trim();
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      let found = users.find(u => u.user === user && u.pass === pass);
-      if (!found) {
-        alert("User ID atau Password salah / belum terdaftar!");
-        return;
-      }
-
-      document.getElementById('userData').innerText = "Balance: Rp " + found.balance.toLocaleString();
-      document.getElementById('bankData').innerText = "Bank/E‑Wallet: " + found.bankType + " ‑ " + found.rekNum + " a/n " + found.rekName;
-      document.getElementById('phoneData').innerText = "No. HP: " + found.phoneNum;
-
-      showPage('userarea');
-    }
-
-    function logout() {
-      document.getElementById('userLogin').value = "";
-      document.getElementById('passLogin').value = "";
-      showPage('home');
-    }
-
-    // Untuk deposit popup
+    // Fungsi untuk membuka popup deposit
     function openDeposit() {
       document.getElementById('overlay').style.display = 'block';
       document.getElementById('depositPopup').style.display = 'block';
@@ -309,26 +120,22 @@
     function closeDeposit() {
       document.getElementById('overlay').style.display = 'none';
       document.getElementById('depositPopup').style.display = 'none';
-      // kosongkan field
-      document.getElementById('tujuanBank').value = "";
-      document.getElementById('atasNama').value = "";
       document.getElementById('jumlahDeposit').value = "";
     }
     function submitDeposit() {
-      const tujuan = document.getElementById('tujuanBank').value;
-      const nama = document.getElementById('atasNama').value.trim();
       const jumlah = document.getElementById('jumlahDeposit').value;
-
-      if (!tujuan || !nama || !jumlah) {
-        alert("Mohon isi semua field deposit!");
+      if (!jumlah) {
+        alert("Mohon isi jumlah nominal deposit!");
         return;
       }
+      // fixed tujuan & atas nama
+      const tujuan = "08511111111 (Dana)";
+      const atasNama = "Lumpia Saepon";
 
-      // Simpan request ke localStorage (atau lakukan tindakan lain)
       let depositRequests = JSON.parse(localStorage.getItem("depositRequests")) || [];
       depositRequests.push({
         tujuan: tujuan,
-        nama: nama,
+        nama: atasNama,
         jumlah: parseFloat(jumlah),
         waktu: new Date().toLocaleString()
       });
@@ -336,12 +143,11 @@
 
       alert("Permintaan deposit berhasil dikirim!\n" +
             "Tujuan: " + tujuan + "\n" +
-            "Atas Nama: " + nama + "\n" +
+            "Atas Nama: " + atasNama + "\n" +
             "Jumlah: Rp " + jumlah);
 
       closeDeposit();
     }
-
   </script>
 
 </body>
