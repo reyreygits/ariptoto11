@@ -41,7 +41,6 @@
     }
     .deposit-popup input[readonly] {
       opacity: 0.6;
-      /* supaya tampak tidak bisa diubah */
     }
     .deposit-popup button {
       padding: 10px;
@@ -66,15 +65,10 @@
 
     .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
     .active { display: block; opacity: 1; transform: translateY(0); }
-
-    /* kamu bisa tambahin style lainnya sesuai desain kamu */
   </style>
 </head>
 <body>
 
-  <!-- bagian login / daftar / userarea seperti sebelumnya -->
-
-  <!-- Menu userarea salah satunya -->
   <div id="userarea" class="page">
     <header>
       <div class="logo">ARIPTOTO - User Area</div>
@@ -93,8 +87,6 @@
     </div>
   </div>
 
-
-  <!-- Popup Deposit -->
   <div class="overlay" id="overlay"></div>
   <div class="deposit-popup" id="depositPopup">
     <h3>Form Permintaan Deposit</h3>
@@ -110,25 +102,24 @@
     </div>
   </div>
 
-
   <script>
-    // Fungsi untuk membuka popup deposit
     function openDeposit() {
       document.getElementById('overlay').style.display = 'block';
       document.getElementById('depositPopup').style.display = 'block';
     }
+
     function closeDeposit() {
       document.getElementById('overlay').style.display = 'none';
       document.getElementById('depositPopup').style.display = 'none';
       document.getElementById('jumlahDeposit').value = "";
     }
+
     function submitDeposit() {
       const jumlah = document.getElementById('jumlahDeposit').value;
       if (!jumlah) {
         alert("Mohon isi jumlah nominal deposit!");
         return;
       }
-      // fixed tujuan & atas nama
       const tujuan = "08511111111 (Dana)";
       const atasNama = "Lumpia Saepon";
 
