@@ -264,121 +264,75 @@
       }
       .banner .btn-main {
         font-size: 16px;
-      }
-      .center-image {
-        max-width: 100%;
+        padding: 10px 20px;
       }
 
       .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .provider-boxes {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .form-box {
         width: 90%;
-        margin: 30px auto;
-        padding: 20px;
+      }
+
+      .provider-boxes {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
+
 <body>
+  <header>
+    <div class="logo">ARIPTOTO</div>
+    <div class="login-form">
+      <input type="text" id="userLogin" placeholder="Username">
+      <input type="password" id="passLogin" placeholder="Password">
+      <button class="btn-login" onclick="login()">Login</button>
+    </div>
+  </header>
 
-  <!-- Halaman Utama -->
+  <div class="banner">
+    <h1>Selamat datang di ARIPTOTO!</h1>
+    <p>Pendaftaran mudah, saldo langsung Rp 1,000,000 setelah berhasil login.</p>
+    <button class="btn-main" onclick="showPage('register')">Daftar Sekarang</button>
+  </div>
+
   <div id="home" class="page active">
-    <header>
-      <div class="logo">ARIPTOTO</div>
-      <div class="login-form">
-        <input type="text" id="userLogin" placeholder="User ID" />
-        <input type="password" id="passLogin" placeholder="Kata Sandi" />
-        <button class="btn-login" onclick="login()">Login</button>
-        <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
-      </div>
-    </header>
-
-    <div class="banner">
-      <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
-      <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
-      <button class="btn-main">Main Sekarang</button>
-
-      <!-- Gambar tengah bawah tulisan banner -->
-      <img src="https://raw.githubusercontent.com/reyreygits/ariptoto11/8c6b6bc656f69037edc448d4997d0d9d784e8711/poto.png2" alt="Gambar Banner" class="center-image" />
-    </div>
-  </div>
-
-  <!-- Halaman Daftar -->
-  <div id="daftar" class="page">
-    <div class="form-box">
-      <h2>Form Pendaftaran</h2>
-      <input type="text" id="newUser" placeholder="User ID" />
-      <input type="password" id="newPass" placeholder="Kata Sandi" />
-      <input type="text" id="rekNum" placeholder="No. Rekening" />
-      <input type="text" id="rekName" placeholder="Nama Rekening" />
-      <input type="text" id="phoneNum" placeholder="No. HP" />
-      <select id="bankType">
-        <option value="">-- Pilih Bank / E‑Wallet --</option>
-        <option>Bank BCA</option>
-        <option>Bank BNI</option>
-        <option>Bank BRI</option>
-        <option>Bank Mandiri</option>
-        <option>DANA</option>
-        <option>OVO</option>
-        <option>Gopay</option>
-        <option>ShopeePay</option>
-      </select>
-      <button onclick="register()">Daftar</button>
-      <br /><br />
-      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
-    </div>
-  </div>
-
-  <!-- Halaman User Area -->
-  <div id="userarea" class="page">
-    <header>
-      <div class="logo">ARIPTOTO - User Area</div>
-      <div class="menu">
-        <a href="#">History</a>
-        <a href="#">Deposit</a>
-        <a href="#">Withdraw</a>
-        <a href="#">Rekening</a>
-        <a href="#">Memo</a>
-        <a href="#" onclick="logout()">Logout</a>
-      </div>
-    </header>
-
     <div class="container">
-      <div class="grid">
-        <div class="card">
-          <h3>User Data</h3>
-          <p id="userData">Balance: Rp 0</p>
-          <p id="bankData"></p>
-          <p id="phoneData"></p>
-        </div>
-        <div class="card">
-          <h3>Last Bet/Win Report</h3>
-          <p>No Data</p>
-        </div>
-        <div class="card">
-          <h3>Last Deposit/Withdraw Status</h3>
-          <p>No Data</p>
-        </div>
+      <h2>Menu Utama</h2>
+      <div class="menu">
+        <a href="#" onclick="showPage('userarea')">Dashboard</a>
+        <a href="#" onclick="showPage('register')">Pendaftaran</a>
       </div>
+    </div>
+  </div>
 
-      <!-- Provider Boxes -->
-      <div class="provider-boxes">
-        <div class="provider-card">Pragmatic</div>
-        <div class="provider-card">PG Soft</div>
-        <div class="provider-card">No Limit</div>
-        <div class="provider-card">Habanhero</div>
-      </div>
+  <div id="register" class="page">
+    <div class="form-box">
+      <h2>Pendaftaran Akun</h2>
+      <input type="text" id="newUser" placeholder="Username" required>
+      <input type="password" id="newPass" placeholder="Password" required>
+      <input type="text" id="rekNum" placeholder="Nomor Rekening" required>
+      <input type="text" id="rekName" placeholder="Nama Rekening" required>
+      <input type="text" id="phoneNum" placeholder="Nomor Telepon" required>
+      <select id="bankType" required>
+        <option value="" disabled selected>Pilih Bank</option>
+        <option value="BCA">BCA</option>
+        <option value="Mandiri">Mandiri</option>
+        <option value="BRI">BRI</option>
+      </select>
+      <button class="btn-daftar" onclick="register()">Daftar</button>
+    </div>
+  </div>
 
-      <!-- Link daftar user -->
-      <div style="text-align:center; margin-top:30px;">
-        <a href="list.html" style="color:#FFD700; text-decoration: underline;">Lihat Daftar User Terdaftar</a>
-      </div>
+  <div id="userarea" class="page">
+    <div class="container">
+      <h2>Dashboard</h2>
+      <div id="userData"></div>
+      <div id="bankData"></div>
+      <div id="phoneData"></div>
+      <button class="btn-login" onclick="logout()">Logout</button>
     </div>
   </div>
 
@@ -396,12 +350,19 @@
       let phone = document.getElementById('phoneNum').value.trim();
       let bank = document.getElementById('bankType').value;
 
-      if(user && pass && rekNum && rekName && phone && bank){
+      if (user && pass && rekNum && rekName && phone && bank) {
         let users = JSON.parse(localStorage.getItem('users') || '{}');
-        if(users[user]){
+        if (users[user]) {
           alert('User ID sudah terdaftar.');
         } else {
-          users[user] = { pass, rekNum, rekName, phone, bank, balance: 0 };
+          users[user] = {
+            pass,
+            rekNum,
+            rekName,
+            phone,
+            bank,
+            balance: 1000000
+          };
           localStorage.setItem('users', JSON.stringify(users));
           alert('Pendaftaran berhasil! Silahkan login.');
           showPage('home');
@@ -414,12 +375,11 @@
     function login() {
       let user = document.getElementById('userLogin').value.trim();
       let pass = document.getElementById('passLogin').value.trim();
-
       let users = JSON.parse(localStorage.getItem('users') || '{}');
-      if(users[user] && users[user].pass === pass){
-        // Login success
+
+      if (users[user] && users[user].pass === pass) {
         showPage('userarea');
-        document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${users[user].balance}`;
+        document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${users[user].balance.toLocaleString()}`;
         document.getElementById('bankData').innerText = `Rekening: ${users[user].rekNum} (${users[user].rekName})`;
         document.getElementById('phoneData').innerText = `No HP: ${users[user].phone} | Bank: ${users[user].bank}`;
       } else {
