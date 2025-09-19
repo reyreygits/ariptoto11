@@ -34,6 +34,7 @@
       flex-wrap: wrap;
       flex-grow: 1;
       justify-content: flex-end;
+      align-items: center;
     }
     header input { 
       padding: 6px; 
@@ -56,6 +57,8 @@
     }
     .btn-login { background: #ff4444; color: white; }
     .btn-daftar { background: #00cc66; color: white; }
+    .btn-export { background: #0055ff; color: white; max-width: 130px; }
+    .btn-import { background: #00aaff; color: white; max-width: 130px; }
     header button:hover { 
       transform: scale(1.05); 
       opacity: 0.9; 
@@ -296,6 +299,8 @@
         <input type="password" id="passLogin" placeholder="Kata Sandi" />
         <button class="btn-login" onclick="login()">Login</button>
         <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
+        <button class="btn-export" onclick="exportUsers()">Export Data</button>
+        <button class="btn-import" onclick="importUsers()">Import Data</button>
       </div>
     </header>
 
@@ -338,154 +343,181 @@
   <!-- Halaman User Area -->
   <div id="userarea" class="page">
     <header>
-      <div class="logo">ARIPTOTO - User Area</div>
-      <div class="menu">
-        <a href="#">History</a>
-        <a href="#">Deposit</a>
-        <a href="#">Withdraw</a>
-        <a href="#">Rekening</a>
-        <a href="#">Memo</a>
-        <a href="#" onclick="logout()">Logout</a>
-      </div>
+      <div class="logo">ARIPTOTO</div>
+      <button style="background:#ff4444; border:none; border-radius:5px; padding:6px 12px; color:white; cursor:pointer;" onclick="logout()">Logout</button>
     </header>
-
     <div class="container">
+      <h2>Selamat datang, <span id="welcomeUser"></span>!</h2>
+      <p>Menu utama:</p>
+      <div class="menu">
+        <a href="javascript:void(0)" onclick="showPage('userarea')">Beranda</a> |
+        <a href="javascript:void(0)" onclick="alert('Fitur belum tersedia')">Deposit</a> |
+        <a href="javascript:void(0)" onclick="alert('Fitur belum tersedia')">Withdraw</a> |
+        <a href="javascript:void(0)" onclick="alert('Fitur belum tersedia')">Profil</a>
+      </div>
+
       <div class="grid">
         <div class="card">
-          <h3>User Data</h3>
-          <p id="userData">Balance: Rp 0</p>
-          <p id="bankData"></p>
-          <p id="phoneData"></p>
+          <h3>Info Deposit</h3>
+          <p>Minimal deposit: Rp 50.000</p>
+          <p>Jenis bank/e-wallet yang tersedia:</p>
+          <ul>
+            <li>Bank BCA</li>
+            <li>Bank BNI</li>
+            <li>Bank BRI</li>
+            <li>Bank Mandiri</li>
+            <li>DANA</li>
+            <li>OVO</li>
+            <li>Gopay</li>
+            <li>ShopeePay</li>
+          </ul>
         </div>
         <div class="card">
-          <h3>Latest Memo</h3>
-          <p id="memoData">Belum ada memo.</p>
+          <h3>Jadwal Pasaran</h3>
+          <p>Pasaran tersedia setiap hari pukul 11:00 - 23:00 WIB</p>
+          <p>Pasaran populer: Sydney, Hongkong, Singapore, Macau</p>
         </div>
         <div class="card">
-          <h3>Deposit</h3>
-          <p>Untuk deposit, gunakan menu Deposit.</p>
+          <h3>Slot Games</h3>
+          <p>Slot online resmi & terpercaya</p>
+          <p>Bonus jackpot hingga 100 juta!</p>
         </div>
       </div>
 
-      <h2 style="margin-top:40px; color:#ff4444;">Provider</h2>
       <div class="provider-boxes">
-        <div class="provider-card">Togel</div>
-        <div class="provider-card">Tembak Ikan</div>
-        <div class="provider-card">Live Casino</div>
-        <div class="provider-card">Slot</div>
+        <div class="provider-card">MPL</div>
+        <div class="provider-card">SPIN78</div>
+        <div class="provider-card">FUTSLOT</div>
+        <div class="provider-card">DUFAN</div>
       </div>
     </div>
   </div>
 
   <script>
-    // Fungsi showPage untuk pindah halaman
+    // Navigasi halaman
     function showPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(p => {
-        if (p.id === pageId) {
-          p.classList.add('active');
-        } else {
-          p.classList.remove('active');
-        }
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
       });
+      document.getElementById(pageId).classList.add('active');
     }
 
-    // Fungsi login
-    function login() {
-      let user = document.getElementById('userLogin').value.trim();
-      let pass = document.getElementById('passLogin').value.trim();
-
-      if (!user || !pass) {
-        alert('Masukkan User ID dan Kata Sandi.');
-        return;
-      }
-
-      let users = JSON.parse(localStorage.getItem('users') || '{}');
-
-      if (users[user] && users[user].pass === pass) {
-        alert(`Selamat datang, ${user}!`);
-        // Simpan user aktif ke localStorage
-        localStorage.setItem('activeUser', user);
-        showPage('userarea');
-        displayUserData(user);
-      } else {
-        alert('User ID atau Kata Sandi salah.');
-      }
-    }
-
-    // Fungsi menampilkan data user di halaman userarea
-    function displayUserData(user) {
-      let users = JSON.parse(localStorage.getItem('users') || '{}');
-      let u = users[user];
-
-      if (!u) return;
-
-      document.getElementById('userData').textContent = `Saldo: Rp ${u.balance.toLocaleString('id-ID')}`;
-      document.getElementById('bankData').textContent = `Bank: ${u.bank} (${u.rekNum} a.n ${u.rekName})`;
-      document.getElementById('phoneData').textContent = `No. HP: ${u.phone}`;
-
-      // Kalau ada memo, tampilkan, kalau tidak tampilkan default
-      document.getElementById('memoData').textContent = u.memo || 'Belum ada memo.';
-    }
-
-    // Fungsi daftar/register
+    // Fungsi Daftar
     function register() {
-      let user = document.getElementById('newUser').value.trim();
-      let pass = document.getElementById('newPass').value.trim();
-      let rekNum = document.getElementById('rekNum').value.trim();
-      let rekName = document.getElementById('rekName').value.trim();
-      let phone = document.getElementById('phoneNum').value.trim();
-      let bank = document.getElementById('bankType').value;
+      const user = document.getElementById('newUser').value.trim();
+      const pass = document.getElementById('newPass').value.trim();
+      const rekNum = document.getElementById('rekNum').value.trim();
+      const rekName = document.getElementById('rekName').value.trim();
+      const phoneNum = document.getElementById('phoneNum').value.trim();
+      const bankType = document.getElementById('bankType').value;
 
-      if (!user || !pass || !rekNum || !rekName || !phone || !bank || bank === "") {
-        alert('Harap isi semua data dengan benar.');
-        return;
-      }
-
-      if (user.length < 4 || pass.length < 4) {
-        alert('User ID dan Password minimal 4 karakter.');
+      if (!user || !pass || !rekNum || !rekName || !phoneNum || !bankType) {
+        alert('Semua field wajib diisi!');
         return;
       }
 
       let users = JSON.parse(localStorage.getItem('users') || '{}');
 
       if (users[user]) {
-        alert('User ID sudah terdaftar.');
-      } else {
-        try {
-          users[user] = { pass, rekNum, rekName, phone, bank, balance: 0, memo: "" };
-          localStorage.setItem('users', JSON.stringify(users));
-          alert('Pendaftaran berhasil! Silahkan login.');
-
-          // Otomatis isi form login setelah pendaftaran
-          document.getElementById('userLogin').value = user;
-          document.getElementById('passLogin').value = pass;
-
-          showPage('home');
-        } catch (err) {
-          alert('Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
-        }
+        alert('User ID sudah digunakan!');
+        return;
       }
-    }
 
-    // Fungsi logout
-    function logout() {
-      localStorage.removeItem('activeUser');
-      alert('Anda berhasil logout.');
+      users[user] = {
+        password: pass,
+        rekening: rekNum,
+        namaRekening: rekName,
+        hp: phoneNum,
+        bank: bankType
+      };
+
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert('Pendaftaran berhasil! Silakan login.');
       showPage('home');
-      // Kosongkan form login
-      document.getElementById('userLogin').value = "";
-      document.getElementById('passLogin').value = "";
+
+      // Reset form
+      document.getElementById('newUser').value = '';
+      document.getElementById('newPass').value = '';
+      document.getElementById('rekNum').value = '';
+      document.getElementById('rekName').value = '';
+      document.getElementById('phoneNum').value = '';
+      document.getElementById('bankType').value = '';
     }
 
-    // Jika user sudah login, tetap di halaman userarea saat reload
-    window.onload = () => {
-      let activeUser = localStorage.getItem('activeUser');
-      if (activeUser) {
-        showPage('userarea');
-        displayUserData(activeUser);
+    // Fungsi Login
+    function login() {
+      const user = document.getElementById('userLogin').value.trim();
+      const pass = document.getElementById('passLogin').value.trim();
+
+      let users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      if (!users[user]) {
+        alert('User ID tidak ditemukan!');
+        return;
       }
-    };
+      if (users[user].password !== pass) {
+        alert('Password salah!');
+        return;
+      }
+
+      document.getElementById('welcomeUser').textContent = user;
+      showPage('userarea');
+
+      // Reset login form
+      document.getElementById('userLogin').value = '';
+      document.getElementById('passLogin').value = '';
+    }
+
+    // Fungsi Logout
+    function logout() {
+      showPage('home');
+    }
+
+    // Export data users ke file JSON
+    function exportUsers() {
+      const users = localStorage.getItem('users');
+      if (!users) {
+        alert('Belum ada data user untuk diexport.');
+        return;
+      }
+      const blob = new Blob([users], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ariptoto_users.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Import data users dari file JSON
+    function importUsers() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = evt => {
+          try {
+            const importedUsers = JSON.parse(evt.target.result);
+            if (typeof importedUsers !== 'object' || Array.isArray(importedUsers)) throw 'Format data salah';
+            const existingUsers = JSON.parse(localStorage.getItem('users') || '{}');
+            // Gabungkan data user yang sudah ada dengan data import
+            const mergedUsers = { ...existingUsers, ...importedUsers };
+            localStorage.setItem('users', JSON.stringify(mergedUsers));
+            alert('Data user berhasil diimport!');
+          } catch {
+            alert('Gagal mengimport data. Pastikan file benar.');
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      input.click();
+    }
   </script>
 </body>
 </html>
