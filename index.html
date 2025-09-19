@@ -378,119 +378,117 @@
           <p>Pasaran populer: Sydney, Hongkong, Singapore, Macau</p>
         </div>
         <div class="card">
-          <h3>Slot Games</h3>
-          <p>Slot online resmi & terpercaya</p>
-          <p>Bonus jackpot hingga 100 juta!</p>
+          <h3>Provider Game</h3>
+          <p>Jenis permainan:</p>
+          <ul>
+            <li>Togel</li>
+            <li>Slot</li>
+            <li>Sabung Ayam</li>
+            <li>Arcade</li>
+            <li>Live Casino</li>
+          </ul>
         </div>
       </div>
 
+      <h3>Provider Terpercaya</h3>
       <div class="provider-boxes">
-        <div class="provider-card">MPL</div>
-        <div class="provider-card">SPIN78</div>
-        <div class="provider-card">FUTSLOT</div>
-        <div class="provider-card">DUFAN</div>
+        <div class="provider-card">Provider 1</div>
+        <div class="provider-card">Provider 2</div>
+        <div class="provider-card">Provider 3</div>
+        <div class="provider-card">Provider 4</div>
+        <div class="provider-card">Provider 5</div>
+        <div class="provider-card">Provider 6</div>
+        <div class="provider-card">Provider 7</div>
+        <div class="provider-card">Provider 8</div>
       </div>
     </div>
   </div>
 
   <script>
-    // Navigasi halaman
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
+    // Simpan user data di localStorage
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
       });
-      document.getElementById(pageId).classList.add('active');
+      document.getElementById(page).classList.add('active');
     }
 
-    // Fungsi Daftar
+    function login() {
+      const userId = document.getElementById('userLogin').value.trim();
+      const pass = document.getElementById('passLogin').value;
+
+      if (!userId || !pass) {
+        alert('Silakan isi User ID dan Kata Sandi.');
+        return;
+      }
+
+      const user = users.find(u => u.user === userId && u.pass === pass);
+      if (user) {
+        localStorage.setItem('loggedInUser', userId);
+        document.getElementById('welcomeUser').textContent = userId;
+        showPage('userarea');
+      } else {
+        alert('User ID atau Kata Sandi salah.');
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      showPage('home');
+      document.getElementById('userLogin').value = '';
+      document.getElementById('passLogin').value = '';
+    }
+
     function register() {
-      const user = document.getElementById('newUser').value.trim();
-      const pass = document.getElementById('newPass').value.trim();
+      const newUser = document.getElementById('newUser').value.trim();
+      const newPass = document.getElementById('newPass').value;
       const rekNum = document.getElementById('rekNum').value.trim();
       const rekName = document.getElementById('rekName').value.trim();
       const phoneNum = document.getElementById('phoneNum').value.trim();
       const bankType = document.getElementById('bankType').value;
 
-      if (!user || !pass || !rekNum || !rekName || !phoneNum || !bankType) {
-        alert('Semua field wajib diisi!');
+      if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
+        alert('Harap isi semua kolom dengan lengkap.');
         return;
       }
 
-      let users = JSON.parse(localStorage.getItem('users') || '{}');
-
-      if (users[user]) {
-        alert('User ID sudah digunakan!');
+      if (users.find(u => u.user === newUser)) {
+        alert('User ID sudah terdaftar.');
         return;
       }
 
-      users[user] = {
-        password: pass,
-        rekening: rekNum,
-        namaRekening: rekName,
-        hp: phoneNum,
-        bank: bankType
-      };
-
+      users.push({
+        user: newUser,
+        pass: newPass,
+        rekNum,
+        rekName,
+        phoneNum,
+        bankType
+      });
       localStorage.setItem('users', JSON.stringify(users));
-
       alert('Pendaftaran berhasil! Silakan login.');
       showPage('home');
-
-      // Reset form
-      document.getElementById('newUser').value = '';
-      document.getElementById('newPass').value = '';
-      document.getElementById('rekNum').value = '';
-      document.getElementById('rekName').value = '';
-      document.getElementById('phoneNum').value = '';
-      document.getElementById('bankType').value = '';
     }
 
-    // Fungsi Login
-    function login() {
-      const user = document.getElementById('userLogin').value.trim();
-      const pass = document.getElementById('passLogin').value.trim();
-
-      let users = JSON.parse(localStorage.getItem('users') || '{}');
-
-      if (!users[user]) {
-        alert('User ID tidak ditemukan!');
-        return;
-      }
-      if (users[user].password !== pass) {
-        alert('Password salah!');
-        return;
-      }
-
-      document.getElementById('welcomeUser').textContent = user;
-      showPage('userarea');
-
-      // Reset login form
-      document.getElementById('userLogin').value = '';
-      document.getElementById('passLogin').value = '';
-    }
-
-    // Fungsi Logout
-    function logout() {
-      showPage('home');
-    }
-
-    // Export data users ke file JSON
     function exportUsers() {
-      const users = localStorage.getItem('users');
-      if (!users) {
-        alert('Belum ada data user untuk diexport.');
+      if(users.length === 0) {
+        alert('Data pengguna kosong.');
         return;
       }
-      const blob = new Blob([users], { type: 'application/json' });
+      const dataStr = JSON.stringify(users, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
       const url = URL.createObjectURL(blob);
+
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'ariptoto_users.json';
+      a.download = 'users.json';
       a.click();
+
       URL.revokeObjectURL(url);
     }
 
-    // Import data users dari file JSON
     function importUsers() {
       const input = document.createElement('input');
       input.type = 'file';
@@ -499,18 +497,20 @@
       input.onchange = e => {
         const file = e.target.files[0];
         if (!file) return;
+
         const reader = new FileReader();
-        reader.onload = evt => {
+        reader.onload = event => {
           try {
-            const importedUsers = JSON.parse(evt.target.result);
-            if (typeof importedUsers !== 'object' || Array.isArray(importedUsers)) throw 'Format data salah';
-            const existingUsers = JSON.parse(localStorage.getItem('users') || '{}');
-            // Gabungkan data user yang sudah ada dengan data import
-            const mergedUsers = { ...existingUsers, ...importedUsers };
-            localStorage.setItem('users', JSON.stringify(mergedUsers));
-            alert('Data user berhasil diimport!');
+            const importedUsers = JSON.parse(event.target.result);
+            if (Array.isArray(importedUsers)) {
+              users = importedUsers;
+              localStorage.setItem('users', JSON.stringify(users));
+              alert('Data pengguna berhasil diimpor.');
+            } else {
+              alert('Format file tidak sesuai.');
+            }
           } catch {
-            alert('Gagal mengimport data. Pastikan file benar.');
+            alert('Gagal membaca file.');
           }
         };
         reader.readAsText(file);
@@ -518,6 +518,15 @@
 
       input.click();
     }
+
+    // Jika sudah login, langsung ke userarea
+    window.onload = () => {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        document.getElementById('welcomeUser').textContent = loggedInUser;
+        showPage('userarea');
+      }
+    };
   </script>
 </body>
 </html>
