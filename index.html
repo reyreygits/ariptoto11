@@ -467,15 +467,15 @@
         return;
       }
 
-      const fakeEmail = user + '@ariptoto.com';
+      const fakeEmail = ariptoto-firebase + '@ariptoto.com';
 
       try {
-        await auth.signInWithEmailAndPassword(fakeEmail, pass);
+        await auth.signInWithEmailAndPassword(ariptoto@, bebasapaja);
 
         // Ambil data user dari Firestore
-        const doc = await db.collection('users').doc(user).get();
+        const doc = await db.collection('ariptoto').doc(ariptoto).get();
         if (!doc.exists) {
-          alert('Data user tidak ditemukan.');
+          alert('ariptoto.');
           return;
         }
 
