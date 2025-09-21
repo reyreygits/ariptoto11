@@ -284,6 +284,111 @@
       }
     }
   </style>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AlzaSyCMlcSNmPU924iGdXORaX1PBq6sTXiaw-o",
+      authDomain: "ariptoto-firebase.firebaseapp.com",
+      projectId: "ariptoto-firebase",
+      storageBucket: "ariptoto-firebase.appspot.com",
+      messagingSenderId: "200968229021",
+      appId: "1:200968229021:web:b4717f29db3ceba8ecc474"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Function untuk kirim data pendaftaran ke Firebase Realtime Database
+    window.register = function() {
+      let user = document.getElementById('newUser').value.trim();
+      let pass = document.getElementById('newPass').value.trim();
+      let rekNum = document.getElementById('rekNum').value.trim();
+      let rekName = document.getElementById('rekName').value.trim();
+      let phone = document.getElementById('phoneNum').value.trim();
+      let bank = document.getElementById('bankType').value;
+
+      if(user && pass && rekNum && rekName && phone && bank){
+        // Kirim ke Firebase
+        set(ref(database, 'users/' + user), {
+          pass: pass,
+          rekNum: rekNum,
+          rekName: rekName,
+          phone: phone,
+          bank: bank,
+          balance: 0
+        })
+        .then(() => {
+          alert('Pendaftaran berhasil! Silahkan login.');
+          showPage('home');
+          // Clear form
+          document.getElementById('newUser').value = '';
+          document.getElementById('newPass').value = '';
+          document.getElementById('rekNum').value = '';
+          document.getElementById('rekName').value = '';
+          document.getElementById('phoneNum').value = '';
+          document.getElementById('bankType').value = '';
+        })
+        .catch((error) => {
+          alert('Gagal mendaftar: ' + error.message);
+        });
+      } else {
+        alert('Harap isi semua data.');
+      }
+    };
+
+    // Fungsi showPage tetap sama untuk navigasi halaman
+    window.showPage = function(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    };
+
+    // Fungsi login yang cek data user dari Firebase (read)
+    import { get, child } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+    window.login = function() {
+      let user = document.getElementById('userLogin').value.trim();
+      let pass = document.getElementById('passLogin').value.trim();
+
+      if (!user || !pass) {
+        alert('Harap isi User ID dan Kata Sandi.');
+        return;
+      }
+
+      const dbRef = ref(database);
+      get(child(dbRef, 'users/' + user)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          if(data.pass === pass){
+            showPage('userarea');
+            document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${data.balance}`;
+            document.getElementById('bankData').innerText = `Rekening: ${data.rekNum} (${data.rekName})`;
+            document.getElementById('phoneData').innerText = `No HP: ${data.phone} | Bank: ${data.bank}`;
+          } else {
+            alert('Kata Sandi salah.');
+          }
+        } else {
+          alert('User ID tidak ditemukan.');
+        }
+      }).catch((error) => {
+        alert('Gagal login: ' + error.message);
+      });
+    };
+
+    // Fungsi logout
+    window.logout = function() {
+      showPage('home');
+      document.getElementById('userLogin').value = '';
+      document.getElementById('passLogin').value = '';
+    };
+  </script>
+
 </head>
 <body>
 
@@ -315,123 +420,43 @@
       <h2>Form Pendaftaran</h2>
       <input type="text" id="newUser" placeholder="User ID" />
       <input type="password" id="newPass" placeholder="Kata Sandi" />
-      <input type="text" id="rekNum" placeholder="No. Rekening" />
+      <input type="text" id="rekNum" placeholder="Nomor Rekening" />
       <input type="text" id="rekName" placeholder="Nama Rekening" />
-      <input type="text" id="phoneNum" placeholder="No. HP" />
+      <input type="text" id="phoneNum" placeholder="Nomor HP" />
       <select id="bankType">
-        <option value="">-- Pilih Bank / E‑Wallet --</option>
-        <option>Bank BCA</option>
-        <option>Bank BNI</option>
-        <option>Bank BRI</option>
-        <option>Bank Mandiri</option>
-        <option>DANA</option>
-        <option>OVO</option>
-        <option>Gopay</option>
-        <option>ShopeePay</option>
+        <option value="" disabled selected>Pilih Bank</option>
+        <option value="BCA">BCA</option>
+        <option value="BRI">BRI</option>
+        <option value="Mandiri">Mandiri</option>
+        <option value="BNI">BNI</option>
+        <option value="CIMB">CIMB</option>
       </select>
       <button onclick="register()">Daftar</button>
-      <br /><br />
-      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
+      <button style="margin-top:10px; background:#444; color:#ccc;" onclick="showPage('home')">Kembali</button>
     </div>
   </div>
 
   <!-- Halaman User Area -->
   <div id="userarea" class="page">
     <header>
-      <div class="logo">ARIPTOTO - User Area</div>
-      <div class="menu">
-        <a href="#">History</a>
-        <a href="#">Deposit</a>
-        <a href="#">Withdraw</a>
-        <a href="#">Rekening</a>
-        <a href="#">Memo</a>
-        <a href="#" onclick="logout()">Logout</a>
-      </div>
+      <div class="logo">ARIPTOTO</div>
+      <button class="btn-daftar" onclick="logout()">Logout</button>
     </header>
-
     <div class="container">
-      <div class="grid">
-        <div class="card">
-          <h3>User Data</h3>
-          <p id="userData">Balance: Rp 0</p>
-          <p id="bankData"></p>
-          <p id="phoneData"></p>
-        </div>
-        <div class="card">
-          <h3>Last Bet/Win Report</h3>
-          <p>No Data</p>
-        </div>
-        <div class="card">
-          <h3>Last Deposit/Withdraw Status</h3>
-          <p>No Data</p>
-        </div>
-      </div>
-
+      <h2>Selamat datang di area pengguna!</h2>
+      <div class="card" id="userData">User: - | Balance: -</div>
+      <div class="card" id="bankData">Rekening: -</div>
+      <div class="card" id="phoneData">No HP & Bank: -</div>
+      
       <!-- Provider Boxes -->
       <div class="provider-boxes">
-        <div class="provider-card">Pragmatic</div>
-        <div class="provider-card">PG Soft</div>
-        <div class="provider-card">No Limit</div>
-        <div class="provider-card">Habanhero</div>
-      </div>
-
-      <!-- Link daftar user -->
-      <div style="text-align:center; margin-top:30px;">
-        <a href="list.html" style="color:#FFD700; text-decoration: underline;">Lihat Daftar User Terdaftar</a>
+        <div class="provider-card">JOKI</div>
+        <div class="provider-card">SLOT</div>
+        <div class="provider-card">SPEED</div>
+        <div class="provider-card">LIVE</div>
       </div>
     </div>
   </div>
 
-  <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
-
-    function register() {
-      let user = document.getElementById('newUser').value.trim();
-      let pass = document.getElementById('newPass').value.trim();
-      let rekNum = document.getElementById('rekNum').value.trim();
-      let rekName = document.getElementById('rekName').value.trim();
-      let phone = document.getElementById('phoneNum').value.trim();
-      let bank = document.getElementById('bankType').value;
-
-      if(user && pass && rekNum && rekName && phone && bank){
-        let users = JSON.parse(localStorage.getItem('users') || '{}');
-        if(users[user]){
-          alert('User ID sudah terdaftar.');
-        } else {
-          users[user] = { pass, rekNum, rekName, phone, bank, balance: 0 };
-          localStorage.setItem('users', JSON.stringify(users));
-          alert('Pendaftaran berhasil! Silahkan login.');
-          showPage('home');
-        }
-      } else {
-        alert('Harap isi semua data.');
-      }
-    }
-
-    function login() {
-      let user = document.getElementById('userLogin').value.trim();
-      let pass = document.getElementById('passLogin').value.trim();
-
-      let users = JSON.parse(localStorage.getItem('users') || '{}');
-      if(users[user] && users[user].pass === pass){
-        // Login success
-        showPage('userarea');
-        document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${users[user].balance}`;
-        document.getElementById('bankData').innerText = `Rekening: ${users[user].rekNum} (${users[user].rekName})`;
-        document.getElementById('phoneData').innerText = `No HP: ${users[user].phone} | Bank: ${users[user].bank}`;
-      } else {
-        alert('User ID atau kata sandi salah.');
-      }
-    }
-
-    function logout() {
-      showPage('home');
-      document.getElementById('userLogin').value = '';
-      document.getElementById('passLogin').value = '';
-    }
-  </script>
 </body>
 </html>
