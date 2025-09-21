@@ -285,110 +285,10 @@
     }
   </style>
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Import Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-
-    // Your Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AlzaSyCMlcSNmPU924iGdXORaX1PBq6sTXiaw-o",
-      authDomain: "ariptoto-firebase.firebaseapp.com",
-      projectId: "ariptoto-firebase",
-      storageBucket: "ariptoto-firebase.appspot.com",
-      messagingSenderId: "200968229021",
-      appId: "1:200968229021:web:b4717f29db3ceba8ecc474"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    // Function untuk kirim data pendaftaran ke Firebase Realtime Database
-    window.register = function() {
-      let user = document.getElementById('newUser').value.trim();
-      let pass = document.getElementById('newPass').value.trim();
-      let rekNum = document.getElementById('rekNum').value.trim();
-      let rekName = document.getElementById('rekName').value.trim();
-      let phone = document.getElementById('phoneNum').value.trim();
-      let bank = document.getElementById('bankType').value;
-
-      if(user && pass && rekNum && rekName && phone && bank){
-        // Kirim ke Firebase
-        set(ref(database, 'users/' + user), {
-          pass: pass,
-          rekNum: rekNum,
-          rekName: rekName,
-          phone: phone,
-          bank: bank,
-          balance: 0
-        })
-        .then(() => {
-          alert('Pendaftaran berhasil! Silahkan login.');
-          showPage('home');
-          // Clear form
-          document.getElementById('newUser').value = '';
-          document.getElementById('newPass').value = '';
-          document.getElementById('rekNum').value = '';
-          document.getElementById('rekName').value = '';
-          document.getElementById('phoneNum').value = '';
-          document.getElementById('bankType').value = '';
-        })
-        .catch((error) => {
-          alert('Gagal mendaftar: ' + error.message);
-        });
-      } else {
-        alert('Harap isi semua data.');
-      }
-    };
-
-    // Fungsi showPage tetap sama untuk navigasi halaman
-    window.showPage = function(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    };
-
-    // Fungsi login yang cek data user dari Firebase (read)
-    import { get, child } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-
-    window.login = function() {
-      let user = document.getElementById('userLogin').value.trim();
-      let pass = document.getElementById('passLogin').value.trim();
-
-      if (!user || !pass) {
-        alert('Harap isi User ID dan Kata Sandi.');
-        return;
-      }
-
-      const dbRef = ref(database);
-      get(child(dbRef, 'users/' + user)).then((snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          if(data.pass === pass){
-            showPage('userarea');
-            document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${data.balance}`;
-            document.getElementById('bankData').innerText = `Rekening: ${data.rekNum} (${data.rekName})`;
-            document.getElementById('phoneData').innerText = `No HP: ${data.phone} | Bank: ${data.bank}`;
-          } else {
-            alert('Kata Sandi salah.');
-          }
-        } else {
-          alert('User ID tidak ditemukan.');
-        }
-      }).catch((error) => {
-        alert('Gagal login: ' + error.message);
-      });
-    };
-
-    // Fungsi logout
-    window.logout = function() {
-      showPage('home');
-      document.getElementById('userLogin').value = '';
-      document.getElementById('passLogin').value = '';
-    };
-  </script>
-
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -420,43 +320,210 @@
       <h2>Form Pendaftaran</h2>
       <input type="text" id="newUser" placeholder="User ID" />
       <input type="password" id="newPass" placeholder="Kata Sandi" />
-      <input type="text" id="rekNum" placeholder="Nomor Rekening" />
+      <input type="text" id="rekNum" placeholder="No. Rekening" />
       <input type="text" id="rekName" placeholder="Nama Rekening" />
-      <input type="text" id="phoneNum" placeholder="Nomor HP" />
+      <input type="text" id="phoneNum" placeholder="No. HP" />
       <select id="bankType">
-        <option value="" disabled selected>Pilih Bank</option>
-        <option value="BCA">BCA</option>
-        <option value="BRI">BRI</option>
-        <option value="Mandiri">Mandiri</option>
-        <option value="BNI">BNI</option>
-        <option value="CIMB">CIMB</option>
+        <option value="">-- Pilih Bank / E‑Wallet --</option>
+        <option>Bank BCA</option>
+        <option>Bank BNI</option>
+        <option>Bank BRI</option>
+        <option>Bank Mandiri</option>
+        <option>DANA</option>
+        <option>OVO</option>
+        <option>Gopay</option>
+        <option>ShopeePay</option>
       </select>
       <button onclick="register()">Daftar</button>
-      <button style="margin-top:10px; background:#444; color:#ccc;" onclick="showPage('home')">Kembali</button>
+      <br /><br />
+      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
     </div>
   </div>
 
   <!-- Halaman User Area -->
   <div id="userarea" class="page">
     <header>
-      <div class="logo">ARIPTOTO</div>
-      <button class="btn-daftar" onclick="logout()">Logout</button>
+      <div class="logo">ARIPTOTO - User Area</div>
+      <div class="menu">
+        <a href="#">History</a>
+        <a href="#">Deposit</a>
+        <a href="#">Withdraw</a>
+        <a href="#">Rekening</a>
+        <a href="#">Memo</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
     </header>
+
     <div class="container">
-      <h2>Selamat datang di area pengguna!</h2>
-      <div class="card" id="userData">User: - | Balance: -</div>
-      <div class="card" id="bankData">Rekening: -</div>
-      <div class="card" id="phoneData">No HP & Bank: -</div>
-      
+      <div class="grid">
+        <div class="card">
+          <h3>User Data</h3>
+          <p id="userData">Balance: Rp 0</p>
+          <p id="bankData"></p>
+          <p id="phoneData"></p>
+        </div>
+        <div class="card">
+          <h3>Last Bet/Win Report</h3>
+          <p>No Data</p>
+        </div>
+        <div class="card">
+          <h3>Last Deposit/Withdraw Status</h3>
+          <p>No Data</p>
+        </div>
+      </div>
+
       <!-- Provider Boxes -->
       <div class="provider-boxes">
-        <div class="provider-card">JOKI</div>
-        <div class="provider-card">SLOT</div>
-        <div class="provider-card">SPEED</div>
-        <div class="provider-card">LIVE</div>
+        <div class="provider-card">Pragmatic</div>
+        <div class="provider-card">PG Soft</div>
+        <div class="provider-card">No Limit</div>
+        <div class="provider-card">Habanhero</div>
+      </div>
+
+      <!-- Link daftar user -->
+      <div style="text-align:center; margin-top:30px;">
+        <a href="list.html" style="color:#FFD700; font-weight:bold;">List User</a>
       </div>
     </div>
   </div>
 
+  <script>
+    // Your Firebase config here, ganti dengan milik kamu
+    const firebaseConfig = {
+      apiKey: "API_KEY_ANDA",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      projectId: "PROJECT_ID",
+      storageBucket: "PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Fungsi untuk ganti halaman
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+
+    // Register user baru
+    async function register() {
+      const newUser = document.getElementById('newUser').value.trim();
+      const newPass = document.getElementById('newPass').value.trim();
+      const rekNum = document.getElementById('rekNum').value.trim();
+      const rekName = document.getElementById('rekName').value.trim();
+      const phoneNum = document.getElementById('phoneNum').value.trim();
+      const bankType = document.getElementById('bankType').value;
+
+      if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
+        alert('Semua field harus diisi!');
+        return;
+      }
+
+      const fakeEmail = newUser + '@ariptoto.com';
+
+      try {
+        // Buat user di Firebase Auth
+        await auth.createUserWithEmailAndPassword(fakeEmail, newPass);
+
+        // Simpan data user di Firestore
+        await db.collection('users').doc(newUser).set({
+          balance: 0,
+          rekNum,
+          rekName,
+          phone: phoneNum,
+          bankType,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert('Pendaftaran berhasil! Silakan login.');
+        showPage('home');
+
+        // Reset form
+        document.getElementById('newUser').value = '';
+        document.getElementById('newPass').value = '';
+        document.getElementById('rekNum').value = '';
+        document.getElementById('rekName').value = '';
+        document.getElementById('phoneNum').value = '';
+        document.getElementById('bankType').value = '';
+
+      } catch (error) {
+        alert('Gagal daftar: ' + error.message);
+      }
+    }
+
+    // Login user
+    async function login() {
+      const user = document.getElementById('userLogin').value.trim();
+      const pass = document.getElementById('passLogin').value.trim();
+
+      if (!user || !pass) {
+        alert('Harap isi User ID dan Kata Sandi.');
+        return;
+      }
+
+      const fakeEmail = user + '@ariptoto.com';
+
+      try {
+        await auth.signInWithEmailAndPassword(fakeEmail, pass);
+
+        // Ambil data user dari Firestore
+        const doc = await db.collection('users').doc(user).get();
+        if (!doc.exists) {
+          alert('Data user tidak ditemukan.');
+          return;
+        }
+
+        const data = doc.data();
+        showPage('userarea');
+
+        document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${data.balance}`;
+        document.getElementById('bankData').innerText = `Rekening: ${data.rekNum} (${data.rekName})`;
+        document.getElementById('phoneData').innerText = `No HP: ${data.phone}`;
+
+        // Reset form
+        document.getElementById('userLogin').value = '';
+        document.getElementById('passLogin').value = '';
+
+      } catch (error) {
+        alert('Login gagal: ' + error.message);
+      }
+    }
+
+    // Logout user
+    function logout() {
+      auth.signOut()
+      .then(() => {
+        alert('Logout berhasil.');
+        showPage('home');
+      })
+      .catch(error => alert('Logout gagal: ' + error.message));
+    }
+
+    // Cek auth state saat reload halaman
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const email = user.email;
+        const username = email.split('@')[0];
+        db.collection('users').doc(username).get()
+          .then(doc => {
+            if (doc.exists) {
+              const data = doc.data();
+              showPage('userarea');
+              document.getElementById('userData').innerText = `User: ${username} | Balance: Rp ${data.balance}`;
+              document.getElementById('bankData').innerText = `Rekening: ${data.rekNum} (${data.rekName})`;
+              document.getElementById('phoneData').innerText = `No HP: ${data.phone}`;
+            }
+          });
+      } else {
+        showPage('home');
+      }
+    });
+  </script>
 </body>
 </html>
