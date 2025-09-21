@@ -5,209 +5,221 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ARIPTOTO - Full Web</title>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #0a0f1c; color: white; overflow-x: hidden; }
-    header { 
-      background: #111a33; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 10px 20px; 
-      position: sticky; 
-      top: 0; 
-      z-index: 10; 
+    /* Basic reset & styling */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0a0f1c;
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      background: #111a33;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       flex-wrap: wrap;
     }
-    header .logo { 
-      font-size: 22px; 
-      font-weight: bold; 
-      color: #FFD700; 
-      letter-spacing: 1px; 
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #FFD700;
+      letter-spacing: 1px;
       flex-shrink: 0;
     }
-    header .login-form { 
-      display: flex; 
-      gap: 10px; 
+    .login-form {
+      display: flex;
+      gap: 10px;
       flex-wrap: wrap;
       flex-grow: 1;
       justify-content: flex-end;
     }
-    header input { 
-      padding: 6px; 
-      border-radius: 5px; 
-      border: none; 
-      outline: none; 
+    .login-form input {
+      padding: 6px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
       min-width: 100px;
-      flex: 1 1 auto;
       max-width: 150px;
-    }
-    header button { 
-      padding: 6px 12px; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer; 
-      font-weight: bold; 
-      transition: all 0.3s ease; 
       flex: 1 1 auto;
-      max-width: 120px;
     }
-    .btn-login { background: #ff4444; color: white; }
-    .btn-daftar { background: #00cc66; color: white; }
-    header button:hover { 
-      transform: scale(1.05); 
-      opacity: 0.9; 
+    .login-form button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      max-width: 120px;
+      flex: 1 1 auto;
+    }
+    .btn-login {
+      background: #ff4444;
+      color: white;
+    }
+    .btn-daftar {
+      background: #00cc66;
+      color: white;
+    }
+    .login-form button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
     }
 
-    .banner { 
-      text-align: center; 
-      margin: 30px auto; 
-      padding: 50px 20px; 
-      background: linear-gradient(135deg, #1e3c72, #2a5298); 
-      border-radius: 15px; 
-      max-width: 900px; 
-      box-shadow: 0px 5px 20px rgba(0,0,0,0.6); 
-      animation: fadeInUp 1s ease; 
+    /* Banner */
+    .banner {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 50px 20px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+      text-align: center;
+      animation: fadeInUp 1s ease;
     }
-    .banner h1 { 
-      font-size: 40px; 
-      margin-bottom: 15px; 
-      color: #FFD700; 
-      animation: fadeIn 2s ease; 
+    .banner h1 {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: #FFD700;
+      animation: fadeIn 2s ease;
     }
-    .banner p { 
-      font-size: 20px; 
-      color: #ddd; 
-      animation: fadeIn 2.5s ease; 
+    .banner p {
+      font-size: 20px;
+      color: #ddd;
+      animation: fadeIn 2.5s ease;
     }
-    .banner .btn-main { 
-      margin-top: 20px; 
-      padding: 12px 25px; 
-      font-size: 18px; 
-      border: none; 
-      border-radius: 8px; 
-      cursor: pointer; 
-      background: #ffcc00; 
-      color: black; 
-      font-weight: bold; 
-      transition: 0.3s; 
+    .btn-main {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #ffcc00;
+      color: black;
+      font-weight: bold;
+      transition: 0.3s;
       max-width: 300px;
       width: 100%;
     }
-    .banner .btn-main:hover { 
-      background: #ffaa00; 
-      transform: scale(1.05); 
+    .btn-main:hover {
+      background: #ffaa00;
+      transform: scale(1.05);
+    }
+    .center-image {
+      margin-top: 30px;
+      max-width: 80%;
+      border-radius: 8px;
+      height: auto;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .menu { 
-      display: flex; 
-      gap: 15px; 
-      flex-wrap: wrap;
-    }
-    .menu a { 
-      color: #FFD700; 
-      text-decoration: none; 
-      font-weight: bold; 
-      transition: 0.3s; 
-    }
-    .menu a:hover { color: #ff4444; }
-
-    .container { 
-      padding: 20px; 
-      animation: fadeIn 1s ease; 
+    /* Pages */
+    .page {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
       max-width: 900px;
       margin: 0 auto;
+      padding: 20px;
     }
-
-    .card { 
-      background: #2a2a2a; 
-      border-radius: 8px; 
-      padding: 15px; 
-      margin-bottom: 15px; 
-      transition: transform 0.3s ease; 
-      box-shadow: 0 6px 15px rgba(0,0,0,0.4); 
-    }
-    .card:hover { transform: translateY(-5px); }
-    .card h3 { margin-top: 0; color: #ff4444; }
-
-    .grid { 
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 15px; 
-    }
-
-    .center-image {
+    .active {
       display: block;
-      margin: 20px auto;
-      max-width: 80%;
-      height: auto;
-      border-radius: 8px;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Halaman Daftar mirip HTML awal */
-    #daftar-page {
-      width: 360px;
-      margin: 60px auto;
+    /* Form Box (Daftar) */
+    .form-box {
       background: #1c1c1c;
-      padding: 25px 25px 40px 25px;
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-      animation: fadeInDown 1s ease;
-      font-size: 16px;
-    }
-    #daftar-page h2 {
+      width: 350px;
+      margin: 60px auto;
       text-align: center;
-      margin-bottom: 20px;
-      font-weight: bold;
-      font-size: 24px;
-      color: #ffd700;
-      user-select: none;
+      animation: fadeInDown 1s ease;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
-    #daftar-page input[type="text"],
-    #daftar-page input[type="password"],
-    #daftar-page select {
+    .form-box h2 {
+      color: #FFD700;
+      margin-bottom: 20px;
+    }
+    .form-box input, .form-box select {
       width: 100%;
-      margin-bottom: 16px;
-      padding: 12px 10px;
-      border-radius: 8px;
+      padding: 10px;
+      margin: 8px 0;
       border: none;
+      border-radius: 5px;
       outline: none;
       font-size: 16px;
       box-sizing: border-box;
-      color: #000;
     }
-    #daftar-page button {
+    .form-box button {
       width: 100%;
-      background: #00cc66;
+      padding: 12px;
       border: none;
+      border-radius: 5px;
+      background: #00cc66;
       color: white;
-      padding: 15px 0;
-      border-radius: 8px;
-      font-weight: 900;
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
-      user-select: none;
+      transition: 0.3s;
     }
-    #daftar-page button:hover {
+    .form-box button:hover {
       background: #00994d;
       transform: scale(1.05);
     }
-    #daftar-page .btn-back {
-      margin-top: 18px;
-      background: #ff4444;
+
+    /* User Area Header Menu */
+    #userarea header {
+      flex-wrap: wrap;
+    }
+    #userarea .menu {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      color: #FFD700;
+      font-weight: bold;
+    }
+    #userarea .menu a {
+      color: #FFD700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    #userarea .menu a:hover {
+      color: #ff4444;
     }
 
-    /* Page switching */
-    .page { 
-      display: none; 
-      opacity: 0; 
-      transform: translateY(20px); 
-      transition: all 0.6s ease; 
+    /* Grid & Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
     }
-    .active { 
-      display: block; 
-      opacity: 1; 
-      transform: translateY(0); 
+    .card {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 {
+      margin-top: 0;
+      color: #ff4444;
     }
 
     /* Provider Boxes */
@@ -216,79 +228,78 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 15px;
       margin-top: 30px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .provider-card {
-      background: #2a2a2a; 
-      padding: 20px; 
-      border-radius: 8px; 
-      text-align: center; 
-      font-weight: bold; 
-      color: #FFD700; 
-      box-shadow: 0 6px 15px rgba(255,215,0,0.4); 
-      cursor: default; 
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      color: #FFD700;
+      box-shadow: 0 6px 15px rgba(255,215,0,0.4);
       user-select: none;
+      cursor: default;
     }
 
-    /* Game Boxes */
-    .game-boxes {
+    /* Game Grid */
+    .game-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 15px;
-      margin-top: 30px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 25px;
     }
     .game-card {
-      background: #3a3a3a; 
-      padding: 20px; 
-      border-radius: 8px; 
-      text-align: center; 
-      font-weight: bold; 
-      color: #00ccff; 
-      box-shadow: 0 6px 15px rgba(0,204,255,0.4); 
-      cursor: default; 
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      color: #FFD700;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease;
       user-select: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    }
+    .game-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
     }
     .game-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      object-fit: cover;
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 8px;
     }
 
     /* Animations */
-    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
-    @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(40px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeInDown {
+      from {opacity: 0; transform: translateY(-40px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
 
-    /* Responsive untuk Mobile */
-    @media screen and (max-width: 768px) {
+    /* Responsive */
+    @media (max-width: 768px) {
       header {
         flex-direction: column;
         align-items: flex-start;
       }
-
-      header .login-form {
+      .login-form {
         flex-direction: column;
         width: 100%;
         margin-top: 10px;
       }
-
-      header input, 
-      header button {
+      .login-form input, .login-form button {
         width: 100%;
         max-width: 100%;
         margin-bottom: 8px;
       }
-
       .banner {
         padding: 30px 15px;
         max-width: 100%;
@@ -299,23 +310,22 @@
       .banner p {
         font-size: 16px;
       }
-      .banner .btn-main {
+      .btn-main {
         font-size: 16px;
       }
       .center-image {
         max-width: 100%;
       }
-
       .grid {
         grid-template-columns: 1fr;
       }
-
-      .provider-boxes,
-      .game-boxes {
+      .provider-boxes {
         grid-template-columns: 1fr 1fr;
       }
-
-      #daftar-page {
+      .game-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .form-box {
         width: 90%;
         margin: 30px auto;
         padding: 20px;
@@ -325,7 +335,7 @@
 </head>
 <body>
 
-  <!-- Halaman Utama -->
+  <!-- Halaman Home (Login) -->
   <div id="home" class="page active">
     <header>
       <div class="logo">ARIPTOTO</div>
@@ -336,20 +346,17 @@
         <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
       </div>
     </header>
-
     <div class="banner">
       <h1>🎉 WELCOME TO ARIPTOTO 🎉</h1>
       <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
-      <button class="btn-main">Main Sekarang</button>
-
-      <!-- Gambar tengah bawah tulisan banner -->
-      <img src="https://raw.githubusercontent.com/reyreygits/ariptoto11/8c6b6bc656f69037edc448d4997d0d9d784e8711/poto.png2" alt="Gambar Banner" class="center-image" />
+      <button class="btn-main" onclick="alert('Fitur Main Sekarang belum aktif')">Main Sekarang</button>
+      <img src="https://raw.githubusercontent.com/reyreygits/ariptoto11/8c6b6bc656f69037edc448d4997d0d9d784e8711/poto.png2" alt="Banner Image" class="center-image" />
     </div>
   </div>
 
   <!-- Halaman Daftar -->
   <div id="daftar" class="page">
-    <div id="daftar-page">
+    <div class="form-box">
       <h2>Form Pendaftaran</h2>
       <input type="text" id="newUser" placeholder="User ID" />
       <input type="password" id="newPass" placeholder="Kata Sandi" />
@@ -367,8 +374,9 @@
         <option>Gopay</option>
         <option>ShopeePay</option>
       </select>
-      <button onclick="register()">DAFTAR</button>
-      <button class="btn-back" onclick="showPage('home')">KEMBALI</button>
+      <button onclick="register()">Daftar</button>
+      <br /><br />
+      <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
     </div>
   </div>
 
@@ -377,11 +385,11 @@
     <header>
       <div class="logo">ARIPTOTO - User Area</div>
       <div class="menu">
-        <a href="#">History</a>
-        <a href="#">Deposit</a>
-        <a href="#">Withdraw</a>
-        <a href="#">Rekening</a>
-        <a href="#">Memo</a>
+        <a href="#" onclick="alert('History belum tersedia')">History</a>
+        <a href="#" onclick="alert('Deposit belum tersedia')">Deposit</a>
+        <a href="#" onclick="alert('Withdraw belum tersedia')">Withdraw</a>
+        <a href="#" onclick="alert('Rekening belum tersedia')">Rekening</a>
+        <a href="#" onclick="alert('Memo belum tersedia')">Memo</a>
         <a href="#" onclick="logout()">Logout</a>
       </div>
     </header>
@@ -404,103 +412,125 @@
         </div>
       </div>
 
+      <!-- Provider Boxes -->
       <div class="provider-boxes">
         <div class="provider-card">Pragmatic</div>
-        <div class="provider-card">Playtech</div>
-        <div class="provider-card">Spade Gaming</div>
-        <div class="provider-card">Betradar</div>
+        <div class="provider-card">PG Soft</div>
+        <div class="provider-card">No Limit</div>
+        <div class="provider-card">Gamatron</div>
       </div>
 
-      <div class="game-boxes">
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game1" alt="Game 1" />
-          Game 1
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game2" alt="Game 2" />
-          Game 2
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game3" alt="Game 3" />
-          Game 3
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game4" alt="Game 4" />
-          Game 4
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game5" alt="Game 5" />
-          Game 5
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game6" alt="Game 6" />
-          Game 6
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game7" alt="Game 7" />
-          Game 7
-        </div>
-        <div class="game-card">
-          <img src="https://via.placeholder.com/80x80?text=Game8" alt="Game 8" />
-          Game 8
-        </div>
+      <!-- Game Cards -->
+      <div class="game-grid" id="gameGrid">
+        <!-- Game cards akan di-generate oleh JavaScript -->
       </div>
     </div>
   </div>
 
-  <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-      document.getElementById(pageId).classList.add('active');
-      window.scrollTo(0,0);
+<script>
+  // Data game lengkap: nama + link gambar bisa lo ganti aja di sini
+  const games = [
+    { name: "Dragon Tiger", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/dragontiger.png" },
+    { name: "Slot", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/slot.png" },
+    { name: "Togel", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/togel.png" },
+    { name: "Sabung Ayam", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/sabungayam.png" },
+    { name: "Live Casino", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/livecasino.png" },
+    { name: "Arcade", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/arcade.png" },
+    { name: "Sportsbook", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/sportsbook.png" },
+    { name: "Poker", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/poker.png" }
+  ];
+
+  function showPage(pageId) {
+    // Hide semua page dulu
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
+    });
+    // Tampilkan page yang dipilih
+    document.getElementById(pageId).classList.add('active');
+  }
+
+  function login() {
+    const user = document.getElementById('userLogin').value.trim();
+    const pass = document.getElementById('passLogin').value.trim();
+
+    if (!user || !pass) {
+      alert('Isi User ID dan Kata Sandi!');
+      return;
     }
 
-    function login() {
-      const user = document.getElementById('userLogin').value.trim();
-      const pass = document.getElementById('passLogin').value.trim();
-      if (!user || !pass) {
-        alert('User ID dan Kata Sandi wajib diisi!');
-        return;
-      }
-      alert('Login berhasil!');
-      document.getElementById('userData').innerText = `Balance: Rp 1.000.000\nUser: ${user}`;
-      document.getElementById('bankData').innerText = 'Bank: BCA 1234567890 a/n ' + user;
-      document.getElementById('phoneData').innerText = 'No HP: 08123456789';
+    // Simpel: cek user di localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
+    if (storedUsers[user] && storedUsers[user].password === pass) {
+      alert('Login berhasil! Selamat datang ' + user);
+      // Tampilkan halaman userarea
+      populateUserData(user, storedUsers[user]);
       showPage('userarea');
+    } else {
+      alert('User ID atau kata sandi salah!');
+    }
+  }
+
+  function register() {
+    const newUser = document.getElementById('newUser').value.trim();
+    const newPass = document.getElementById('newPass').value.trim();
+    const rekNum = document.getElementById('rekNum').value.trim();
+    const rekName = document.getElementById('rekName').value.trim();
+    const phoneNum = document.getElementById('phoneNum').value.trim();
+    const bankType = document.getElementById('bankType').value;
+
+    if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
+      alert('Semua field wajib diisi!');
+      return;
     }
 
-    function logout() {
-      if (confirm('Yakin ingin logout?')) {
-        showPage('home');
-      }
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
+    if (storedUsers[newUser]) {
+      alert('User ID sudah terdaftar!');
+      return;
     }
 
-    function register() {
-      const user = document.getElementById('newUser').value.trim();
-      const pass = document.getElementById('newPass').value.trim();
-      const rekNum = document.getElementById('rekNum').value.trim();
-      const rekName = document.getElementById('rekName').value.trim();
-      const phone = document.getElementById('phoneNum').value.trim();
-      const bank = document.getElementById('bankType').value;
+    storedUsers[newUser] = {
+      password: newPass,
+      rekening: rekNum,
+      namaRekening: rekName,
+      phone: phoneNum,
+      bank: bankType,
+      balance: 100000 // saldo awal
+    };
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+    alert('Registrasi berhasil! Silakan login.');
+    showPage('home');
+  }
 
-      if (!user || !pass || !rekNum || !rekName || !phone || !bank) {
-        alert('Semua kolom harus diisi!');
-        return;
-      }
-
-      alert(`Pendaftaran berhasil!\nUser: ${user}\nSilakan login.`);
+  function logout() {
+    if(confirm('Yakin ingin logout?')) {
       showPage('home');
-      // Optional: clear form fields
-      document.getElementById('newUser').value = '';
-      document.getElementById('newPass').value = '';
-      document.getElementById('rekNum').value = '';
-      document.getElementById('rekName').value = '';
-      document.getElementById('phoneNum').value = '';
-      document.getElementById('bankType').value = '';
+      // reset form login
+      document.getElementById('userLogin').value = '';
+      document.getElementById('passLogin').value = '';
     }
-  </script>
+  }
+
+  function populateUserData(username, userData) {
+    document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
+    document.getElementById('bankData').textContent = `Rekening: ${userData.rekening} (${userData.bank})`;
+    document.getElementById('phoneData').textContent = `No HP: ${userData.phone}`;
+    populateGameGrid();
+  }
+
+  function populateGameGrid() {
+    const container = document.getElementById('gameGrid');
+    container.innerHTML = '';
+    games.forEach(game => {
+      const card = document.createElement('div');
+      card.classList.add('game-card');
+      card.title = game.name;
+      card.innerHTML = `<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
+      card.onclick = () => alert(`Memulai game: ${game.name}`);
+      container.appendChild(card);
+    });
+  }
+</script>
 
 </body>
 </html>
