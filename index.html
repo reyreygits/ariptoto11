@@ -438,7 +438,7 @@
   { name: "BUFALO KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo.png1" },
   { name: "POWER OF THOR", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor,png" },
   { name: "MAHJONG WINS 3", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/black.png" }
- ];
+  ];
 
   function showPage(pageId) {
     // Hide semua page dulu
@@ -512,9 +512,9 @@
   }
 
   function populateUserData(username, userData) {
-    document.getElementById('userData').textContent = User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()};
-    document.getElementById('bankData').textContent = Rekening: ${userData.rekening} (${userData.bank});
-    document.getElementById('phoneData').textContent = No HP: ${userData.phone};
+    document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
+    document.getElementById('bankData').textContent = `Rekening: ${userData.rekening} (${userData.bank})`;
+    document.getElementById('phoneData').textContent = `No HP: ${userData.phone}`;
     populateGameGrid();
   }
 
@@ -525,8 +525,8 @@
       const card = document.createElement('div');
       card.classList.add('game-card');
       card.title = game.name;
-      card.innerHTML = <img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>;
-      card.onclick = () => alert(Memulai game: ${game.name});
+      card.innerHTML = `<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
+      card.onclick = () => alert(`Memulai game: ${game.name}`);
       container.appendChild(card);
     });
   }
