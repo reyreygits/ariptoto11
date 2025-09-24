@@ -4,6 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ARIPTOTO - Full Web</title>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ====== Ganti dengan config Firebase milikmu ======
+    const firebaseConfig = {
+      apiKey: "AIzaSyBC8UXFcrJaxMsJsTQgnqaaNvgsAVz0vOE",
+      authDomain: "ariptoto-web.firebaseapp.com",
+      projectId: "ariptoto-web",
+      storageBucket: "ariptoto-web.appspot.com",
+      messagingSenderId: "129200594109",
+      appId: "1:129200594109:web:50f7f4ce89a384211b2bd4"
+    };
+    // ====================================================
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
   <style>
     /* Basic reset & styling */
     body {
@@ -71,7 +92,6 @@
       opacity: 0.9;
     }
 
-    /* Banner */
     .banner {
       max-width: 900px;
       margin: 30px auto;
@@ -121,7 +141,6 @@
       margin-right: auto;
     }
 
-    /* Pages */
     .page {
       display: none;
       opacity: 0;
@@ -137,7 +156,6 @@
       transform: translateY(0);
     }
 
-    /* Form Box (Daftar) */
     .form-box {
       background: #1c1c1c;
       padding: 30px;
@@ -179,7 +197,6 @@
       transform: scale(1.05);
     }
 
-    /* User Area Header Menu */
     #userarea header {
       flex-wrap: wrap;
     }
@@ -201,7 +218,6 @@
       color: #ff4444;
     }
 
-    /* Grid & Cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -222,7 +238,6 @@
       color: #ff4444;
     }
 
-    /* Provider Boxes */
     .provider-boxes {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -241,7 +256,6 @@
       cursor: default;
     }
 
-    /* Game Grid */
     .game-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -270,7 +284,6 @@
       margin-bottom: 8px;
     }
 
-    /* Animations */
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
@@ -284,7 +297,6 @@
       to {opacity: 1; transform: translateY(0);}
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       header {
         flex-direction: column;
@@ -332,10 +344,12 @@
       }
     }
   </style>
+
+  <!-- Pastikan firebase SDK & db sudah di atas script login/register -->
+
 </head>
 <body>
-
-  <!-- Halaman Home (Login) -->
+  <!-- Home -->
   <div id="home" class="page active">
     <header>
       <div class="logo">ARIPTOTO</div>
@@ -354,7 +368,7 @@
     </div>
   </div>
 
-  <!-- Halaman Daftar -->
+  <!-- Daftar -->
   <div id="daftar" class="page">
     <div class="form-box">
       <h2>Form Pendaftaran</h2>
@@ -380,7 +394,7 @@
     </div>
   </div>
 
-  <!-- Halaman User Area -->
+  <!-- User Area -->
   <div id="userarea" class="page">
     <header>
       <div class="logo">ARIPTOTO - User Area</div>
@@ -412,7 +426,6 @@
         </div>
       </div>
 
-      <!-- Provider Boxes -->
       <div class="provider-boxes">
         <div class="provider-card">Pragmatic</div>
         <div class="provider-card">PG Soft</div>
@@ -420,117 +433,117 @@
         <div class="provider-card">Gamatron</div>
       </div>
 
-      <!-- Game Cards -->
       <div class="game-grid" id="gameGrid">
-        <!-- Game cards akan di-generate oleh JavaScript -->
+        <!-- Game cards akan digenerate lewat JS -->
       </div>
     </div>
   </div>
 
-<script>
-  // Data game lengkap: nama + link gambar bisa lo ganti aja di sini
-  const games = [
-   { name: "GATES OF OLYMPUS 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
-  { name: "GATES OF OLYMPUS SUPER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png" },
-  { name: "STARLIGHT PRINCES 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png" },
-  { name: "STARLIGHT PRINCES", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png" },
-  { name: "GATES OF GATOT KACA 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/gatot1.png" },
-  { name: "BUFALO KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo.png1" },
-  { name: "POWER OF THOR", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor,png" },
-  { name: "MAHJONG WINS 3", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/black.png" }
-  ];
+  <script>
+    // Game data
+    const games = [
+      { name: "GATES OF OLYMPUS 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+      { name: "GATES OF OLYMPUS SUPER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png" },
+      { name: "STARLIGHT PRINCES 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png" },
+      { name: "STARLIGHT PRINCES", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png" },
+      { name: "GATES OF GATOT KACA 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/gatot1.png" },
+      { name: "BUFALO KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo.png1" },
+      { name: "POWER OF THOR", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor,png" },
+      { name: "MAHJONG WINS 3", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/black.png" }
+    ];
 
-  function showPage(pageId) {
-    // Hide semua page dulu
-    document.querySelectorAll('.page').forEach(page => {
-      page.classList.remove('active');
-    });
-    // Tampilkan page yang dipilih
-    document.getElementById(pageId).classList.add('active');
-  }
-
-  function login() {
-    const user = document.getElementById('userLogin').value.trim();
-    const pass = document.getElementById('passLogin').value.trim();
-
-    if (!user || !pass) {
-      alert('Isi User ID dan Kata Sandi!');
-      return;
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
     }
 
-    // Simpel: cek user di localStorage
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
-    if (storedUsers[user] && storedUsers[user].password === pass) {
-      alert('Login berhasil! Selamat datang ' + user);
-      // Tampilkan halaman userarea
-      populateUserData(user, storedUsers[user]);
-      showPage('userarea');
-    } else {
-      alert('User ID atau kata sandi salah!');
-    }
-  }
-
-  function register() {
-    const newUser = document.getElementById('newUser').value.trim();
-    const newPass = document.getElementById('newPass').value.trim();
-    const rekNum = document.getElementById('rekNum').value.trim();
-    const rekName = document.getElementById('rekName').value.trim();
-    const phoneNum = document.getElementById('phoneNum').value.trim();
-    const bankType = document.getElementById('bankType').value;
-
-    if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
-      alert('Semua field wajib diisi!');
-      return;
-    }
-
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || {};
-    if (storedUsers[newUser]) {
-      alert('User ID sudah terdaftar!');
-      return;
+    async function login() {
+      const user = document.getElementById('userLogin').value.trim();
+      const pass = document.getElementById('passLogin').value.trim();
+      if (!user || !pass) {
+        alert('Isi User ID dan Kata Sandi!');
+        return;
+      }
+      try {
+        const doc = await db.collection('users').doc(user).get();
+        if (!doc.exists) {
+          alert('User ID atau kata sandi salah!');
+          return;
+        }
+        const userData = doc.data();
+        if (userData.password === pass) {
+          alert('Login berhasil! Selamat datang ' + user);
+          populateUserData(user, userData);
+          showPage('userarea');
+        } else {
+          alert('User ID atau kata sandi salah!');
+        }
+      } catch (err) {
+        console.error('Error login:', err);
+        alert('Gagal login, coba lagi.');
+      }
     }
 
-    storedUsers[newUser] = {
-      password: newPass,
-      rekening: rekNum,
-      namaRekening: rekName,
-      phone: phoneNum,
-      bank: bankType,
-      balance: 100000 // saldo awal
-    };
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-    alert('Registrasi berhasil! Silakan login.');
-    showPage('home');
-  }
+    async function register() {
+      const newUser = document.getElementById('newUser').value.trim();
+      const newPass = document.getElementById('newPass').value.trim();
+      const rekNum = document.getElementById('rekNum').value.trim();
+      const rekName = document.getElementById('rekName').value.trim();
+      const phoneNum = document.getElementById('phoneNum').value.trim();
+      const bankType = document.getElementById('bankType').value;
 
-  function logout() {
-    if(confirm('Yakin ingin logout?')) {
+      if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
+        alert('Semua field wajib diisi!');
+        return;
+      }
+      try {
+        const doc = await db.collection('users').doc(newUser).get();
+        if (doc.exists) {
+          alert('User ID sudah terdaftar!');
+          return;
+        }
+        await db.collection('users').doc(newUser).set({
+          password: newPass,
+          rekening: rekNum,
+          namaRekening: rekName,
+          phone: phoneNum,
+          bank: bankType,
+          balance: 100000
+        });
+        alert('Registrasi berhasil! Silakan login.');
+        showPage('home');
+      } catch (err) {
+        console.error('Error registrasi:', err);
+        alert('Gagal registrasi, coba lagi.');
+      }
+    }
+
+    function logout() {
       showPage('home');
-      // reset form login
       document.getElementById('userLogin').value = '';
       document.getElementById('passLogin').value = '';
     }
-  }
 
-  function populateUserData(username, userData) {
-    document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
-    document.getElementById('bankData').textContent = `Rekening: ${userData.rekening} (${userData.bank})`;
-    document.getElementById('phoneData').textContent = `No HP: ${userData.phone}`;
-    populateGameGrid();
-  }
+    function populateUserData(username, userData) {
+      document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
+      document.getElementById('bankData').textContent = `Rekening: ${userData.rekening} (${userData.bank})`;
+      document.getElementById('phoneData').textContent = `No HP: ${userData.phone}`;
+      populateGameGrid();
+    }
 
-  function populateGameGrid() {
-    const container = document.getElementById('gameGrid');
-    container.innerHTML = '';
-    games.forEach(game => {
-      const card = document.createElement('div');
-      card.classList.add('game-card');
-      card.title = game.name;
-      card.innerHTML = `<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
-      card.onclick = () => alert(`Memulai game: ${game.name}`);
-      container.appendChild(card);
-    });
-  }
-</script>
+    function populateGameGrid() {
+      const container = document.getElementById('gameGrid');
+      container.innerHTML = '';
+      games.forEach(game => {
+        const card = document.createElement('div');
+        card.classList.add('game-card');
+        card.title = game.name;
+        card.innerHTML = `<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
+        card.onclick = () => alert(`Memulai game: ${game.name}`);
+        container.appendChild(card);
+      });
+    }
+  </script>
 
 </body>
 </html>
