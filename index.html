@@ -10,7 +10,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // ====== Ganti dengan config Firebase milikmu ======
     const firebaseConfig = {
       apiKey: "AIzaSyBC8UXFcrJaxMsJsTQgnqaaNvgsAVz0vOE",
       authDomain: "ariptoto-web.firebaseapp.com",
@@ -19,14 +18,11 @@
       messagingSenderId: "129200594109",
       appId: "1:129200594109:web:50f7f4ce89a384211b2bd4"
     };
-    // ====================================================
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
   </script>
 
   <style>
-    /* Basic reset & styling */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -284,69 +280,56 @@
       margin-bottom: 8px;
     }
 
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    @keyframes fadeInUp {
-      from {opacity: 0; transform: translateY(40px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    @keyframes fadeInDown {
-      from {opacity: 0; transform: translateY(-40px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
 
+    /* ===== Mobile Responsive ===== */
     @media (max-width: 768px) {
       header {
         flex-direction: column;
         align-items: flex-start;
+        padding: 8px 10px;
       }
+      .logo { font-size: 18px; }
       .login-form {
         flex-direction: column;
         width: 100%;
-        margin-top: 10px;
+        margin-top: 8px;
+        gap: 6px;
       }
       .login-form input, .login-form button {
         width: 100%;
+        font-size: 14px;
+        padding: 5px;
         max-width: 100%;
-        margin-bottom: 8px;
       }
       .banner {
-        padding: 30px 15px;
+        padding: 20px 10px;
         max-width: 100%;
       }
-      .banner h1 {
-        font-size: 26px;
-      }
-      .banner p {
-        font-size: 16px;
-      }
-      .btn-main {
-        font-size: 16px;
-      }
-      .center-image {
-        max-width: 100%;
-      }
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      .provider-boxes {
-        grid-template-columns: 1fr 1fr;
-      }
-      .game-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .form-box {
-        width: 90%;
-        margin: 30px auto;
-        padding: 20px;
-      }
+      .banner h1 { font-size: 22px; }
+      .banner p { font-size: 14px; }
+      .btn-main { font-size: 14px; padding: 10px 15px; }
+      .center-image { max-width: 100%; }
+
+      .grid { grid-template-columns: 1fr; gap: 10px; }
+      .card { padding: 10px; font-size: 14px; }
+      .card h3 { font-size: 16px; }
+
+      .provider-boxes { grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; padding: 5px; }
+      .provider-card { padding: 10px; }
+
+      .game-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .game-card { font-size: 12px; padding: 8px; }
+
+      .form-box { width: 90%; margin: 20px auto; padding: 15px; font-size: 14px; }
+      .form-box h2 { font-size: 18px; }
+      .form-box input, .form-box select, .form-box button { font-size: 14px; padding: 8px; }
+
+      #userarea .menu { flex-direction: column; gap: 5px; font-size: 14px; }
     }
   </style>
-
-  <!-- Pastikan firebase SDK & db sudah di atas script login/register -->
-
 </head>
 <body>
   <!-- Home -->
@@ -433,14 +416,11 @@
         <div class="provider-card">Gamatron</div>
       </div>
 
-      <div class="game-grid" id="gameGrid">
-        <!-- Game cards akan digenerate lewat JS -->
-      </div>
+      <div class="game-grid" id="gameGrid"></div>
     </div>
   </div>
 
   <script>
-    // Game data
     const games = [
       { name: "GATES OF OLYMPUS 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
       { name: "GATES OF OLYMPUS SUPER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png" },
@@ -460,28 +440,17 @@
     async function login() {
       const user = document.getElementById('userLogin').value.trim();
       const pass = document.getElementById('passLogin').value.trim();
-      if (!user || !pass) {
-        alert('Isi User ID dan Kata Sandi!');
-        return;
-      }
+      if (!user || !pass) { alert('Isi User ID dan Kata Sandi!'); return; }
       try {
         const doc = await db.collection('users').doc(user).get();
-        if (!doc.exists) {
-          alert('User ID atau kata sandi salah!');
-          return;
-        }
+        if (!doc.exists) { alert('User ID atau kata sandi salah!'); return; }
         const userData = doc.data();
         if (userData.password === pass) {
           alert('Login berhasil! Selamat datang ' + user);
           populateUserData(user, userData);
           showPage('userarea');
-        } else {
-          alert('User ID atau kata sandi salah!');
-        }
-      } catch (err) {
-        console.error('Error login:', err);
-        alert('Gagal login, coba lagi.');
-      }
+        } else { alert('User ID atau kata sandi salah!'); }
+      } catch (err) { console.error('Error login:', err); alert('Gagal login, coba lagi.'); }
     }
 
     async function register() {
@@ -491,17 +460,10 @@
       const rekName = document.getElementById('rekName').value.trim();
       const phoneNum = document.getElementById('phoneNum').value.trim();
       const bankType = document.getElementById('bankType').value;
-
-      if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
-        alert('Semua field wajib diisi!');
-        return;
-      }
+      if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) { alert('Semua field wajib diisi!'); return; }
       try {
         const doc = await db.collection('users').doc(newUser).get();
-        if (doc.exists) {
-          alert('User ID sudah terdaftar!');
-          return;
-        }
+        if (doc.exists) { alert('User ID sudah terdaftar!'); return; }
         await db.collection('users').doc(newUser).set({
           password: newPass,
           rekening: rekNum,
@@ -512,10 +474,7 @@
         });
         alert('Registrasi berhasil! Silakan login.');
         showPage('home');
-      } catch (err) {
-        console.error('Error registrasi:', err);
-        alert('Gagal registrasi, coba lagi.');
-      }
+      } catch (err) { console.error('Error registrasi:', err); alert('Gagal registrasi, coba lagi.'); }
     }
 
     function logout() {
