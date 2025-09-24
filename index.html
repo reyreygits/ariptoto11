@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ARIPTOTO - Full Web</title>
   <style>
-    /* Basic reset & styling */
+    /* (CSS kamu tetap sama) */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -71,7 +71,6 @@
       opacity: 0.9;
     }
 
-    /* Banner */
     .banner {
       max-width: 900px;
       margin: 30px auto;
@@ -121,7 +120,6 @@
       margin-right: auto;
     }
 
-    /* Pages */
     .page {
       display: none;
       opacity: 0;
@@ -137,7 +135,6 @@
       transform: translateY(0);
     }
 
-    /* Form Box (Daftar) */
     .form-box {
       background: #1c1c1c;
       padding: 30px;
@@ -179,7 +176,6 @@
       transform: scale(1.05);
     }
 
-    /* User Area Header Menu */
     #userarea header {
       flex-wrap: wrap;
     }
@@ -201,7 +197,6 @@
       color: #ff4444;
     }
 
-    /* Grid & Cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -222,7 +217,6 @@
       color: #ff4444;
     }
 
-    /* Provider Boxes */
     .provider-boxes {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -241,7 +235,6 @@
       cursor: default;
     }
 
-    /* Game Grid */
     .game-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -318,26 +311,18 @@
         grid-template-columns: 1fr;
       }
       .provider-boxes {
-        grid-template-columns: 1fr 1fr;
-      }
-      .game-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .form-box {
-        width: 90%;
-        margin: 30px auto;
-        padding: 20px;
+        grid-template-columns: 1fr 1f
       }
     }
   </style>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"></script>
 </head>
 <body>
 
-  <!-- Halaman Home (Login) -->
+  <!-- Halaman Home -->
   <div id="home" class="page active">
     <header>
       <div class="logo">ARIPTOTO</div>
@@ -413,14 +398,12 @@
           <p>No Data</p>
         </div>
       </div>
-
       <div class="provider-boxes">
         <div class="provider-card">Pragmatic</div>
         <div class="provider-card">PG Soft</div>
         <div class="provider-card">No Limit</div>
         <div class="provider-card">Gamatron</div>
       </div>
-
       <div class="game-grid" id="gameGrid"></div>
     </div>
   </div>
@@ -468,8 +451,8 @@
           } else {
             alert('User ID tidak ditemukan!');
           }
-        } catch (error) {
-          alert('Error saat login: ' + error.message);
+        } catch (err) {
+          alert('Error saat login: ' + err.message);
         }
       };
 
@@ -480,7 +463,6 @@
         const rekName = document.getElementById('rekName').value.trim();
         const phoneNum = document.getElementById('phoneNum').value.trim();
         const bankType = document.getElementById('bankType').value;
-
         if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
           alert('Semua field wajib diisi!');
           return;
@@ -503,8 +485,8 @@
           await userRef.set(dataToSave);
           alert('Registrasi berhasil! Silakan login.');
           showPage('home');
-        } catch (error) {
-          alert('Error saat registrasi: ' + error.message);
+        } catch (err) {
+          alert('Error saat registrasi: ' + err.message);
         }
       };
 
@@ -527,7 +509,7 @@
         { name: "GATES OF OLYMPUS 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
         { name: "GATES OF OLYMPUS SUPER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png" },
         { name: "STARLIGHT PRINCES 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png" },
-        { name: "STARLIGHT PRINCES", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png" },
+        { name: "STARLIGHT PRINCES", img: "https://raw.githubusercontent.com/reyreygits ariptoto11/main/inces2.png" },
         { name: "GATES OF GATOT KACA 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/gatot1.png" },
         { name: "BUFALO KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo.png" },
         { name: "POWER of THOR", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor.png" },
