@@ -20,9 +20,11 @@
       appId: "1:129200594109:web:50f7f4ce89a384211b2bd4"
     };
     // ====================================================
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // simple current user tracker (tidak merubah flow login yang sudah ada)
+    let currentUser = null;
   </script>
 
   <style>
@@ -378,7 +380,7 @@
       <input type="text" id="rekName" placeholder="Nama Rekening" />
       <input type="text" id="phoneNum" placeholder="No. HP" />
       <select id="bankType">
-        <option value="">-- Pilih Bank / E‑Wallet --</option>
+        <option value="">-- Pilih Bank / E-Wallet --</option>
         <option>Bank BCA</option>
         <option>Bank BNI</option>
         <option>Bank BRI</option>
@@ -400,7 +402,7 @@
       <div class="logo">ARIPTOTO - User Area</div>
       <div class="menu">
         <a href="#" onclick="alert('History belum tersedia')">History</a>
-        <a href="#" onclick="alert('Deposit belum tersedia')">Deposit</a>
+        <a href="#" onclick="showPage('deposit')">Deposit</a>
         <a href="#" onclick="alert('Withdraw belum tersedia')">Withdraw</a>
         <a href="#" onclick="alert('Rekening belum tersedia')">Rekening</a>
         <a href="#" onclick="alert('Memo belum tersedia')">Memo</a>
@@ -439,6 +441,24 @@
     </div>
   </div>
 
+  <!-- Deposit Page (ditambah) -->
+  <div id="deposit" class="page">
+    <div class="form-box" style="max-width:400px;">
+      <h2>💸 Deposit Saldo</h2>
+      <p>Scan QRIS di bawah untuk melakukan pembayaran:</p>
+
+      <!-- Ganti src gambar QRIS ini dengan URL QRIS kamu -->
+      <img id="qrisImage" src="https://via.placeholder.com/300x300.png?text=QRIS+CODE" alt="QRIS" style="width:260px;height:260px;margin:10px auto;display:block;border-radius:8px;object-fit:cover;">
+
+      <label for="depositAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Deposit (Rp)</label>
+      <input type="number" id="depositAmount" placeholder="Contoh: 100000" />
+
+      <button onclick="konfirmasiDeposit()">Konfirmasi Deposit</button>
+      <br /><br />
+      <button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
+    </div>
+  </div>
+
   <script>
     // Game data
     const games = [
@@ -474,6 +494,7 @@
         if (userData.password === pass) {
           alert('Login berhasil! Selamat datang ' + user);
           populateUserData(user, userData);
+          currentUser = user; // set current user
           showPage('userarea');
         } else {
           alert('User ID atau kata sandi salah!');
@@ -522,6 +543,7 @@
       showPage('home');
       document.getElementById('userLogin').value = '';
       document.getElementById('passLogin').value = '';
+      currentUser = null;
     }
 
     function populateUserData(username, userData) {
@@ -542,6 +564,40 @@
         card.onclick = () => alert(`Memulai game: ${game.name}`);
         container.appendChild(card);
       });
+    }
+
+    // Konfirmasi deposit: simpan ke koleksi 'deposits' dengan status 'pending'
+    async function konfirmasiDeposit() {
+      const amountEl = document.getElementById('depositAmount');
+      const amount = parseInt(amountEl.value);
+      const user = currentUser || document.getElementById('userLogin').value.trim();
+
+      if (!amount || amount <= 0) {
+        alert('Masukkan nominal deposit yang valid!');
+        return;
+      }
+
+      if (!user) {
+        alert('User tidak terdeteksi. Silakan login ulang.');
+        showPage('home');
+        return;
+      }
+
+      try {
+        await db.collection('deposits').add({
+          user: user,
+          amount: amount,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+
+        alert('✅ Deposit terdaftar. Mohon upload bukti / tunggu konfirmasi admin.');
+        amountEl.value = '';
+        showPage('userarea');
+      } catch (err) {
+        console.error('Error saat menyimpan deposit:', err);
+        alert('Gagal memproses deposit. Coba lagi.');
+      }
     }
   </script>
 
