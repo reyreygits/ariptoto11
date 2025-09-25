@@ -68,6 +68,16 @@
     .game-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6); }
     .game-card img { width: 100%; border-radius: 6px; margin-bottom: 8px; }
 
+    /* QRIS Style */
+    #qrisImage {
+      width: 250px;
+      max-width: 80%;
+      height: auto;
+      display: block;
+      margin: 15px auto;
+      border-radius: 8px;
+    }
+
     @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
     @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
     @keyframes fadeInDown { from {opacity: 0; transform: translateY(-40px);} to {opacity: 1; transform: translateY(0);} }
@@ -85,6 +95,7 @@
       .provider-boxes { grid-template-columns: 1fr 1fr; }
       .game-grid { grid-template-columns: 1fr 1fr; }
       .form-box { width: 90%; margin: 30px auto; padding: 20px; }
+      #qrisImage { width: 200px; max-width: 90%; }
     }
   </style>
 
@@ -180,7 +191,7 @@
 
   <!-- Deposit Page -->
   <div id="deposit" class="page">
-    <div class="form-box" style="max-width:100px;">
+    <div class="form-box" style="max-width:400px;">
       <h2>💸 Deposit Saldo</h2>
       <p>Scan QRIS di bawah untuk melakukan pembayaran:</p>
       <img id="qrisImage" src="https://raw.githubusercontent.com/reyreygits/ariptoto11/main/qris1.png" alt="QRIS" />
@@ -221,7 +232,7 @@
           alert('Login berhasil! Selamat datang ' + user);
           populateUserData(user, userData);
           currentUser = user;
-          listenUserUpdates(user); // realtime listener deposit approved
+          listenUserUpdates(user);
           showPage('userarea');
         } else { alert('User ID atau kata sandi salah!'); }
       } catch (err) {
@@ -256,7 +267,6 @@
           balance: 100000
         });
 
-        // Admin copy
         await db.collection('adminUsers').doc(newUser).set({
           password: newPass,
           rekening: rekNum,
@@ -318,7 +328,6 @@
           createdAt: new Date().toISOString()
         });
 
-        // Admin copy
         await db.collection('adminDeposits').add({
           user: user,
           amount: amount,
@@ -335,11 +344,9 @@
       }
     }
 
-    // ===== Listener realtime untuk update saldo =====
     function listenUserUpdates(username){
       if(!username) return;
 
-      // Update user data realtime
       db.collection('users').doc(username)
         .onSnapshot(doc => {
           if(doc.exists){
@@ -350,7 +357,6 @@
           }
         });
 
-      // Listen deposit yang diapprove oleh admin
       db.collection('adminDeposits')
         .where('user','==',username)
         .where('status','==','approved')
@@ -370,6 +376,5 @@
         });
     }
   </script>
-
 </body>
 </html>
