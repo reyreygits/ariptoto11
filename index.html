@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ARIPTOTO - Full Web</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARIPTOTO - Full Web with History</title>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -24,360 +24,312 @@ let currentUser = null;
 </script>
 
 <style>
-body { margin:0; font-family:Arial,sans-serif; background:#0a0f1c; color:white; overflow-x:hidden; }
-header { background:#111a33; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; box-shadow:0 4px 12px rgba(0,0,0,0.4); flex-wrap:wrap; }
-.logo { font-size:22px; font-weight:bold; color:#FFD700; letter-spacing:1px; flex-shrink:0; }
-.login-form { display:flex; gap:10px; flex-wrap:wrap; flex-grow:1; justify-content:flex-end; }
-.login-form input { padding:6px; border-radius:5px; border:none; outline:none; min-width:100px; max-width:150px; flex:1 1 auto; }
-.login-form button { padding:6px 12px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; transition:all 0.3s ease; max-width:120px; flex:1 1 auto; }
-.btn-login { background:#ff4444; color:white; }
-.btn-daftar { background:#00cc66; color:white; }
-.login-form button:hover { transform:scale(1.05); opacity:0.9; }
-.btn-wa { display:inline-block; margin-top:10px; padding:8px 16px; background:#25D366; color:white; font-weight:bold; border-radius:6px; text-decoration:none; transition:all 0.3s ease; font-size:14px; }
-.btn-wa:hover { background:#1ebe5d; transform:scale(1.05); }
-
-.banner { max-width:900px; margin:30px auto; padding:50px 20px; border-radius:15px; background:linear-gradient(135deg,#1e3c72,#2a5298); box-shadow:0 5px 20px rgba(0,0,0,0.6); text-align:center; animation:fadeInUp 1s ease; }
-.banner h1 { font-size:40px; margin-bottom:15px; color:#FFD700; animation:fadeIn 2s ease; }
-.banner p { font-size:20px; color:#ddd; animation:fadeIn 2.5s ease; }
-.btn-main { margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-radius:8px; cursor:pointer; background:#ffcc00; color:black; font-weight:bold; transition:0.3s; max-width:300px; width:100%; }
-.btn-main:hover { background:#ffaa00; transform:scale(1.05); }
-.center-image { margin-top:30px; max-width:80%; border-radius:8px; height:auto; display:block; margin-left:auto; margin-right:auto; }
-
-.page { display:none; opacity:0; transform:translateY(20px); transition:all 0.6s ease; max-width:900px; margin:0 auto; padding:20px; }
-.active { display:block; opacity:1; transform:translateY(0); }
-
-.form-box { background:#1c1c1c; padding:30px; border-radius:10px; width:350px; margin:60px auto; text-align:center; animation:fadeInDown 1s ease; box-shadow:0 8px 25px rgba(0,0,0,0.5); }
-.form-box h2 { color:#FFD700; margin-bottom:20px; }
-.form-box input, .form-box select { width:100%; padding:10px; margin:8px 0; border:none; border-radius:5px; outline:none; font-size:16px; box-sizing:border-box; }
-.form-box button { width:100%; padding:12px; border:none; border-radius:5px; background:#00cc66; color:white; font-size:16px; font-weight:bold; cursor:pointer; transition:0.3s; }
-.form-box button:hover { background:#00994d; transform:scale(1.05); }
-
-#userarea header { flex-wrap:wrap; }
-#userarea .menu { display:flex; gap:15px; flex-wrap:wrap; color:#FFD700; font-weight:bold; }
-#userarea .menu a { color:#FFD700; text-decoration:none; cursor:pointer; transition:color 0.3s ease; user-select:none; }
-#userarea .menu a:hover { color:#ff4444; }
-
-.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; }
-.card { background:#2a2a2a; border-radius:8px; padding:15px; box-shadow:0 6px 15px rgba(0,0,0,0.4); transition:transform 0.3s ease; }
-.card:hover { transform:translateY(-5px); }
-.card h3 { margin-top:0; color:#ff4444; }
-
-.provider-boxes { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-top:30px; }
-.provider-card { background:#2a2a2a; padding:20px; border-radius:8px; text-align:center; font-weight:bold; color:#FFD700; box-shadow:0 6px 15px rgba(255,215,0,0.4); user-select:none; cursor:default; }
-
-.game-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-top:25px; }
-.game-card { background:#1e1e1e; border-radius:10px; padding:12px; text-align:center; font-weight:bold; color:#FFD700; box-shadow:0 4px 12px rgba(255,215,0,0.3); cursor:pointer; transition:transform 0.3s ease; user-select:none; }
-.game-card:hover { transform:translateY(-6px) scale(1.03); box-shadow:0 8px 20px rgba(255,215,0,0.6); }
-.game-card img { width:100%; border-radius:6px; margin-bottom:8px; }
-
-#qrisImage { width:250px; max-width:80%; height:auto; display:block; margin:15px auto; border-radius:8px; }
-
-#historyModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:200; overflow:auto; padding:20px; box-sizing:border-box; }
-#historyModal > div { max-width:600px; margin:50px auto; background:#1c1c1c; border-radius:10px; padding:20px; position:relative; }
-
-@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-@keyframes fadeInUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
-@keyframes fadeInDown { from{opacity:0; transform:translateY(-40px);} to{opacity:1; transform:translateY(0);} }
-
-@media (max-width:768px) {
-  header { flex-direction:column; align-items:flex-start; }
-  .login-form { flex-direction:column; width:100%; margin-top:10px; }
-  .login-form input, .login-form button { width:100%; max-width:100%; margin-bottom:8px; }
-  .banner { padding:30px 15px; max-width:100%; }
-  .banner h1 { font-size:26px; }
-  .banner p { font-size:16px; }
-  .btn-main { font-size:16px; }
-  .center-image { max-width:100%; }
-  .grid { grid-template-columns:1fr; }
-  .provider-boxes { grid-template-columns:1fr 1fr; }
-  .game-grid { grid-template-columns:1fr 1fr; }
-  .form-box { width:90%; margin:30px auto; padding:20px; }
-  #qrisImage { width:200px; max-width:90%; }
-}
+body {margin:0;font-family:Arial,sans-serif;background:#0a0f1c;color:white;overflow-x:hidden;}
+header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.4);flex-wrap:wrap;}
+.logo{font-size:22px;font-weight:bold;color:#FFD700;letter-spacing:1px;flex-shrink:0;}
+.login-form{display:flex;gap:10px;flex-wrap:wrap;flex-grow:1;justify-content:flex-end;}
+.login-form input{padding:6px;border-radius:5px;border:none;outline:none;min-width:100px;max-width:150px;flex:1 1 auto;}
+.login-form button{padding:6px 12px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;transition:all 0.3s ease;max-width:120px;flex:1 1 auto;}
+.btn-login{background:#ff4444;color:white;}
+.btn-daftar{background:#00cc66;color:white;}
+.login-form button:hover{transform:scale(1.05);opacity:0.9;}
+.btn-wa{display:inline-block;margin-top:10px;padding:8px 16px;background:#25D366;color:white;font-weight:bold;border-radius:6px;text-decoration:none;transition:all 0.3s ease;font-size:14px;}
+.btn-wa:hover{background:#1ebe5d;transform:scale(1.05);}
+.page{display:none;opacity:0;transform:translateY(20px);transition:all 0.6s ease;max-width:900px;margin:0 auto;padding:20px;}
+.active{display:block;opacity:1;transform:translateY(0);}
+.form-box{background:#1c1c1c;padding:30px;border-radius:10px;width:350px;margin:60px auto;text-align:center;animation:fadeInDown 1s ease;box-shadow:0 8px 25px rgba(0,0,0,0.5);}
+.form-box h2{color:#FFD700;margin-bottom:20px;}
+.form-box input,.form-box select{width:100%;padding:10px;margin:8px 0;border:none;border-radius:5px;outline:none;font-size:16px;box-sizing:border-box;}
+.form-box button{width:100%;padding:12px;border:none;border-radius:5px;background:#00cc66;color:white;font-size:16px;font-weight:bold;cursor:pointer;transition:0.3s;}
+.form-box button:hover{background:#00994d;transform:scale(1.05);}
+#userarea header{flex-wrap:wrap;}
+#userarea .menu{display:flex;gap:15px;flex-wrap:wrap;color:#FFD700;font-weight:bold;}
+#userarea .menu a{color:#FFD700;text-decoration:none;cursor:pointer;transition:color 0.3s ease;user-select:none;}
+#userarea .menu a:hover{color:#ff4444;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
+.card{background:#2a2a2a;border-radius:8px;padding:15px;box-shadow:0 6px 15px rgba(0,0,0,0.4);transition:transform 0.3s ease;}
+.card:hover{transform:translateY(-5px);}
+.card h3{margin-top:0;color:#ff4444;}
+.provider-boxes{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:30px;}
+.provider-card{background:#2a2a2a;padding:20px;border-radius:8px;text-align:center;font-weight:bold;color:#FFD700;box-shadow:0 6px 15px rgba(255,215,0,0.4);user-select:none;cursor:default;}
+.game-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:25px;}
+.game-card{background:#1e1e1e;border-radius:10px;padding:12px;text-align:center;font-weight:bold;color:#FFD700;box-shadow:0 4px 12px rgba(255, 215,0,0.3);cursor:pointer;transition:transform 0.3s ease;user-select:none;}
+.game-card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 8px 20px rgba(255,215,0,0.6);}
+.game-card img{width:100%;border-radius:6px;margin-bottom:8px;}
+#qrisImage{width:250px;max-width:80%;height:auto;display:block;margin:15px auto;border-radius:8px;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-40px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){header{flex-direction:column;align-items:flex-start}.login-form{flex-direction:column;width:100%;margin-top:10px}.login-form input,.login-form button{width:100%;max-width:100%;margin-bottom:8px}.grid{grid-template-columns:1fr}.provider-boxes{grid-template-columns:1fr 1fr}.game-grid{grid-template-columns:1fr 1fr}.form-box{width:90%;margin:30px auto;padding:20px}#qrisImage{width:200px;max-width:90%;}}
+/* History Modal */
+#historyModal{display:none;position:fixed;z-index:999;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;}
+#historyContent{background:#1c1c1c;padding:20px;border-radius:10px;max-height:80%;overflow-y:auto;width:90%;max-width:600px;}
+#historyContent h3{color:#FFD700;margin-top:0;}
 </style>
 </head>
 <body>
 
-<!-- Home Page -->
+<!-- Home -->
 <div id="home" class="page active">
-  <header>
-    <div class="logo">JOKOWI-TOTO</div>
-    <div class="login-form">
-      <input type="text" id="userLogin" placeholder="User ID" />
-      <input type="password" id="passLogin" placeholder="Kata Sandi" />
-      <button class="btn-login" onclick="login()">Login</button>
-      <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
-    </div>
-    <div style="width:100%; text-align:right;">
-      <a href="https://wa.me/6282128009210" target="_blank" class="btn-wa">💬 Hubungi WhatsApp / Live Chat</a>
-    </div>
-  </header>
-  <div class="banner">
-    <h1>🎉 WELCOME TO JOKOWI-TOTO 🎉</h1>
-    <p>Situs terbaik di Asia • Aman & 100% Resmi</p>
-    <button class="btn-main" onclick="alert('Fitur Main Sekarang belum aktif')">Main Sekarang</button>
-    <img src="https://raw.githubusercontent.com/reyreygits/ariptoto11/8c6b6bc656f69037edc448d4997d0d9d784e8711/poto.png2" alt="Banner" class="center-image"/>
-  </div>
+<header>
+<div class="logo">JOKOWI-TOTO</div>
+<div class="login-form">
+<input type="text" id="userLogin" placeholder="User ID">
+<input type="password" id="passLogin" placeholder="Kata Sandi">
+<button class="btn-login" onclick="login()">Login</button>
+<button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
+</div>
+<div style="width:100%;text-align:right;">
+<a href="https://wa.me/6282128009210" target="_blank" class="btn-wa">💬 Hubungi WhatsApp / Live Chat</a>
+</div>
+</header>
+<div class="banner">
+<h1>🎉 WELCOME TO JOKOWI-TOTO 🎉</h1>
+<p>Situs terbaik di Asia • Aman & 100% Resmi</p>
+<button class="btn-main" onclick="alert('Fitur Main Sekarang belum aktif')">Main Sekarang</button>
+<img src="https://raw.githubusercontent.com/reyreygits/ariptoto11/8c6b6bc656f69037edc448d4997d0d9d784e8711/poto.png2" alt="Banner Image" class="center-image">
+</div>
 </div>
 
-<!-- Daftar Page -->
+<!-- Daftar -->
 <div id="daftar" class="page">
-  <div class="form-box">
-    <h2>Form Pendaftaran</h2>
-    <input type="text" id="newUser" placeholder="User ID" />
-    <input type="password" id="newPass" placeholder="Kata Sandi" />
-    <input type="text" id="rekNum" placeholder="No. Rekening" />
-    <input type="text" id="rekName" placeholder="Nama Rekening" />
-    <input type="text" id="phoneNum" placeholder="No. HP" />
-    <select id="bankType">
-      <option value="">-- Pilih Bank / E-Wallet --</option>
-      <option>Bank BCA</option><option>Bank BNI</option><option>Bank BRI</option><option>Bank Mandiri</option>
-      <option>DANA</option><option>OVO</option><option>Gopay</option><option>ShopeePay</option>
-    </select>
-    <button onclick="register()">Daftar</button><br><br>
-    <button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
-  </div>
+<div class="form-box">
+<h2>Form Pendaftaran</h2>
+<input type="text" id="newUser" placeholder="User ID">
+<input type="password" id="newPass" placeholder="Kata Sandi">
+<input type="text" id="rekNum" placeholder="No. Rekening">
+<input type="text" id="rekName" placeholder="Nama Rekening">
+<input type="text" id="phoneNum" placeholder="No. HP">
+<select id="bankType">
+<option value="">-- Pilih Bank / E-Wallet --</option>
+<option>Bank BCA</option>
+<option>Bank BNI</option>
+<option>Bank BRI</option>
+<option>Bank Mandiri</option>
+<option>DANA</option>
+<option>OVO</option>
+<option>Gopay</option>
+<option>ShopeePay</option>
+</select>
+<button onclick="register()">Daftar</button>
+<br><br>
+<button style="background:#ff4444" onclick="showPage('home')">Kembali</button>
+</div>
 </div>
 
 <!-- User Area -->
 <div id="userarea" class="page">
-  <header>
-    <div class="logo">JOKOWI-TOTO - User Area</div>
-    <div class="menu">
-      <a href="#" onclick="showHistory()">History</a>
-      <a href="#" onclick="showPage('deposit')">Deposit</a>
-      <a href="#" onclick="showWithdraw()">Withdraw</a>
-      <a href="#" onclick="alert('Rekening belum tersedia')">Rekening</a>
-      <a href="#" onclick="alert('Memo belum tersedia')">Memo</a>
-      <a href="#" onclick="logout()">Logout</a>
-    </div>
-  </header>
+<header>
+<div class="logo">JOKOWI-TOTO - User Area</div>
+<div class="menu">
+<a href="#" onclick="showHistory()">History</a>
+<a href="#" onclick="showPage('deposit')">Deposit</a>
+<a href="#" onclick="showWithdraw()">Withdraw</a>
+<a href="#" onclick="alert('Rekening belum tersedia')">Rekening</a>
+<a href="#" onclick="alert('Memo belum tersedia')">Memo</a>
+<a href="#" onclick="logout()">Logout</a>
+</div>
+</header>
 
-  <div class="container">
-    <div class="grid">
-      <div class="card">
-        <h3>User Data</h3>
-        <p id="userData">Balance: Rp 0</p>
-        <p id="bankData"></p>
-        <p id="phoneData"></p>
-      </div>
-      <div class="card">
-        <h3>Last Bet/Win Report</h3>
-        <p>No Data</p>
-      </div>
-      <div class="card">
-        <h3>Last Deposit/Withdraw Status</h3>
-        <p>No Data</p>
-      </div>
-    </div>
+<div class="container">
+<div class="grid">
+<div class="card">
+<h3>User Data</h3>
+<p id="userData">Balance: Rp 0</p>
+<p id="bankData"></p>
+<p id="phoneData"></p>
+</div>
+<div class="card">
+<h3>Last Bet/Win Report</h3>
+<p>No Data</p>
+</div>
+<div class="card">
+<h3>Last Deposit/Withdraw Status</h3>
+<p>No Data</p>
+</div>
+</div>
 
-    <div class="provider-boxes">
-      <div class="provider-card">Pragmatic</div>
-      <div class="provider-card">PG Soft</div>
-      <div class="provider-card">No Limit</div>
-      <div class="provider-card">Gamatron</div>
-    </div>
+<div class="provider-boxes">
+<div class="provider-card">Pragmatic</div>
+<div class="provider-card">PG Soft</div>
+<div class="provider-card">No Limit</div>
+<div class="provider-card">Gamatron</div>
+</div>
 
-    <div class="game-grid" id="gameGrid"></div>
-  </div>
+<div class="game-grid" id="gameGrid"></div>
+</div>
 </div>
 
 <!-- Deposit Page -->
 <div id="deposit" class="page">
-  <div class="form-box" style="max-width:400px;">
-    <h2>💸 Deposit Saldo</h2>
-    <p>Scan QRIS di bawah untuk melakukan pembayaran:</p>
-    <img id="qrisImage" src="https://raw.githubusercontent.com/reyreygits/ariptoto11/main/qris1.png" alt="QRIS" />
-    <label for="depositAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Deposit (Rp)</label>
-    <input type="number" id="depositAmount" placeholder="Contoh: 100000" />
-    <button onclick="konfirmasiDeposit()">Konfirmasi Deposit</button><br><br>
-    <button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
-  </div>
+<div class="form-box" style="max-width:400px;">
+<h2>💸 Deposit Saldo</h2>
+<p>Scan QRIS di bawah untuk melakukan pembayaran:</p>
+<img id="qrisImage" src="https://raw.githubusercontent.com/reyreygits/ariptoto11/main/qris1.png" alt="QRIS">
+<label for="depositAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Deposit (Rp)</label>
+<input type="number" id="depositAmount" placeholder="Contoh: 100000">
+<button onclick="konfirmasiDeposit()">Konfirmasi Deposit</button>
+<br><br>
+<button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
+</div>
 </div>
 
 <!-- Withdraw Page -->
 <div id="withdraw" class="page">
-  <div class="form-box" style="max-width:400px;">
-    <h2>💰 Withdraw Saldo</h2>
-    <p>Data Rekening Anda:</p>
-    <p id="withdrawRekening"></p>
-    <p id="withdrawNama"></p>
-    <label for="withdrawAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Withdraw (Rp)</label>
-    <input type="number" id="withdrawAmount" placeholder="Contoh: 50000" />
-    <button onclick="konfirmasiWithdraw()">Konfirmasi Withdraw</button><br><br>
-    <button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
-  </div>
+<div class="form-box" style="max-width:400px;">
+<h2>💰 Withdraw Saldo</h2>
+<p>Data Rekening Anda:</p>
+<p id="withdrawRekening"></p>
+<p id="withdrawNama"></p>
+<label for="withdrawAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Withdraw (Rp)</label>
+<input type="number" id="withdrawAmount" placeholder="Contoh: 50000">
+<button onclick="konfirmasiWithdraw()">Konfirmasi Withdraw</button>
+<br><br>
+<button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
+</div>
 </div>
 
 <!-- History Modal -->
 <div id="historyModal">
-  <div>
-    <h2 style="color:#FFD700;margin-top:0;">📜 Riwayat Deposit & Withdraw</h2>
-    <div id="historyContent" style="max-height:400px; overflow-y:auto;"></div>
-    <button onclick="closeHistory()" style="margin-top:15px;padding:8px 15px;border:none;border-radius:5px;background:#ff4444;color:white;font-weight:bold;cursor:pointer;">Tutup</button>
-  </div>
+<div id="historyContent">
+<button onclick="closeHistory()" style="float:right;margin-bottom:10px;padding:8px 15px;border:none;border-radius:5px;background:#ff4444;color:white;font-weight:bold;cursor:pointer;">Tutup</button>
+<div id="historyList"></div>
+</div>
 </div>
 
 <script>
 const games = [
-  {name:"GATES OF OLYMPUS 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png"},
-  {name:"GATES OF OLYMPUS SUPER",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png"},
-  {name:"STARLIGHT PRINCES 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png"},
-  {name:"STARLIGHT PRINCES",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png"},
-  {name:"GATES OF GATOT KACA 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/gatot1.png"},
-  {name:"BUFALO KING",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo1.png"},
-  {name:"POWER OF THOR",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor,png"},
-  {name:"MAHJONG WINS 3",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/black.png"}
+{name:"GATES OF OLYMPUS 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png"},
+{name:"GATES OF OLYMPUS SUPER",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png"},
+{name:"STARLIGHT PRINCES 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png"},
+{name:"STARLIGHT PRINCES",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png"},
+{name:"GATES OF GATOT KACA 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/gatot1.png"},
+{name:"BUFALO KING",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo1.png"},
+{name:"POWER OF THOR",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor,png"},
+{name:"MAHJONG WINS 3",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/black.png"}
 ];
 
 function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');}
 
 async function login(){
-  const user = document.getElementById('userLogin').value.trim();
-  const pass = document.getElementById('passLogin').value.trim();
-  if(!user||!pass){alert('Isi User ID dan Kata Sandi!');return;}
-  try{
-    const doc = await db.collection('users').doc(user).get();
-    if(!doc.exists){alert('User ID atau kata sandi salah!');return;}
-    const userData = doc.data();
-    if(userData.password===pass){
-      alert('Login berhasil! Selamat datang '+user);
-      populateUserData(user,userData);
-      currentUser=user;
-      listenUserUpdates(user);
-      showPage('userarea');
-    }else{alert('User ID atau kata sandi salah!');}
-  }catch(err){console.error(err);alert('Gagal login, coba lagi.');}
+const user=document.getElementById('userLogin').value.trim();
+const pass=document.getElementById('passLogin').value.trim();
+if(!user||!pass){alert('Isi User ID dan Kata Sandi!');return;}
+try{
+const doc=await db.collection('users').doc(user).get();
+if(!doc.exists){alert('User ID atau kata sandi salah!');return;}
+const userData=doc.data();
+if(userData.password===pass){
+alert('Login berhasil! Selamat datang '+user);
+populateUserData(user,userData);
+currentUser=user;
+listenUserUpdates(user);
+showPage('userarea');
+}else{alert('User ID atau kata sandi salah!');}
+}catch(err){console.error(err);alert('Gagal login, coba lagi.');}
 }
 
 async function register(){
-  const newUser=document.getElementById('newUser').value.trim();
-  const newPass=document.getElementById('newPass').value.trim();
-  const rekNum=document.getElementById('rekNum').value.trim();
-  const rekName=document.getElementById('rekName').value.trim();
-  const phoneNum=document.getElementById('phoneNum').value.trim();
-  const bankType=document.getElementById('bankType').value;
-  if(!newUser||!newPass||!rekNum||!rekName||!phoneNum||!bankType){alert('Semua field wajib diisi!'); return;}
-  try{
-    const doc = await db.collection('users').doc(newUser).get();
-    if(doc.exists){alert('User ID sudah terdaftar!'); return;}
-    await db.collection('users').doc(newUser).set({password:newPass,rekening:rekNum,namaRekening:rekName,phone:phoneNum,bank:bankType,balance:0});
-    await db.collection('adminUsers').doc(newUser).set({password:newPass,rekening:rekNum,namaRekening:rekName,phone:phoneNum,bank:bankType,balance:0,createdAt:new Date().toISOString()});
-    alert('Registrasi berhasil! Silakan login.');
-    showPage('home');
-  }catch(err){console.error(err);alert('Gagal registrasi, coba lagi.');}
+const newUser=document.getElementById('newUser').value.trim();
+const newPass=document.getElementById('newPass').value.trim();
+const rekNum=document.getElementById('rekNum').value.trim();
+const rekName=document.getElementById('rekName').value.trim();
+const phoneNum=document.getElementById('phoneNum').value.trim();
+const bankType=document.getElementById('bankType').value;
+if(!newUser||!newPass||!rekNum||!rekName||!phoneNum||!bankType){alert('Semua field wajib diisi!'); return;}
+try{
+const doc=await db.collection('users').doc(newUser).get();
+if(doc.exists){alert('User ID sudah terdaftar!'); return;}
+await db.collection('users').doc(newUser).set({password:newPass,rekening:rekNum,namaRekening:rekName,phone:phoneNum,bank:bankType,balance:0});
+alert('Registrasi berhasil! Silakan login.');
+showPage('home');
+}catch(err){console.error(err);alert('Gagal registrasi, coba lagi.');}
 }
 
 function logout(){showPage('home');document.getElementById('userLogin').value='';document.getElementById('passLogin').value='';currentUser=null;}
 
 function populateUserData(username,userData){
-  document.getElementById('userData').textContent=`User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
-  document.getElementById('bankData').textContent=`Rekening: ${userData.rekening} (${userData.bank})`;
-  document.getElementById('phoneData').textContent=`No HP: ${userData.phone}`;
-  populateGameGrid();
+document.getElementById('userData').textContent=`User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
+document.getElementById('bankData').textContent=`Rekening: ${userData.rekening} (${userData.bank})`;
+document.getElementById('phoneData').textContent=`No HP: ${userData.phone}`;
+populateGameGrid();
 }
 
 function populateGameGrid(){
-  const container=document.getElementById('gameGrid'); container.innerHTML='';
-  games.forEach(game=>{
-    const card=document.createElement('div');
-    card.classList.add('game-card');
-    card.title=game.name;
-    card.innerHTML=`<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
-    card.onclick=()=>alert(`LAKUKAN DEPOSIT UNTUK MEMULAI: ${game.name}`);
-    container.appendChild(card);
-  });
+const container=document.getElementById('gameGrid'); container.innerHTML='';
+games.forEach(game=>{
+const card=document.createElement('div');
+card.classList.add('game-card');
+card.title=game.name;
+card.innerHTML=`<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
+card.onclick=()=>alert(`LAKUKAN DEPOSIT UNTUK MEMULAI: ${game.name}`);
+container.appendChild(card);
+});
 }
 
 async function konfirmasiDeposit(){
-  const amountEl=document.getElementById('depositAmount');
-  const amount=parseInt(amountEl.value);
-  const user=currentUser||document.getElementById('userLogin').value.trim();
-  if(!amount||amount<=0){alert('Masukkan nominal deposit yang valid!');return;}
-  if(!user){alert('User tidak terdeteksi. Silakan login ulang.');showPage('home');return;}
-  try{
-    await db.collection('deposits').add({user:user,amount:amount,status:'pending',createdAt:new Date().toISOString()});
-    await db.collection('adminDeposits').add({user:user,amount:amount,status:'pending',createdAt:new Date().toISOString()});
-    alert('✅ Deposit terdaftar. Mohon upload bukti / tunggu konfirmasi admin.');
-    amountEl.value=''; showPage('userarea');
-  }catch(err){console.error(err);alert('Gagal memproses deposit. Coba lagi.');}
+const amountEl=document.getElementById('depositAmount');
+const amount=parseInt(amountEl.value);
+if(!currentUser){alert('Silakan login!'); showPage('home'); return;}
+if(!amount||amount<=0){alert('Masukkan nominal deposit yang valid!'); return;}
+try{
+await db.collection('transactions').add({user:currentUser,type:'deposit',amount:amount,status:'pending',createdAt:new Date().toISOString()});
+alert('✅ Deposit tersimpan, tunggu konfirmasi admin.');
+amountEl.value=''; showPage('userarea');
+}catch(err){console.error(err);alert('Gagal deposit.');}
 }
 
 function showWithdraw(){
-  if(!currentUser){alert('Silakan login terlebih dahulu!'); showPage('home'); return;}
-  db.collection('users').doc(currentUser).get().then(doc=>{
-    if(doc.exists){
-      const u=doc.data();
-      document.getElementById('withdrawRekening').textContent=`No. Rekening: ${u.rekening}`;
-      document.getElementById('withdrawNama').textContent=`Nama Rekening: ${u.namaRekening}`;
-      document.getElementById('withdrawAmount').value='';
-      showPage('withdraw');
-    }else{alert('Data user tidak ditemukan!'); showPage('home');}
-  }).catch(err=>{console.error(err);alert('Gagal mengambil data user!');});
+if(!currentUser){alert('Silakan login!'); showPage('home'); return;}
+db.collection('users').doc(currentUser).get().then(doc=>{
+if(doc.exists){const u=doc.data();document.getElementById('withdrawRekening').textContent=`No. Rekening: ${u.rekening}`;
+document.getElementById('withdrawNama').textContent=`Nama Rekening: ${u.namaRekening}`;
+document.getElementById('withdrawAmount').value='';
+showPage('withdraw');} else {alert('Data user tidak ditemukan!'); showPage('home');}
+}).catch(err=>{console.error(err);alert('Gagal ambil data user!');});
 }
 
 async function konfirmasiWithdraw(){
-  const amountEl=document.getElementById('withdrawAmount');
-  const amount=parseInt(amountEl.value);
-  if(!currentUser){alert('User tidak terdeteksi!'); showPage('home'); return;}
-  if(!amount||amount<=0){alert('Masukkan nominal Withdraw yang valid!'); return;}
-  try{
-    const userRef=db.collection('users').doc(currentUser);
-    const userDoc=await userRef.get();
-    if(!userDoc.exists){alert('User tidak ditemukan!'); return;}
-    const balance=userDoc.data().balance||0;
-    if(amount>balance){alert('Saldo tidak mencukupi!'); return;}
-    await db.collection('withdraws').add({user:currentUser,amount:amount,status:'pending',createdAt:new Date().toISOString()});
-    await db.collection('adminWithdraws').add({user:currentUser,amount:amount,status:'pending',createdAt:new Date().toISOString()});
-    alert('✅ Withdraw terdaftar, tunggu konfirmasi admin.');
-    amountEl.value=''; showPage('userarea');
-  }catch(err){console.error(err);alert('Gagal memproses Withdraw. Coba lagi.');}
+const amountEl=document.getElementById('withdrawAmount'); const amount=parseInt(amountEl.value);
+if(!currentUser){alert('User tidak terdeteksi!'); showPage('home'); return;}
+if(!amount||amount<=0){alert('Masukkan nominal withdraw yang valid!'); return;}
+try{
+const userDoc=await db.collection('users').doc(currentUser).get();
+if(!userDoc.exists){alert('User tidak ditemukan!'); return;}
+const balance=userDoc.data().balance||0;
+if(amount>balance){alert('Saldo tidak mencukupi!'); return;}
+await db.collection('transactions').add({user:currentUser,type:'withdraw',amount:amount,status:'pending',createdAt:new Date().toISOString()});
+alert('✅ Withdraw tersimpan, tunggu konfirmasi admin.');
+amountEl.value=''; showPage('userarea');
+}catch(err){console.error(err);alert('Gagal Withdraw.');}
 }
+
+// History
+async function showHistory(){
+if(!currentUser){alert('Silakan login!'); return;}
+document.getElementById('historyModal').style.display='flex';
+const historyList=document.getElementById('historyList');
+try{
+const snapshot=await db.collection('transactions').where('user','==',currentUser).orderBy('createdAt','desc').get();
+if(snapshot.empty){historyList.innerHTML='<p>Tidak ada riwayat transaksi.</p>'; return;}
+let html='<ul>';
+snapshot.forEach(doc=>{const w=doc.data(); html+=`<li>${w.type.toUpperCase()}: Rp ${w.amount.toLocaleString()} - ${w.status} (${new Date(w.createdAt).toLocaleString()})</li>`;});
+html+='</ul>'; historyList.innerHTML=html;
+}catch(err){console.error(err);historyList.innerHTML='<p>Gagal load history.</p>';}
+}
+function closeHistory(){document.getElementById('historyModal').style.display='none';}
 
 function listenUserUpdates(username){
-  if(!username) return;
-  db.collection('users').doc(username).onSnapshot(doc=>{
-    if(doc.exists){
-      const u=doc.data();
-      document.getElementById('userData').textContent=`User: ${username} | Saldo: Rp ${u.balance.toLocaleString()}`;
-      document.getElementById('bankData').textContent=`Rekening: ${u.rekening} (${u.bank})`;
-      document.getElementById('phoneData').textContent=`No HP: ${u.phone}`;
-    }
-  });
-
-  db.collection('adminDeposits').where('user','==',username).where('status','==','approved')
-  .onSnapshot(snapshot=>{snapshot.docChanges().forEach(async change=>{
-    if(change.type==='added'){
-      const depositData=change.doc.data();
-      const userRef=db.collection('users').doc(username);
-      await db.runTransaction(async transaction=>{
-        const userDoc=await transaction.get(userRef);
-        if(!userDoc.exists) return;
-        const newBalance=(userDoc.data().balance||0)+(depositData.amount||0);
-        transaction.update(userRef,{balance:newBalance});
-      });
-    }
-  });});
+if(!username) return;
+db.collection('users').doc(username).onSnapshot(doc=>{
+if(doc.exists){
+const u=doc.data();
+document.getElementById('userData').textContent=`User: ${username} | Saldo: Rp ${u.balance.toLocaleString()}`;
+document.getElementById('bankData').textContent=`Rekening: ${u.rekening} (${u.bank})`;
+document.getElementById('phoneData').textContent=`No HP: ${u.phone}`;
 }
-
-async function showHistory(){
-  if(!currentUser){alert('Silakan login terlebih dahulu!'); return;}
-  const historyContent=document.getElementById('historyContent');
-  historyContent.innerHTML='<p>Loading...</p>';
-  document.getElementById('historyModal').style.display='block';
-  try{
-    const depositsSnap=await db.collection('adminDeposits').where('user','==',currentUser).orderBy('createdAt','desc').get();
-    const withdrawsSnap=await db.collection('adminWithdraws').where('user','==',currentUser).orderBy('createdAt','desc').get();
-    let html='<h3 style="color:#00cc66;">💳 Deposits</h3><ul style="padding-left:15px;">';
-    depositsSnap.forEach(doc=>{const d=doc.data(); html+=`<li>Rp ${d.amount.toLocaleString()} - ${d.status} (${new Date(d.createdAt).toLocaleString()})</li>`;});
-    html+='</ul><h3 style="color:#ff4444;">💸 Withdraws</h3><ul style="padding-left:15px;">';
-    withdrawsSnap.forEach(doc=>{const w=doc.data(); html+=`<li>Rp ${w.amount.toLocaleString()} - ${w.status} (${new Date(w.createdAt).toLocaleString()})</li>`;});
-    html+='</ul>'; historyContent.innerHTML=html;
-  }catch(err){console.error(err); historyContent.innerHTML='<p>Gagal load history.</p>';}
+});
 }
-
-function closeHistory(){document.getElementById('historyModal').style.display='none';}
 </script>
-
 </body>
 </html>
