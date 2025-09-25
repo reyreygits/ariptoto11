@@ -10,7 +10,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // ====== Ganti dengan config Firebase milikmu ======
     const firebaseConfig = {
       apiKey: "AIzaSyBC8UXFcrJaxMsJsTQgnqaaNvgsAVz0vOE",
       authDomain: "ariptoto-web.firebaseapp.com",
@@ -19,10 +18,8 @@
       messagingSenderId: "129200594109",
       appId: "1:129200594109:web:50f7f4ce89a384211b2bd4"
     };
-    // ====================================================
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     let currentUser = null;
   </script>
 
@@ -177,9 +174,7 @@
         <div class="provider-card">Gamatron</div>
       </div>
 
-      <div class="game-grid" id="gameGrid">
-        <!-- Game cards akan digenerate lewat JS -->
-      </div>
+      <div class="game-grid" id="gameGrid"></div>
     </div>
   </div>
 
@@ -226,6 +221,7 @@
           alert('Login berhasil! Selamat datang ' + user);
           populateUserData(user, userData);
           currentUser = user;
+          listenUserUpdates(user); // realtime listener deposit approved
           showPage('userarea');
         } else { alert('User ID atau kata sandi salah!'); }
       } catch (err) {
@@ -337,6 +333,41 @@
         console.error('Error saat menyimpan deposit:', err);
         alert('Gagal memproses deposit. Coba lagi.');
       }
+    }
+
+    // ===== Listener realtime untuk update saldo =====
+    function listenUserUpdates(username){
+      if(!username) return;
+
+      // Update user data realtime
+      db.collection('users').doc(username)
+        .onSnapshot(doc => {
+          if(doc.exists){
+            const u = doc.data();
+            document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${u.balance.toLocaleString()}`;
+            document.getElementById('bankData').textContent = `Rekening: ${u.rekening} (${u.bank})`;
+            document.getElementById('phoneData').textContent = `No HP: ${u.phone}`;
+          }
+        });
+
+      // Listen deposit yang diapprove oleh admin
+      db.collection('adminDeposits')
+        .where('user','==',username)
+        .where('status','==','approved')
+        .onSnapshot(snapshot => {
+          snapshot.docChanges().forEach(async change => {
+            if(change.type === 'added'){
+              const depositData = change.doc.data();
+              const userRef = db.collection('users').doc(username);
+              await db.runTransaction(async (transaction) => {
+                const userDoc = await transaction.get(userRef);
+                if(!userDoc.exists) return;
+                const newBalance = (userDoc.data().balance || 0) + (depositData.amount || 0);
+                transaction.update(userRef, { balance: newBalance });
+              });
+            }
+          });
+        });
     }
   </script>
 
