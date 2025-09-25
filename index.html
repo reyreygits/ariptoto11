@@ -98,7 +98,6 @@
       #qrisImage { width: 200px; max-width: 90%; }
     }
   </style>
-
 </head>
 <body>
   <!-- Home -->
@@ -153,7 +152,7 @@
       <div class="menu">
         <a href="#" onclick="alert('History belum tersedia')">History</a>
         <a href="#" onclick="showPage('deposit')">Deposit</a>
-        <a href="#" onclick="alert('Withdraw belum tersedia')">Withdraw</a>
+        <a href="#" onclick="showWithdraw()">Withdraw</a>
         <a href="#" onclick="alert('Rekening belum tersedia')">Rekening</a>
         <a href="#" onclick="alert('Memo belum tersedia')">Memo</a>
         <a href="#" onclick="logout()">Logout</a>
@@ -198,6 +197,23 @@
       <label for="depositAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Deposit (Rp)</label>
       <input type="number" id="depositAmount" placeholder="Contoh: 100000" />
       <button onclick="konfirmasiDeposit()">Konfirmasi Deposit</button>
+      <br /><br />
+      <button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
+    </div>
+  </div>
+
+  <!-- Withdraw Page -->
+  <div id="withdraw" class="page">
+    <div class="form-box" style="max-width:400px;">
+      <h2>💰 Withdraw Saldo</h2>
+      <p>Data Rekening Anda:</p>
+      <p id="withdrawRekening"></p>
+      <p id="withdrawNama"></p>
+      
+      <label for="withdrawAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Withdraw (Rp)</label>
+      <input type="number" id="withdrawAmount" placeholder="Contoh: 50000" />
+      
+      <button onclick="konfirmasiWithdraw()">Konfirmasi Withdraw</button>
       <br /><br />
       <button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
     </div>
@@ -273,7 +289,7 @@
           namaRekening: rekName,
           phone: phoneNum,
           bank: bankType,
-          balance: 0,
+          balance: 100000,
           createdAt: new Date().toISOString()
         });
 
@@ -341,6 +357,66 @@
       } catch (err) {
         console.error('Error saat menyimpan deposit:', err);
         alert('Gagal memproses deposit. Coba lagi.');
+      }
+    }
+
+    function showWithdraw() {
+      if(!currentUser) { alert('Silakan login terlebih dahulu!'); showPage('home'); return; }
+
+      db.collection('users').doc(currentUser).get()
+        .then(doc => {
+          if(doc.exists){
+            const u = doc.data();
+            document.getElementById('withdrawRekening').textContent = `No. Rekening: ${u.rekening}`;
+            document.getElementById('withdrawNama').textContent = `Nama Rekening: ${u.namaRekening}`;
+            document.getElementById('withdrawAmount').value = '';
+            showPage('withdraw');
+          } else {
+            alert('Data user tidak ditemukan!');
+            showPage('home');
+          }
+        }).catch(err => {
+          console.error(err);
+          alert('Gagal mengambil data user!');
+        });
+    }
+
+    async function konfirmasiWithdraw() {
+      const amountEl = document.getElementById('withdrawAmount');
+      const amount = parseInt(amountEl.value);
+      if(!currentUser){ alert('User tidak terdeteksi!'); showPage('home'); return; }
+      if(!amount || amount <= 0){ alert('Masukkan nominal Withdraw yang valid!'); return; }
+
+      try {
+        const userRef = db.collection('users').doc(currentUser);
+        const userDoc = await userRef.get();
+        if(!userDoc.exists){ alert('User tidak ditemukan!'); return; }
+
+        const balance = userDoc.data().balance || 0;
+        if(amount > balance){ alert('Saldo tidak mencukupi!'); return; }
+
+        // Simpan ke koleksi Withdraw (pending)
+        await db.collection('withdraws').add({
+          user: currentUser,
+          amount: amount,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+
+        // Simpan juga di adminWithdraws
+        await db.collection('adminWithdraws').add({
+          user: currentUser,
+          amount: amount,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+
+        alert('✅ Withdraw terdaftar, tunggu konfirmasi admin.');
+        amountEl.value = '';
+        showPage('userarea');
+      } catch(err){
+        console.error(err);
+        alert('Gagal memproses Withdraw. Coba lagi.');
       }
     }
 
