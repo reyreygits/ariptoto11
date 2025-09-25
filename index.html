@@ -58,19 +58,20 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 .game-card img{width:100%;border-radius:6px;margin-bottom:8px;}
 #qrisImage{width:250px;max-width:80%;height:auto;display:block;margin:15px auto;border-radius:8px;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeInDown{from{opacity:0;transform:translateY(-40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);} }
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-40px);}to{opacity:1;transform:translateY(0);} }
 @media(max-width:768px){header{flex-direction:column;align-items:flex-start}.login-form{flex-direction:column;width:100%;margin-top:10px}.login-form input,.login-form button{width:100%;max-width:100%;margin-bottom:8px}.grid{grid-template-columns:1fr}.provider-boxes{grid-template-columns:1fr 1fr}.game-grid{grid-template-columns:1fr 1fr}.form-box{width:90%;margin:30px auto;padding:20px}#qrisImage{width:200px;max-width:90%;}}
-/* History & Rekening Modal */
-#historyModal, #rekeningModal{display:none;position:fixed;z-index:999;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;}
-#historyContent, #rekeningModal div{background:#1c1c1c;padding:20px;border-radius:10px;max-height:80%;overflow-y:auto;width:90%;max-width:600px;position:relative;}
-#historyContent h3, #rekeningModal h3{color:#FFD700;margin-top:0;}
-#historyContent button, #rekeningModal button{float:right;margin-bottom:10px;padding:8px 15px;border:none;border-radius:5px;background:#ff4444;color:white;font-weight:bold;cursor:pointer;}
+
+/* Modal */
+.modal{display:none;position:fixed;z-index:1000;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;}
+.modal-content{background:#1c1c1c;padding:20px;border-radius:10px;max-width:400px;width:90%;text-align:center;position:relative;}
+.modal-content h3{color:#FFD700;margin-top:0;}
+.modal-content button{position:absolute;top:10px;right:10px;padding:5px 10px;border:none;border-radius:5px;background:#ff4444;color:white;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<!-- Home Page -->
+<!-- ===== Home Page ===== -->
 <div id="home" class="page active">
 <header>
 <div class="logo">JOKOWI-TOTO</div>
@@ -92,7 +93,7 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 </div>
 </div>
 
-<!-- Daftar -->
+<!-- ===== Daftar Page ===== -->
 <div id="daftar" class="page">
 <div class="form-box">
 <h2>Form Pendaftaran</h2>
@@ -118,7 +119,7 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 </div>
 </div>
 
-<!-- User Area -->
+<!-- ===== User Area ===== -->
 <div id="userarea" class="page">
 <header>
 <div class="logo">JOKOWI-TOTO - User Area</div>
@@ -126,7 +127,7 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 <a href="#" onclick="showHistory()">History</a>
 <a href="#" onclick="showPage('deposit')">Deposit</a>
 <a href="#" onclick="showWithdraw()">Withdraw</a>
-<a href="#" onclick="showRekening()">Rekening</a>
+<a href="#" id="menuRekening">Rekening</a>
 <a href="#" onclick="alert('Memo belum tersedia')">Memo</a>
 <a href="#" onclick="logout()">Logout</a>
 </div>
@@ -161,7 +162,7 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 </div>
 </div>
 
-<!-- Deposit Page -->
+<!-- ===== Deposit Page ===== -->
 <div id="deposit" class="page">
 <div class="form-box" style="max-width:400px;">
 <h2>💸 Deposit Saldo</h2>
@@ -175,7 +176,7 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 </div>
 </div>
 
-<!-- Withdraw Page -->
+<!-- ===== Withdraw Page ===== -->
 <div id="withdraw" class="page">
 <div class="form-box" style="max-width:400px;">
 <h2>💰 Withdraw Saldo</h2>
@@ -190,17 +191,17 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 </div>
 </div>
 
-<!-- History Modal -->
-<div id="historyModal">
-<div id="historyContent">
+<!-- ===== History Modal ===== -->
+<div id="historyModal" class="modal">
+<div class="modal-content">
 <button onclick="closeHistory()">Tutup</button>
 <div id="historyList"></div>
 </div>
 </div>
 
-<!-- Rekening Modal -->
-<div id="rekeningModal">
-<div>
+<!-- ===== Rekening Modal ===== -->
+<div id="rekeningModal" class="modal">
+<div class="modal-content">
 <button onclick="closeRekening()">Tutup</button>
 <h3>Data Rekening</h3>
 <p id="modalRekening"></p>
@@ -210,7 +211,6 @@ header{background:#111a33;padding:10px 20px;display:flex;justify-content:space-b
 </div>
 
 <script>
-// Games
 const games = [
 {name:"GATES OF OLYMPUS 1000",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png"},
 {name:"GATES OF OLYMPUS SUPER",img:"https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png"},
@@ -317,7 +317,6 @@ amountEl.value=''; showPage('userarea');
 }catch(err){console.error(err);alert('Gagal Withdraw.');}
 }
 
-// History
 async function showHistory(){
 if(!currentUser){alert('Silakan login!'); return;}
 document.getElementById('historyModal').style.display='flex';
@@ -332,7 +331,7 @@ html+='</ul>'; historyList.innerHTML=html;
 }
 function closeHistory(){document.getElementById('historyModal').style.display='none';}
 
-// Rekening Modal
+// ===== Modal Rekening =====
 function showRekening(){
 if(!currentUser){alert('Silakan login!'); showPage('home'); return;}
 db.collection('users').doc(currentUser).get().then(doc=>{
@@ -358,6 +357,9 @@ document.getElementById('phoneData').textContent=`No HP: ${u.phone}`;
 }
 });
 }
+
+// Hubungkan menu Rekening
+document.getElementById('menuRekening').onclick = showRekening;
 </script>
 </body>
 </html>
