@@ -34,23 +34,8 @@
     .btn-daftar { background: #00cc66; color: white; }
     .login-form button:hover { transform: scale(1.05); opacity: 0.9; }
 
-    /* Tombol WA / Live Chat */
-    .btn-wa {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 16px;
-      background: #25D366;
-      color: white;
-      font-weight: bold;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 14px;
-    }
-    .btn-wa:hover {
-      background: #1ebe5d;
-      transform: scale(1.05);
-    }
+    .btn-wa { display: inline-block; margin-top: 10px; padding: 8px 16px; background: #25D366; color: white; font-weight: bold; border-radius: 6px; text-decoration: none; transition: all 0.3s ease; font-size: 14px; }
+    .btn-wa:hover { background: #1ebe5d; transform: scale(1.05); }
 
     .banner { max-width: 900px; margin: 30px auto; padding: 50px 20px; border-radius: 15px; background: linear-gradient(135deg, #1e3c72, #2a5298); box-shadow: 0 5px 20px rgba(0,0,0,0.6); text-align: center; animation: fadeInUp 1s ease; }
     .banner h1 { font-size: 40px; margin-bottom: 15px; color: #FFD700; animation: fadeIn 2s ease; }
@@ -79,14 +64,14 @@
     .card h3 { margin-top: 0; color: #ff4444; }
 
     .provider-boxes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 30px; }
-    .provider-card { background: #2a2a2a; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; color: #FFD700; box-shadow: 0 6px 15px rgba(255,215,0,0.4); user-select: none; cursor: default; }
+    .provider-card { background: #2a2a2a; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; color: #FFD700; box-shadow: 0 6px 15px rgba(255,215,0,0.4); user-select: none; cursor: pointer; transition: transform 0.3s ease; }
+    .provider-card:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6); }
 
     .game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; }
     .game-card { background: #1e1e1e; border-radius: 10px; padding: 12px; text-align: center; font-weight: bold; color: #FFD700; box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); cursor: pointer; transition: transform 0.3s ease; user-select: none; }
     .game-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6); }
     .game-card img { width: 100%; border-radius: 6px; margin-bottom: 8px; }
 
-    /* QRIS Style */
     #qrisImage { width: 250px; max-width: 80%; height: auto; display: block; margin: 15px auto; border-radius: 8px; }
 
     @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
@@ -111,6 +96,7 @@
   </style>
 </head>
 <body>
+
   <!-- Home -->
   <div id="home" class="page active">
     <header>
@@ -121,11 +107,8 @@
         <button class="btn-login" onclick="login()">Login</button>
         <button class="btn-daftar" onclick="showPage('daftar')">Daftar</button>
       </div>
-      <!-- Tombol WA / Live Chat -->
       <div style="width:100%; text-align:right;">
-        <a href="https://wa.me/6282128009210" target="_blank" class="btn-wa">
-          💬 Hubungi WhatsApp / Live Chat
-        </a>
+        <a href="https://wa.me/6282128009210" target="_blank" class="btn-wa">💬 Hubungi WhatsApp / Live Chat</a>
       </div>
     </header>
     <div class="banner">
@@ -226,10 +209,8 @@
       <p>Data Rekening Anda:</p>
       <p id="withdrawRekening"></p>
       <p id="withdrawNama"></p>
-      
       <label for="withdrawAmount" style="display:block;text-align:left;margin-top:8px;">Nominal Withdraw (Rp)</label>
       <input type="number" id="withdrawAmount" placeholder="Contoh: 50000" />
-      
       <button onclick="konfirmasiWithdraw()">Konfirmasi Withdraw</button>
       <br /><br />
       <button style="background:#ff4444" onclick="showPage('userarea')">⬅️ Kembali</button>
@@ -237,235 +218,109 @@
   </div>
 
   <script>
-    const games = [
-      { name: "GATES OF OLYMPUS 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
-      { name: "GATES OF OLYMPUS SUPER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png" },
-      { name: "STARLIGHT PRINCES 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png" },
-      { name: "STARLIGHT PRINCES", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png" },
-      { name: "GATES OF GATOT KACA 1000", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/gatot1.png" },
-      { name: "BUFALO KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/falo1.png" },
-      { name: "POWER OF THOR", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor,png" },
-      { name: "MAHJONG WINS 3", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/black.png" }
-    ];
+    // Provider & Game Grid
+    const providerGames = {
+      "Pragmatic": [
+        { name: "GATES OF OLYMPUS", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GATES OF OLYMPUS SUPER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus1.png" },
+        { name: "STARLIGHT PRINCESS", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/icens1.png" },
+        { name: "STARLIGHT PRINCESS 2", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/inces2.png" },
+        { name: "BUFFALO KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/buffalo.png" },
+        { name: "POWER OF THOR", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/thor.png" }
+      ],
+      "PG Soft": [
+        { name: "GATES OF GATOT KACA", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "BUFALO KING PG", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "MAHJONG WINS 3", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "POWER OF THOR PG", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "DRAGON LEGEND", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "LUCKY FORTUNE CAT", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" }
+      ],
+      "No Limit": [
+        { name: "WILD WHEELS", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "SILVER TIGER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GOLDEN HORSE", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "LUCKY SEVEN", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "PHARAOH'S FORTUNE", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "TREASURE HUNTER", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" }
+      ],
+      "Gamatron": [
+        { name: "GAMATRON DRAGON", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GAMATRON LUCKY", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GAMATRON RICHES", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GAMATRON FORTUNE", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GAMATRON GOLD", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" },
+        { name: "GAMATRON KING", img: "https://raw.githubusercontent.com/reyreygits/ariptoto11/main/zeus.png" }
+      ]
+    };
 
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
-
-    async function login() {
-      const user = document.getElementById('userLogin').value.trim();
-      const pass = document.getElementById('passLogin').value.trim();
-      if (!user || !pass) { alert('Isi User ID dan Kata Sandi!'); return; }
-      try {
-        const doc = await db.collection('users').doc(user).get();
-        if (!doc.exists) { alert('User ID atau kata sandi salah!'); return; }
-        const userData = doc.data();
-        if (userData.password === pass) {
-          alert('Login berhasil! Selamat datang ' + user);
-          populateUserData(user, userData);
-          currentUser = user;
-          listenUserUpdates(user);
-          showPage('userarea');
-        } else { alert('User ID atau kata sandi salah!'); }
-      } catch (err) {
-        console.error('Error login:', err);
-        alert('Gagal login, coba lagi.');
-      }
-    }
-
-    async function register() {
-      const newUser = document.getElementById('newUser').value.trim();
-      const newPass = document.getElementById('newPass').value.trim();
-      const rekNum = document.getElementById('rekNum').value.trim();
-      const rekName = document.getElementById('rekName').value.trim();
-      const phoneNum = document.getElementById('phoneNum').value.trim();
-      const bankType = document.getElementById('bankType').value;
-
-      if (!newUser || !newPass || !rekNum || !rekName || !phoneNum || !bankType) {
-        alert('Semua field wajib diisi!');
-        return;
-      }
-
-      try {
-        const doc = await db.collection('users').doc(newUser).get();
-        if (doc.exists) { alert('User ID sudah terdaftar!'); return; }
-
-        await db.collection('users').doc(newUser).set({
-          password: newPass,
-          rekening: rekNum,
-          namaRekening: rekName,
-          phone: phoneNum,
-          bank: bankType,
-          balance: 0
-        });
-
-        await db.collection('adminUsers').doc(newUser).set({
-          password: newPass,
-          rekening: rekNum,
-          namaRekening: rekName,
-          phone: phoneNum,
-          bank: bankType,
-          balance: 0,
-          createdAt: new Date().toISOString()
-        });
-
-        alert('Registrasi berhasil! Silakan login.');
-        showPage('home');
-      } catch (err) {
-        console.error('Error registrasi:', err);
-        alert('Gagal registrasi, coba lagi.');
-      }
-    }
-
-    function logout() {
-      showPage('home');
-      document.getElementById('userLogin').value = '';
-      document.getElementById('passLogin').value = '';
-      currentUser = null;
-    }
-
-    function populateUserData(username, userData) {
-      document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${userData.balance.toLocaleString()}`;
-      document.getElementById('bankData').textContent = `Rekening: ${userData.rekening} (${userData.bank})`;
-      document.getElementById('phoneData').textContent = `No HP: ${userData.phone}`;
-      populateGameGrid();
-    }
-
-    function populateGameGrid() {
+    function populateGameGridByProvider(providerName){
       const container = document.getElementById('gameGrid');
       container.innerHTML = '';
-      games.forEach(game => {
+      const gamesToShow = providerGames[providerName] || [];
+      gamesToShow.forEach(game=>{
         const card = document.createElement('div');
         card.classList.add('game-card');
         card.title = game.name;
         card.innerHTML = `<img src="${game.img}" alt="${game.name}" /><div>${game.name}</div>`;
-        card.onclick = () => alert(`LAKUKAN DEPOSIT UNTUK MEMULAI: ${game.name}`);
+        card.onclick = () => alert(`Deposit dulu untuk main: ${game.name}`);
         container.appendChild(card);
       });
     }
 
-    async function konfirmasiDeposit() {
-      const amountEl = document.getElementById('depositAmount');
-      const amount = parseInt(amountEl.value);
-      const user = currentUser || document.getElementById('userLogin').value.trim();
+    document.querySelectorAll('.provider-card').forEach((el)=>{
+      const providerName = el.textContent.trim();
+      el.onclick = ()=>populateGameGridByProvider(providerName);
+    });
 
-      if (!amount || amount <= 0) { alert('Masukkan nominal deposit yang valid!'); return; }
-      if (!user) { alert('User tidak terdeteksi. Silakan login ulang.'); showPage('home'); return; }
-
-      try {
-        await db.collection('deposits').add({
-          user: user,
-          amount: amount,
-          status: 'pending',
-          createdAt: new Date().toISOString()
-        });
-
-        await db.collection('adminDeposits').add({
-          user: user,
-          amount: amount,
-          status: 'pending',
-          createdAt: new Date().toISOString()
-        });
-
-        alert('✅ Deposit terdaftar. Mohon upload bukti / tunggu konfirmasi admin.');
-        amountEl.value = '';
-        showPage('userarea');
-      } catch (err) {
-        console.error('Error saat menyimpan deposit:', err);
-        alert('Gagal memproses deposit. Coba lagi.');
-      }
+    function showPage(pageId){
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
     }
 
-    function showWithdraw() {
-      if(!currentUser) { alert('Silakan login terlebih dahulu!'); showPage('home'); return; }
-
-      db.collection('users').doc(currentUser).get()
-        .then(doc => {
-          if(doc.exists){
-            const u = doc.data();
-            document.getElementById('withdrawRekening').textContent = `No. Rekening: ${u.rekening}`;
-            document.getElementById('withdrawNama').textContent = `Nama Rekening: ${u.namaRekening}`;
-            document.getElementById('withdrawAmount').value = '';
-            showPage('withdraw');
-          } else {
-            alert('Data user tidak ditemukan!');
-            showPage('home');
-          }
-        }).catch(err => {
-          console.error(err);
-          alert('Gagal mengambil data user!');
-        });
+    function login(){
+      const user = document.getElementById('userLogin').value;
+      const pass = document.getElementById('passLogin').value;
+      if(!user || !pass){ alert('Isi User & Password'); return; }
+      currentUser = { user, pass, balance: 100000, bank: 'BCA 123456', phone: '08123456789' };
+      showPage('userarea');
+      document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${currentUser.balance}`;
+      document.getElementById('bankData').innerText = `Bank: ${currentUser.bank}`;
+      document.getElementById('phoneData').innerText = `HP: ${currentUser.phone}`;
     }
 
-    async function konfirmasiWithdraw() {
-      const amountEl = document.getElementById('withdrawAmount');
-      const amount = parseInt(amountEl.value);
-      if(!currentUser){ alert('User tidak terdeteksi!'); showPage('home'); return; }
-      if(!amount || amount <= 0){ alert('Masukkan nominal Withdraw yang valid!'); return; }
-
-      try {
-        const userRef = db.collection('users').doc(currentUser);
-        const userDoc = await userRef.get();
-        if(!userDoc.exists){ alert('User tidak ditemukan!'); return; }
-
-        const balance = userDoc.data().balance || 0;
-        if(amount > balance){ alert('Saldo tidak mencukupi!'); return; }
-
-        await db.collection('withdraws').add({
-          user: currentUser,
-          amount: amount,
-          status: 'pending',
-          createdAt: new Date().toISOString()
-        });
-
-        await db.collection('adminWithdraws').add({
-          user: currentUser,
-          amount: amount,
-          status: 'pending',
-          createdAt: new Date().toISOString()
-        });
-
-        alert('✅ Withdraw terdaftar, tunggu konfirmasi admin.');
-        amountEl.value = '';
-        showPage('userarea');
-      } catch(err){
-        console.error(err);
-        alert('Gagal memproses Withdraw. Coba lagi.');
-      }
+    function register(){
+      alert('Akun berhasil didaftarkan (Demo)'); showPage('home');
     }
 
-    function listenUserUpdates(username){
-      if(!username) return;
+    function logout(){ currentUser=null; alert('Logout berhasil'); showPage('home'); }
 
-      db.collection('users').doc(username)
-        .onSnapshot(doc => {
-          if(doc.exists){
-            const u = doc.data();
-            document.getElementById('userData').textContent = `User: ${username} | Saldo: Rp ${u.balance.toLocaleString()}`;
-            document.getElementById('bankData').textContent = `Rekening: ${u.rekening} (${u.bank})`;
-            document.getElementById('phoneData').textContent = `No HP: ${u.phone}`;
-          }
-        });
+    function showWithdraw(){
+      if(!currentUser){ alert('Login dulu'); return; }
+      document.getElementById('withdrawRekening').innerText = `Rek: ${currentUser.bank}`;
+      document.getElementById('withdrawNama').innerText = `User: ${currentUser.user}`;
+      showPage('withdraw');
+    }
 
-      db.collection('adminDeposits')
-        .where('user','==',username)
-        .where('status','==','approved')
-        .onSnapshot(snapshot => {
-          snapshot.docChanges().forEach(async change => {
-            if(change.type === 'added'){
-              const depositData = change.doc.data();
-              const userRef = db.collection('users').doc(username);
-              await db.runTransaction(async (transaction) => {
-                const userDoc = await transaction.get(userRef);
-                if(!userDoc.exists) return;
-                const newBalance = (userDoc.data().balance || 0) + (depositData.amount || 0);
-                transaction.update(userRef, { balance: newBalance });
-              });
-            }
-          });
-        });
+    function konfirmasiDeposit(){
+      const amt = document.getElementById('depositAmount').value;
+      if(!amt || amt <=0){ alert('Masukkan nominal'); return; }
+      currentUser.balance += parseInt(amt);
+      alert(`Deposit Rp ${amt} berhasil!`);
+      document.getElementById('userData').innerText = `User: ${currentUser.user} | Balance: Rp ${currentUser.balance}`;
+      showPage('userarea');
+    }
+
+    function konfirmasiWithdraw(){
+      const amt = document.getElementById('withdrawAmount').value;
+      if(!amt || amt<=0){ alert('Masukkan nominal'); return; }
+      if(amt > currentUser.balance){ alert('Saldo tidak cukup'); return; }
+      currentUser.balance -= amt;
+      alert(`Withdraw Rp ${amt} berhasil!`);
+      document.getElementById('userData').innerText = `User: ${currentUser.user} | Balance: Rp ${currentUser.balance}`;
+      showPage('userarea');
     }
   </script>
+
 </body>
 </html>
