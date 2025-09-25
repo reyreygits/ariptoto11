@@ -8,19 +8,20 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBC8UXFcrJaxMsJsTQgnqaaNvgsAVz0vOE",
-    authDomain: "ariptoto-web.firebaseapp.com",
-    projectId: "ariptoto-web",
-    storageBucket: "ariptoto-web.appspot.com",
-    messagingSenderId: "129200594109",
-    appId: "1:129200594109:web:50f7f4ce89a384211b2bd4"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  let currentUser = null;
+const firebaseConfig = {
+  apiKey: "AIzaSyBC8UXFcrJaxMsJsTQgnqaaNvgsAVz0vOE",
+  authDomain: "ariptoto-web.firebaseapp.com",
+  projectId: "ariptoto-web",
+  storageBucket: "ariptoto-web.appspot.com",
+  messagingSenderId: "129200594109",
+  appId: "1:129200594109:web:50f7f4ce89a384211b2bd4"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+let currentUser = null;
 </script>
 
 <style>
@@ -138,7 +139,7 @@ header{flex-direction:column;align-items:flex-start}
 <header>
 <div class="logo">JOKOWI-TOTO - User Area</div>
 <div class="menu">
-<a href="#" onclick="alert('Silahkan Lakukan Deposit')">History</a>
+<a href="#" onclick="showHistory()">History</a>
 <a href="#" onclick="showPage('deposit')">Deposit</a>
 <a href="#" onclick="showWithdraw()">Withdraw</a>
 <a href="#" onclick="alert('Rekening Sudah Terdaftar')">Rekening</a>
@@ -156,11 +157,11 @@ header{flex-direction:column;align-items:flex-start}
 </div>
 <div class="card">
 <h3>Last Bet/Win Report</h3>
-<p>No Data</p>
+<p id="betReport">No Data</p>
 </div>
 <div class="card">
 <h3>Last Deposit/Withdraw Status</h3>
-<p>No Data</p>
+<div id="historyList" style="max-height:200px; overflow-y:auto;"></div>
 </div>
 </div>
 
@@ -288,10 +289,27 @@ async function login(){
     const data = docSnap.data();
     if(data.pass !== pass){ alert('Password salah'); return; }
     currentUser = {...data, user};
+
+    // real-time update
+    db.collection('users').doc(user).onSnapshot(doc=>{
+      const data = doc.data();
+      currentUser.balance = data.balance;
+      document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${currentUser.balance}`;
+      document.getElementById('bankData').innerText = `Bank: ${data.bank} (${data.bankType})`;
+      document.getElementById('phoneData').innerText = `HP: ${data.phone}`;
+
+      // update history
+      const historyDiv = document.getElementById('historyList');
+      historyDiv.innerHTML = '';
+      const deposits = data.historyDeposit || [];
+      const withdraws = data.historyWithdraw || [];
+      [...deposits.map(d=>`<div>Deposit Rp ${d.amount} - ${new Date(d.date.seconds*1000).toLocaleString()}</div>`),
+       ...withdraws.map(w=>`<div>Withdraw Rp ${w.amount} - ${new Date(w.date.seconds*1000).toLocaleString()}</div>`)]
+       .forEach(h=>{historyDiv.innerHTML += h;});
+    });
+
     showPage('userarea');
-    document.getElementById('userData').innerText = `User: ${user} | Balance: Rp ${currentUser.balance}`;
-    document.getElementById('bankData').innerText = `Bank: ${currentUser.bank} (${currentUser.bankType})`;
-    document.getElementById('phoneData').innerText = `HP: ${currentUser.phone}`;
+
   }catch(err){ console.error(err); alert('Gagal login'); }
 }
 
@@ -315,7 +333,9 @@ async function register(){
       bankName,
       bankType,
       phone,
-      balance: 0
+      balance: 0,
+      historyDeposit: [],
+      historyWithdraw: []
     });
     alert('Akun berhasil didaftarkan');
     showPage('home');
@@ -341,11 +361,13 @@ function showWithdraw(){
 async function konfirmasiDeposit(){
   const amt = parseInt(document.getElementById('depositAmount').value);
   if(!amt || amt <=0){ alert('Masukkan nominal'); return; }
-  currentUser.balance += amt;
+
   try{
-    await db.collection('users').doc(currentUser.user).update({balance: currentUser.balance});
+    await db.collection('users').doc(currentUser.user).update({
+      balance: firebase.firestore.FieldValue.increment(amt),
+      historyDeposit: firebase.firestore.FieldValue.arrayUnion({amount: amt, date: new Date()})
+    });
     alert(`Deposit Rp ${amt} berhasil!`);
-    document.getElementById('userData').innerText = `User: ${currentUser.user} | Balance: Rp ${currentUser.balance}`;
     showPage('userarea');
   }catch(err){ console.error(err); alert('Gagal update deposit'); }
 }
@@ -355,13 +377,21 @@ async function konfirmasiWithdraw(){
   const amt = parseInt(document.getElementById('withdrawAmount').value);
   if(!amt || amt <=0){ alert('Masukkan nominal'); return; }
   if(amt > currentUser.balance){ alert('Saldo tidak cukup'); return; }
-  currentUser.balance -= amt;
+
   try{
-    await db.collection('users').doc(currentUser.user).update({balance: currentUser.balance});
+    await db.collection('users').doc(currentUser.user).update({
+      balance: firebase.firestore.FieldValue.increment(-amt),
+      historyWithdraw: firebase.firestore.FieldValue.arrayUnion({amount: amt, date: new Date()})
+    });
     alert(`Withdraw Rp ${amt} berhasil!`);
-    document.getElementById('userData').innerText = `User: ${currentUser.user} | Balance: Rp ${currentUser.balance}`;
     showPage('userarea');
   }catch(err){ console.error(err); alert('Gagal update withdraw'); }
+}
+
+// Show History
+function showHistory(){
+  if(!currentUser){ alert('Login dulu'); return; }
+  showPage('userarea');
 }
 </script>
 
